@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 23:38:53 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/02 18:34:50 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/03 01:11:24 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -279,13 +279,11 @@ double get_v_distance(t_data *data, double rayAngle, double *v_hit_x, double *v_
     double x = data->p_x;
     double y = data->p_y;
     double angle = rayAngle;
-    // double ray_step = 0.5;
-    // double step_x = cos(angle) * ray_step;
-    // double step_y = sin(angle) * ray_step;
+  
 
-    if (angle > M_PI && angle < 2 * M_PI)
+    if (angle >= M_PI_2 && angle <= 3 * M_PI_2)
     {
-        xintercept = floor(x / 50) * 50 - 1;
+        xintercept = floor(x / 50) * 50;
         xstep = -50;
     }
     else
@@ -327,13 +325,10 @@ double get_h_distance(t_data *data, double rayAngle, double *h_hit_x, double *h_
     double x = data->p_x;
     double y = data->p_y;
     double angle = rayAngle;
-    // double ray_step = 0.5;
-    // double step_x = cos(angle) * ray_step;
-    // double step_y = sin(angle) * ray_step;
  
-    if (angle > M_PI_2 && angle < 3 * M_PI_2)
+    if (angle >= 0 && angle <= M_PI)
     {
-        yintercept = floor(y / 50) * 50 - 1;
+        yintercept = floor(y / 50) * 50 - 0.0001;
         ystep = -50;
     }
     else
@@ -393,11 +388,11 @@ void ray(t_data *data, double rayAngle)
     printf("h_distance : %f\n", h_distance);
     if (v_distance <= h_distance)
     {
-        mlx_pixel_put(data->mlx, data->win, v_hit_x, v_hit_y, 0xF62108);
+        mlx_pixel_put(data->mlx, data->win, v_hit_y, v_hit_x, 0xF62108);
     }
     else
     {
-        mlx_pixel_put(data->mlx, data->win, h_hit_x, h_hit_y, 0xF62108);
+        mlx_pixel_put(data->mlx, data->win, h_hit_y, h_hit_x, 0xF62108);
     }
      printf("--------------------\n");
 }
