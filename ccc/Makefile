@@ -7,7 +7,7 @@ CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
 RM = rm -f
 
 SRC= main.c libft/ft_strjoin.c libft/ft_strlen.c get_next_line_utils.c get_next_line.c libft/ft_strcmp.c libft/ft_strncmp.c actions.c \
- libft/ft_split.c list_fun.c libft/ft_atoi.c raycaster.c    \
+ libft/ft_split.c list_fun.c libft/ft_atoi.c raycaster.c   draw.c \
 
 OBJ = $(SRC:.c=.o)
 

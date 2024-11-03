@@ -83,5 +83,6 @@ void	move_player_left(t_data *data);
 void	move_player_up(t_data *data);
 void    drawmap(t_data *data);
 void    drawplayer(t_data *data);
+int is_wall(t_data *data, double y, double x);
 
 #endif
