@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 23:38:53 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/03 01:11:24 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/03 17:55:50 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,101 +148,278 @@ void    drawplayer(t_data *data)
     
 }
 
-void    move_player_up(t_data *data)
-{
-    double x;
-    double y;
+// **************************** aymane *******************************
+
+// void	move_player_up(t_data *data)
+// {
+// 	double x;
+// 	double y;
+	
+// 	x = data->p_x - cos(data->angle) * 10.00;
+// 	y = data->p_y - sin(data->angle) * 10.00;
+// 	if (data->all_map[(int)y / 50][(int)x / 50] == '1')
+// 		return ;
+// 	data->p_y = y;
+// 	data->p_x = x;
+// 	mlx_clear_window(data->mlx, data->win);
+// 	mlx_clear_window(data->mlx, data->win_test);
+// 	drawmap(data);
+// 	drawplayer(data);
+// 	castAllRay(data);
+// }
+
+// void	move_player_down(t_data *data)
+// {
+// 	double y = data->p_y + sin(data->angle) * 10.00;
+// 	double x = data->p_x + cos(data->angle) * 10.00;
+// 	if (data->all_map[(int)y / 50][(int)x / 50] == '1')
+// 		return ;
+// 	data->p_y = y;
+// 	data->p_x = x;
+// 	mlx_clear_window(data->mlx, data->win);
+// 	mlx_clear_window(data->mlx, data->win_test);
+// 	drawmap(data);
+// 	drawplayer(data);
+// 	castAllRay(data);
+// }
+
+// void	move_player_right(t_data *data)
+// { 
+// 	double y = data->p_y + sin(data->angle - M_PI_2) * 10.00;
+// 	double x = data->p_x + cos(data->angle - M_PI_2) * 10.00;
+// 	if (data->all_map[(int)y / 50][(int)x / 50] == '1')
+// 		return ;
+// 	data->p_y = y;
+// 	data->p_x = x;
+// 	mlx_clear_window(data->mlx, data->win);
+// 	mlx_clear_window(data->mlx, data->win_test);
+// 	drawmap(data);
+// 	drawplayer(data);
+// 	castAllRay(data);
+// }
+// void	move_player_left(t_data *data)
+// {
+// 	double y = data->p_y + sin(data->angle + M_PI_2) * 10.00;
+// 	double x = data->p_x + cos(data->angle + M_PI_2) * 10.00;
+// 	if (data->all_map[(int)y / 50][(int)x / 50] == '1')
+// 		return ;
+// 	data->p_y = y;
+// 	data->p_x = x;
+// 	mlx_clear_window(data->mlx, data->win);
+// 	mlx_clear_window(data->mlx, data->win_test);
+// 	drawmap(data);
+// 	drawplayer(data);
+// 	castAllRay(data);
+// }
+
+// int	key_press(int keycode, t_data *data)
+// {
+// 	if (keycode == 53)
+// 		exit(0);
+// 	if (keycode == 13)
+// 		move_player_up(data);
+// 	if (keycode == 1)
+// 		move_player_down(data);
+// 	if (keycode == 0)
+// 		move_player_left(data);
+// 	if (keycode == 2)
+// 		move_player_right(data);
+// 	if (keycode == 123)
+// 	{
+// 		data->angle -= 0.1 * (M_PI / 180) * 50;
+// 		printf("%f\n", data->angle);
+// 		mlx_clear_window(data->mlx, data->win);
+// 		mlx_clear_window(data->mlx, data->win_test);
+// 		drawmap(data);
+// 		drawplayer(data);
+// 		castAllRay(data);
+// 	}
+// 	if (keycode == 124)
+// 	{
+// 		data->angle += 0.1 * (M_PI / 180) * 50;
+// 		printf("%f\n", data->angle);
+// 		mlx_clear_window(data->mlx, data->win);
+// 		mlx_clear_window(data->mlx, data->win_test);
+// 		drawmap(data);
+// 		drawplayer(data);
+// 		castAllRay(data);
+// 	}
+// 	return (0);
+// }
+
+// void get_player_position(t_data *data)
+// {
+// 	if (data->all_map == NULL)
+// 		return ;
+// 	while (data->all_map[(int)data->p_y])
+// 	{
+// 		data->p_x = 0;
+// 		while (data->all_map[(int)data->p_y][(int)data->p_x])
+// 		{
+// 			if (data->all_map[(int)data->p_y][(int)data->p_x] == 'N')
+// 				break;
+// 			data->p_x++;
+// 		}
+// 		if (data->all_map[(int)data->p_y][(int)data->p_x] == 'N')
+// 			break;
+// 		data->p_y++;
+// 	}
+// 	data->p_x = (data->p_x * 50) + 25;
+// 	data->p_y = (data->p_y * 50) + 25;
+// }
+
+// ******************************************************************** //
+
+// void draw_floor(t_data *data, double distance, double column)
+// {
+// 	double line_height;
+//    	double top_y;
+//    	double bottom_y;
+// 	double window_height = data->height * 50.00;
+//     line_height = (window_height  / distance) * 30.0;
+//     top_y = window_height / 2 - line_height / 2;
+//     bottom_y = top_y + line_height;
+
+// 	int i = bottom_y;
+// 	while(i < window_height)
+// 	{
+// 		mlx_pixel_put(data->mlx, data->win_test, column, i, 0x629584);
+// 		i++;
+// 	}
+// 	i = 0;
+// 	while (i < top_y)
+// 	{
+// 		mlx_pixel_put(data->mlx, data->win_test, column, i, 0x243642);
+// 		i++;
+// 	}
+// }
+// void draw_wall(t_data *data, double distance, double column)
+// {
+//     double line_height;
+//    	double top_y;
+//    	double bottom_y;
+//     int color = 0x387478; 
+// 	double window_height = data->height * 50.00;
+//     line_height = (window_height  / distance) * 30.0;
+//     top_y = window_height / 2 - line_height / 2;
+//     bottom_y = top_y + line_height;
+//     if (top_y < 0)
+//         top_y = 0;
+//     if (bottom_y > window_height)
+//         bottom_y = window_height;
+// 	int i = top_y;
+//     while (top_y <= bottom_y)
+//     {
+// 		if (top_y < 0)
+// 			return ;
+//         mlx_pixel_put(data->mlx, data->win_test, column, top_y, color);
+//         top_y++;
+//     }
+// 	top_y = i;
+// 	while(i < top_y)
+// 	{
+// 		puts("here");
+// 		mlx_pixel_put(data->mlx, data->win_test, column, i, 0x88C273);
+// 		i++;
+// 	}
+
+// }
+
+// void    move_player_up(t_data *data)
+// {
+//     double x;
+//     double y;
     
-    x = data->p_x + cos(data->angle) * 10.00;
-    y = data->p_y - sin(data->angle) * 10.00;
-    if (data->all_map[(int)y / 50][(int)x / 50] == '1')
-        return ;
-    data->p_y = y;
-    data->p_x = x;
-    mlx_clear_window(data->mlx, data->win);
-    drawmap(data);
-    drawplayer(data);
-    castAllRay(data);
-}
+//     x = data->p_x + cos(data->angle) * 10.00;
+//     y = data->p_y - sin(data->angle) * 10.00;
+//     if (data->all_map[(int)y / 50][(int)x / 50] == '1')
+//         return ;
+//     data->p_y = y;
+//     data->p_x = x;
+//     mlx_clear_window(data->mlx, data->win);
+//     drawmap(data);
+//     drawplayer(data);
+//     castAllRay(data);
+// }
 
-void    move_player_down(t_data *data)
-{
-    printf("cos : %f sin : %f\n", cos(data->angle) ,sin(data->angle));
-    double y = data->p_y + sin(data->angle) * 10.00;
-    double x = data->p_x + cos(data->angle) * 10.00;
-    if (data->all_map[(int)y / 50][(int)x / 50] == '1')
-        return ;
-    data->p_y = y;
-    data->p_x = x;
-    mlx_clear_window(data->mlx, data->win);
-    drawmap(data);
-    drawplayer(data);
-    castAllRay(data);
-}
+// void    move_player_down(t_data *data)
+// {
+//     printf("cos : %f sin : %f\n", cos(data->angle) ,sin(data->angle));
+//     double y = data->p_y + sin(data->angle) * 10.00;
+//     double x = data->p_x + cos(data->angle) * 10.00;
+//     if (data->all_map[(int)y / 50][(int)x / 50] == '1')
+//         return ;
+//     data->p_y = y;
+//     data->p_x = x;
+//     mlx_clear_window(data->mlx, data->win);
+//     drawmap(data);
+//     drawplayer(data);
+//     castAllRay(data);
+// }
 
-void    move_player_right(t_data *data)
-{
-    printf("cos : %f sin : %f\n", cos(data->angle + M_PI_2) ,sin(data->angle + M_PI_2));
-    double y = data->p_y + sin(data->angle - M_PI_2) * 10.00;
-    double x = data->p_x + cos(data->angle - M_PI_2) * 10.00;
-    if (data->all_map[(int)y / 50][(int)x / 50] == '1')
-        return ;
-    data->p_y = y;
-    data->p_x = x;
-    mlx_clear_window(data->mlx, data->win);
-    drawmap(data);
-    drawplayer(data);
-    castAllRay(data);
-}
-void    move_player_left(t_data *data)
-{
-    printf("cos : %f sin : %f\n", cos(data->angle - M_PI_2) ,sin(data->angle - M_PI_2));
-    double y = data->p_y + sin(data->angle + M_PI_2) * 10.00;
-    double x = data->p_x + cos(data->angle + M_PI_2) * 10.00;
-    if (data->all_map[(int)y / 50][(int)x / 50] == '1')
-        return ;
-    data->p_y = y;
-    data->p_x = x;
-    mlx_clear_window(data->mlx, data->win);
-    drawmap(data);
-    drawplayer(data);
-    castAllRay(data);
-}
+// void    move_player_right(t_data *data)
+// {
+//     printf("cos : %f sin : %f\n", cos(data->angle + M_PI_2) ,sin(data->angle + M_PI_2));
+//     double y = data->p_y + sin(data->angle - M_PI_2) * 10.00;
+//     double x = data->p_x + cos(data->angle - M_PI_2) * 10.00;
+//     if (data->all_map[(int)y / 50][(int)x / 50] == '1')
+//         return ;
+//     data->p_y = y;
+//     data->p_x = x;
+//     mlx_clear_window(data->mlx, data->win);
+//     drawmap(data);
+//     drawplayer(data);
+//     castAllRay(data);
+// }
+// void    move_player_left(t_data *data)
+// {
+//     printf("cos : %f sin : %f\n", cos(data->angle - M_PI_2) ,sin(data->angle - M_PI_2));
+//     double y = data->p_y + sin(data->angle + M_PI_2) * 10.00;
+//     double x = data->p_x + cos(data->angle + M_PI_2) * 10.00;
+//     if (data->all_map[(int)y / 50][(int)x / 50] == '1')
+//         return ;
+//     data->p_y = y;
+//     data->p_x = x;
+//     mlx_clear_window(data->mlx, data->win);
+//     drawmap(data);
+//     drawplayer(data);
+//     castAllRay(data);
+// }
 
-int    key_press(int keycode, t_data *data)
-{
-    if (keycode == 53)
-        exit(0);
-    if (keycode == 13)
-        move_player_up(data);
-    if (keycode == 1)
-        move_player_down(data);
-    if (keycode == 0)
-        move_player_left(data);
-    if (keycode == 2)
-        move_player_right(data);
-    if (keycode == 123)
-    {
-        puts("right");
-        data->angle -= 0.1 * (M_PI / 180) * 50;
-        printf("%f\n", data->angle);
-        mlx_clear_window(data->mlx, data->win);
-        drawmap(data);
-        drawplayer(data);
-        castAllRay(data);
-    }
-    if (keycode == 124)
-    {
-        puts("left");
-        data->angle += 0.1 * (M_PI / 180) * 50;
-        printf("%f\n", data->angle);
-        mlx_clear_window(data->mlx, data->win);
-    drawmap(data);
-    drawplayer(data);
-    castAllRay(data);
-    }
-    return (0);
-}
+// int    key_press(int keycode, t_data *data)
+// {
+//     if (keycode == 53)
+//         exit(0);
+//     if (keycode == 13)
+//         move_player_up(data);
+//     if (keycode == 1)
+//         move_player_down(data);
+//     if (keycode == 0)
+//         move_player_left(data);
+//     if (keycode == 2)
+//         move_player_right(data);
+//     if (keycode == 123)
+//     {
+//         puts("right");
+//         data->angle -= 0.1 * (M_PI / 180) * 50;
+//         printf("%f\n", data->angle);
+//         mlx_clear_window(data->mlx, data->win);
+//         drawmap(data);
+//         drawplayer(data);
+//         castAllRay(data);
+//     }
+//     if (keycode == 124)
+//     {
+//         puts("left");
+//         data->angle += 0.1 * (M_PI / 180) * 50;
+//         printf("%f\n", data->angle);
+//         mlx_clear_window(data->mlx, data->win);
+//     drawmap(data);
+//     drawplayer(data);
+//     castAllRay(data);
+//     }
+//     return (0);
+// }
 
 void get_player_position(t_data *data)
 {
@@ -279,7 +456,7 @@ double get_v_distance(t_data *data, double rayAngle, double *v_hit_x, double *v_
     double x = data->p_x;
     double y = data->p_y;
     double angle = rayAngle;
-  
+        
 
     if (angle >= M_PI_2 && angle <= 3 * M_PI_2)
     {
@@ -405,6 +582,7 @@ void  castAllRay(t_data *data)
 
     // double FOV = 60 * (M_PI / 180);
 
+    
     rayAngle = data->angle - (FOV / 2 );
     rayStep = ( 5 * M_PI / 180) / 50;
     while (rayAngle < data->angle + (FOV / 2))
@@ -420,7 +598,7 @@ int create_window(char **map)
     t_data data;
     data.p_y = 0;
     data.p_x = 0;
-    data.angle = M_PI / 2;
+    data.angle = 3 * M_PI_2 ;
     // data.size_p = 30;
     int len = 0;
     while (map[len])

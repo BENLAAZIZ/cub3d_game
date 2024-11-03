@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaaraba <aaaraba@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:25:53 by aaaraba           #+#    #+#             */
-/*   Updated: 2024/10/05 18:52:15 by aaaraba          ###   ########.fr       */
+/*   Updated: 2024/11/03 17:24:15 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../cub3d.h"
 
 static int	ft_countword(char const *s, char c)
 {
