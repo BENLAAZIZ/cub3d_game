@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 23:38:53 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/04 17:39:24 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/04 23:48:54 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,23 +92,22 @@ double get_v_distance(t_data *data, double rayAngle, double *v_hit_x, double *v_
 
     xintercept = floor(x / 50) * 50;
      ystep = 50 * tan(angle);
-    yintercept = x + (xintercept - x) * tan(angle);
      
     if (angle > M_PI_2 && angle < 3 * M_PI_2)
     {
+         xintercept = floor(x / 50) * 50 - 1;
         xstep = -50;
     }
     else
     {
         xstep = 50;
     }
-    if (angle > 0 && angle < M_PI)
+    yintercept = x + (xintercept - x) * tan(angle);
+    if (!(angle > 0 && angle < M_PI))
     {
         ystep *= -1;
     }
 
-
-    
     while (xintercept >= 0 && xintercept < data->lenght * 50 && yintercept >= 0 && yintercept < data->height * 50)
     {
         xtocheck = xintercept;
@@ -131,23 +130,23 @@ double get_v_distance(t_data *data, double rayAngle, double *v_hit_x, double *v_
 }
 
 
-int horz_incriment(t_data *data, double *xintercept, double *yintercept, double xstep, double ystep)
-{
-    if (xstep > 0)
-    {
-        *xintercept = floor(*xintercept / 50) * 50 + 50;
-    }
-    else
-    {
-        *xintercept = floor(*xintercept / 50) * 50 - 0.0001;
-    }
-    *yintercept = *yintercept + (*xintercept - *xintercept) * tan(0);
-    if (xstep > 0)
-        ystep *= -1;
-    if (is_wall(data, *yintercept, *xintercept))
-        return (1);
-    return (0);
-}
+// int horz_incriment(t_data *data, double *xintercept, double *yintercept, double xstep, double ystep)
+// {
+//     if (xstep > 0)
+//     {
+//         *xintercept = floor(*xintercept / 50) * 50 + 50;
+//     }
+//     else
+//     {
+//         *xintercept = floor(*xintercept / 50) * 50 - 0.0001;
+//     }
+//     *yintercept = *yintercept + (*xintercept - *xintercept) * tan(0);
+//     if (xstep > 0)
+//         ystep *= -1;
+//     if (is_wall(data, *yintercept, *xintercept))
+//         return (1);
+//     return (0);
+// }
 
 double get_h_distance(t_data *data, double rayAngle, double *h_hit_x, double *h_hit_y)
 {
@@ -161,7 +160,7 @@ double get_h_distance(t_data *data, double rayAngle, double *h_hit_x, double *h_
     double x = data->p_x;
     double y = data->p_y;
     double angle = rayAngle;
-    int k = 0;
+    // int k = 0;
  
  //************************************************************
     // if (angle > 0 && angle < M_PI)
@@ -182,70 +181,57 @@ double get_h_distance(t_data *data, double rayAngle, double *h_hit_x, double *h_
 
 
 
-    if (data->ray_looking_down)
-		yintercept += 50;
-	else
-		k = 1;
-     ystep = 50;
-     xintercept = y + (yintercept - y) / tan(angle);
+    // if (data->ray_looking_down)
+	// 	yintercept += 50;
+	// else
+	// 	k = 1;
+    //  ystep = 50;
+    //  xintercept = y + (yintercept - y) / tan(angle);
     
-    if (!data->ray_looking_down)
-		ystep *= -1;
+    // if (!data->ray_looking_down)
+	// 	ystep *= -1;
 
-      xstep = 50 / tan(angle);
+    //   xstep = 50 / tan(angle);
     
     
         
 
 // -----------------------------------  end  method  -----------------------------------
 
-//   yintercept = floor(y / 50) * 50 - 0.0001;
-//   xintercept = y + (yintercept - y) / tan(angle);
-//   xstep = 50 / tan(angle);
+  yintercept = floor(y / 50) * 50;
+  xstep = 50 / tan(angle);
 
-//   if (angle > 0 && angle < M_PI)
-//     {
-//         yintercept = floor(y / 50) * 50 - 0.0001;
-//         ystep = -50;
-//     }
-//     else
-//     {
-//         yintercept = floor(y / 50) * 50 + 50;
-//         ystep = 50;
-//     }
-
-//     if (angle > M_PI_2 && angle < 3 * M_PI_2)
-//     {
-//        xstep *= -1;
-//     }
-    
-    // while (xintercept >= 0 && xintercept < data->lenght * 50 && yintercept >= 0 && yintercept < data->height * 50)
-    while (xintercept >= 0 && xintercept < data->lenght * 50 && yintercept - k >= 0 && yintercept - k < data->height * 50 
-              && data->all_map[(int)(yintercept - k) / 50][(int)xintercept / 50] != '1')
+  if (!(angle > 0 && angle < M_PI))
     {
-        // xtocheck = xintercept;
-        // ytocheck = yintercept;
-        // if (is_wall(data, ytocheck, xtocheck))
-        // {
-        //     *h_hit_x = xtocheck;
-        //     *h_hit_y = ytocheck;
-        //     printf("horizontal\n");
-        //     printf("x : %f y : %f\n", xtocheck, ytocheck);
-        //     h_distance = sqrt(pow(x - xtocheck, 2) + pow(y - ytocheck, 2));
-        //     return (h_distance);
-        // }
-        // xintercept += xstep;
-        // yintercept += ystep;
-        if (horz_incriment(data, &xintercept, &yintercept, xstep, ystep))
+        yintercept = floor(y / 50) * 50 - 1;
+        ystep = -50;
+    }
+    else
+    {
+        ystep = 50;
+    }
+     xintercept = y + (yintercept - y) / tan(angle);
+
+    if (angle > M_PI_2 && angle < 3 * M_PI_2)
+    {
+       xstep *= -1;
+    }
+    
+    while (xintercept >= 0 && xintercept < data->lenght * 50 && yintercept >= 0 && yintercept < data->height * 50)
+    {
+        xtocheck = xintercept;
+        ytocheck = yintercept;
+        if (is_wall(data, ytocheck, xtocheck))
         {
-            *h_hit_x = xintercept;
-            *h_hit_y = yintercept;
+            *h_hit_x = xtocheck;
+            *h_hit_y = ytocheck;
             printf("horizontal\n");
-            printf("x : %f y : %f\n", xintercept, yintercept);
-            h_distance = sqrt(pow(x - xintercept, 2) + pow(y - yintercept, 2));
+            printf("x : %f y : %f\n", xtocheck, ytocheck);
+            h_distance = sqrt(pow(x - xtocheck, 2) + pow(y - ytocheck, 2));
             return (h_distance);
         }
-            
+        xintercept += xstep;
+        yintercept += ystep;
     }
     return (INT_MAX);
 }
@@ -274,10 +260,6 @@ void ray(t_data *data, double rayAngle)
         rayAngle -= 2 * M_PI;
     if (rayAngle < 0)
         rayAngle += 2 * M_PI;
-
-    data->ray_looking_down = rayAngle > 0 && rayAngle < M_PI;
-	data->ray_looking_right = rayAngle < 0.5 * M_PI
-		|| rayAngle > 1.5 * M_PI;
         
     v_distance = get_v_distance(data, rayAngle, &v_hit_x, &v_hit_y);
     h_distance = get_h_distance(data, rayAngle, &h_hit_x, &h_hit_y);

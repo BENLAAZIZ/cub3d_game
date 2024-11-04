@@ -26,9 +26,7 @@ typedef enum e_type {
 
 typedef struct s_data
 {
-	bool	ray_looking_down;
-	bool	ray_looking_right;
-
+	
 	char	**all_map;
 	void	*mlx;
 	void	*win;
