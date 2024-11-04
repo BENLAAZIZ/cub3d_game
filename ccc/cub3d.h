@@ -12,6 +12,8 @@
 
 
 #define FOV (60 * (M_PI / 180))
+# define RAD(X) (X * (M_PI / (float)180))
+# define DEGREE(X) ((X * 360) / 2 * M_PI)
 
 typedef enum e_type {
 	NO,
@@ -24,6 +26,9 @@ typedef enum e_type {
 
 typedef struct s_data
 {
+	bool	ray_looking_down;
+	bool	ray_looking_right;
+
 	char	**all_map;
 	void	*mlx;
 	void	*win;
