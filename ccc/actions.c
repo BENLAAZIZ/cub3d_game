@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 17:47:52 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/03 18:11:05 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/05 17:26:14 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,12 @@ void	move_player_up(t_data *data)
 
 void	move_player_down(t_data *data)
 {
+	printf("== angle ==  = %f\n", data->angle);
 	double y = data->p_y + sin(data->angle) * 10.00;
 	double x = data->p_x + cos(data->angle) * 10.00;
 	if (data->all_map[(int)y / 50][(int)x / 50] == '1')
 		return ;
+		
 	data->p_y = y;
 	data->p_x = x;
 	mlx_clear_window(data->mlx, data->win);
@@ -89,8 +91,8 @@ int	key_press(int keycode, t_data *data)
 		move_player_right(data);
 	if (keycode == 123)
 	{
-		data->angle -= 0.1 * (M_PI / 180) * 50;
-		printf("%f\n", data->angle);
+		data->angle -= 0.1 * (M_PI / 180) * 100;
+		// printf("%f\n", data->angle);
 		mlx_clear_window(data->mlx, data->win);
 		// mlx_clear_window(data->mlx, data->win_test);
 		drawmap(data);
@@ -99,8 +101,8 @@ int	key_press(int keycode, t_data *data)
 	}
 	if (keycode == 124)
 	{
-		data->angle += 0.1 * (M_PI / 180) * 50;
-		printf("%f\n", data->angle);
+		data->angle += 0.1 * (M_PI / 180) * 100;
+		// printf("%f\n", data->angle);
 		mlx_clear_window(data->mlx, data->win);
 		// mlx_clear_window(data->mlx, data->win_test);
 		drawmap(data);
