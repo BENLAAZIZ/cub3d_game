@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 23:38:53 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/06 23:29:05 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/06 23:58:48 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,7 @@ double get_v_distance(t_data *data, double rayAngle, double *v_hit_x, double *v_
     double angle = rayAngle;
     // ====================
 
-    int foundVertWallHit = 0;
-    // float vertWallHitX = 0;
-    // float vertWallHitY = 0;
+    // int foundVertWallHit = 0;
     *v_hit_x = 0;
     *v_hit_y = 0;
     int vertWallContent = 0;
@@ -67,43 +65,26 @@ double get_v_distance(t_data *data, double rayAngle, double *v_hit_x, double *v_
     // ====================
     xintercept = floor(x / 50) * 50;
     if (data->isRayFacingRight)
-    {
         xintercept += 50;
-    }
     yintercept = y + (xintercept - x) * tan(angle);
 
     xstep = 50;
     if (data->isRayFacingLeft)
-    {
         xstep *= -1;
-    }
     
     ystep = 50 * tan(angle);
 
     if (data->isRayFacingUp && ystep > 0)
-    {
         ystep *= -1;
-    }
     if (data->isRayFacingDown && ystep < 0)
-    {
         ystep *= -1;
-    }
     float nextVertTouchX = xintercept;
     float nextVertTouchY = yintercept;
     
-    
-   
-    
-  
-
-   
-
     while (nextVertTouchX >= 0 && nextVertTouchX <= data->lenght * 50 && nextVertTouchY >= 0 && nextVertTouchY <= data->height * 50)
     {
         if (data->isRayFacingLeft)
-        {
             xtocheck = nextVertTouchX - 1;
-        }
         else
            xtocheck = nextVertTouchX;
         ytocheck = nextVertTouchY;
@@ -113,16 +94,8 @@ double get_v_distance(t_data *data, double rayAngle, double *v_hit_x, double *v_
             *v_hit_y = nextVertTouchY;
             vertWallContent = data->all_map[(int)floor(ytocheck / 50)][(int)floor(xtocheck / 50)];
 
-            foundVertWallHit = 1;
-
+            // foundVertWallHit = 1;
             v_distance = sqrt(pow(x - xtocheck, 2) + pow(y - ytocheck, 2));
-               printf ("======== v ============\n\n\n");
-                printf("rayAngle : %f\n", rayAngle);
-                printf("x_p : %d y_p : %d\n", data->p_x, data->p_y);
-                printf("vertical in function\n");
-                printf("v_hit_x : %f v_hit_y : %f\n", *v_hit_x, *v_hit_y);
-            
-                printf ("=========f v===========\n");
             return (v_distance);
         }
         nextVertTouchX += xstep;
@@ -166,40 +139,31 @@ double get_h_distance(t_data *data, double rayAngle, double *h_hit_x, double *h_
 
     // ====================
     
- int foundHorzWallHit = 0;
-// float horzWallHitX = 0;
-// float horzWallHitY = 0;
+//  int foundHorzWallHit = 0;
     xintercept = 0;
     yintercept = 0;
     *h_hit_x = 0;
     *h_hit_y = 0;
-int horzWallContent = 0;
+// int horzWallContent = 0;
 
     // ====================
 
     yintercept = floor(y / 50) * 50;
     if (data->isRayFacingDown)
-    {
         yintercept += 50;
-    }
  
-   xintercept = x + (yintercept - y) / tan(angle);
+    xintercept = x + (yintercept - y) / tan(angle);
 
-   ystep = 50;
+    ystep = 50;
     if (data->isRayFacingUp)
-    {
         ystep *= -1;
-    }
    
     xstep = 50 / tan(angle);
     if (data->isRayFacingLeft && xstep > 0)
-    {
         xstep *= -1;
-    }
+        
     if (data->isRayFacingRight && xstep < 0)
-    {
         xstep *= -1;
-    }
     
     float nextHorzTouchX = xintercept;
     float nextHorzTouchY = yintercept;
@@ -208,17 +172,15 @@ int horzWallContent = 0;
     {
         xtocheck = nextHorzTouchX;
         if (data->isRayFacingUp)
-        {
             ytocheck = nextHorzTouchY - 1;
-        }
         else
             ytocheck = nextHorzTouchY;
         if (is_wall(data, ytocheck, xtocheck))
         {
             *h_hit_x = nextHorzTouchX;
             *h_hit_y = nextHorzTouchY;
-            horzWallContent = data->all_map[(int)floor(ytocheck / 50)][(int)floor(xtocheck / 50)];
-            foundHorzWallHit = 1;
+            // horzWallContent = data->all_map[(int)floor(ytocheck / 50)][(int)floor(xtocheck / 50)];
+            // foundHorzWallHit = 1;
             h_distance = sqrt(pow(x - xtocheck, 2) + pow(y - ytocheck, 2));
             return (h_distance);
         }
@@ -331,7 +293,6 @@ void  castAllRay(t_data *data)
     // rayAngle = normalize_angle(rayStep - ((FOV) / 2));
     while (rayAngle < data->angle + (FOV / 2))
     {
-
         ray(data, rayAngle);
         rayAngle += rayStep;
     }
