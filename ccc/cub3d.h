@@ -14,6 +14,7 @@
 #define FOV (60 * (M_PI / 180))
 # define RAD(X) (X * (M_PI / (float)180))
 # define DEGREE(X) ((X * 360) / 2 * M_PI)
+#define NUM_RAYS 60
 
 typedef enum e_type {
 	NO,
@@ -43,7 +44,25 @@ typedef struct s_data
 	float rotationAngle;
 	float moveSpeed;
 	float rotationSpeed;
+	// *****************
+	int isRayFacingDown;
+	int isRayFacingUp;
+	int isRayFacingRight;
+	int isRayFacingLeft;
 }t_data;
+
+// struct Ray {
+//     float rayAngle;
+//     float wallHitX;
+//     float wallHitY;
+//     float distance;
+//     int wasHitVertical;
+//     int isRayFacingUp;
+//     int isRayFacingDown;
+//     int isRayFacingLeft;
+//     int isRayFacingRight;
+//     int wallHitContent;
+// } rays[NUM_RAYS];
 
 typedef struct s_texture
 {
