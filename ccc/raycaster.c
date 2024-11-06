@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 23:38:53 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/05 22:54:20 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/06 15:05:54 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -298,14 +298,6 @@ void ray(t_data *data, double rayAngle)
     v_distance = get_v_distance(data, rayAngle, &v_hit_x, &v_hit_y);
     h_distance = get_h_distance(data, rayAngle, &h_hit_x, &h_hit_y);
     printf("--------------------\n");
-    // printf("v_distance : %f\n", v_distance);
-    // printf("h_distance : %f\n", h_distance);
-    // printf("rayAngle : %f\n", rayAngle);
-    // printf("x_p : %d y_p : %d\n", data->p_x, data->p_y);
-    // printf("vertical\n");
-    // printf("v_hit_x : %f v_hit_y : %f\n", v_hit_x, v_hit_y);
-    // printf("horizontal\n");
-    // printf("h_hit_x : %f h_hit_y : %f\n", h_hit_x, h_hit_y);
     printf("v_distance : %f\n", v_distance);
     printf("h_distance : %f\n", h_distance);
     if (v_distance <= h_distance)
@@ -318,13 +310,10 @@ void ray(t_data *data, double rayAngle)
         while (x < 3)
         {
         mlx_pixel_put(data->mlx, data->win, v_hit_x + x, v_hit_y + y, 0xF62108);
-            // mlx_pixel_put(data->mlx, data->win, data->p_x + x, data->p_y + y, 0xFF0000);
             x++;
         }
         y++;
         }
-        // printf("v_hit_x : %f v_hit_y : %f\n", v_hit_x, v_hit_y);
-        // mlx_pixel_put(data->mlx, data->win, v_hit_x + x, v_hit_y + y, 0xF62108);
     }
     else
     {
@@ -336,14 +325,10 @@ void ray(t_data *data, double rayAngle)
         while (x < 3)
         {
         mlx_pixel_put(data->mlx, data->win, h_hit_x + x, h_hit_y + y, 0xF62108);
-            // mlx_pixel_put(data->mlx, data->win, data->p_x + x, data->p_y + y, 0xFF0000);
             x++;
         }
         y++;
         }
-        //  h_hit_x = 175.00;
-        // printf("h_hit_x : %f h_hit_y : %f\n", h_hit_x, h_hit_y);
-        // mlx_pixel_put(data->mlx, data->win, h_hit_x, h_hit_y, 0xF62108);
     }
      printf("\n");
 }
@@ -367,8 +352,7 @@ void  castAllRay(t_data *data)
 
     // double FOV = 60 * (M_PI / 180);
 
-    rayAngle = data->angle;
-    rayAngle = data->angle;
+    // rayAngle = data->angle;
     // rayAngle = data->angle - (FOV / 2 );
     rayStep = ( 5 * M_PI / 180) / 50;
    
