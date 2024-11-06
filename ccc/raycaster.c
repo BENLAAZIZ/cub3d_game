@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 23:38:53 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/06 15:05:54 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/06 15:28:03 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ double get_v_distance(t_data *data, double rayAngle, double *v_hit_x, double *v_
     {
         xstep = -50;
     }
-    yintercept = x + (xintercept - x) * tan(angle);
+    yintercept = y + (xintercept - y) * tan(angle);
     if (angle > 0 && angle < M_PI)
     {
         ystep *= -1;
@@ -233,7 +233,7 @@ double get_h_distance(t_data *data, double rayAngle, double *h_hit_x, double *h_
     {
         ystep = -50;
     }
-    xintercept = y + (yintercept - y) / tan(angle);
+    xintercept = x + (yintercept - x) / tan(angle);
 
     if (!(angle >= M_PI_2 && angle <= 3 * M_PI_2))
     {
@@ -375,7 +375,7 @@ int create_window(char **map)
     t_data data;
     data.p_y = 0;
     data.p_x = 0;
-    data.angle = M_PI / 2;
+    data.angle = 3 * M_PI / 2;
     // data.size_p = 30;
     int len = 0;
     while (map[len])
