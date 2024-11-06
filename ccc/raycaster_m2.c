@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 23:38:53 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/06 23:58:48 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/07 00:03:43 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,24 +105,6 @@ double get_v_distance(t_data *data, double rayAngle, double *v_hit_x, double *v_
     return (INT_MAX);
 }
 
-
-// int horz_incriment(t_data *data, double *xintercept, double *yintercept, double xstep, double ystep)
-// {
-//     if (xstep > 0)
-//     {
-//         *xintercept = floor(*xintercept / 50) * 50 + 50;
-//     }
-//     else
-//     {
-//         *xintercept = floor(*xintercept / 50) * 50 - 0.0001;
-//     }
-//     *yintercept = *yintercept + (*xintercept - *xintercept) * tan(0);
-//     if (xstep > 0)
-//         ystep *= -1;
-//     if (is_wall(data, *yintercept, *xintercept))
-//         return (1);
-//     return (0);
-// }
 
 double get_h_distance(t_data *data, double rayAngle, double *h_hit_x, double *h_hit_y)
 {
@@ -296,12 +278,6 @@ void  castAllRay(t_data *data)
         ray(data, rayAngle);
         rayAngle += rayStep;
     }
-
-
-    //  for (int stripId = 0; stripId < NUM_RAYS; stripId++) {
-    //     ray(data, rayAngle, stripId);
-    //     rayAngle += FOV / NUM_RAYS;
-    // }
 }
 
 int create_window(char **map)
@@ -310,7 +286,7 @@ int create_window(char **map)
     data.p_y = 0;
     data.p_x = 0;
     data.angle = M_PI / 2;
-    // data.size_p = 30;
+    
     int len = 0;
     while (map[len])
         len++;
