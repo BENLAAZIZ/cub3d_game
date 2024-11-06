@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 18:12:27 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/05 17:30:32 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/06 15:33:01 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,8 @@ void    drawplayer(t_data *data)
         if (is_wall(data, ray_y, ray_x))
                 break;
         mlx_pixel_put(data->mlx, data->win, ray_x, ray_y, 0x40ff00);
-        ray_x -= step_x;
-        ray_y -= step_y;
+        ray_x += step_x;
+        ray_y += step_y;
         z--;
     }
     ray_y = data->p_y;
@@ -101,8 +101,8 @@ void    drawplayer(t_data *data)
         if (is_wall(data, ray_y, ray_x))
                 break;
         mlx_pixel_put(data->mlx, data->win, ray_x, ray_y, 0x40ff00);
-        ray_x -= step_x;
-        ray_y -= step_y;
+        ray_x += step_x;
+        ray_y += step_y;
         z--;
     }
     ray_y = data->p_y;
@@ -115,8 +115,8 @@ void    drawplayer(t_data *data)
         if (is_wall(data, ray_y, ray_x))
                 break;
         mlx_pixel_put(data->mlx, data->win, ray_x, ray_y, 0x40ff00);
-        ray_x -= step_x;
-        ray_y -= step_y;
+        ray_x += step_x;
+        ray_y += step_y;
         z--;
     }
     

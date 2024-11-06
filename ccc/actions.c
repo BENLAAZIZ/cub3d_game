@@ -6,14 +6,15 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 17:47:52 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/05 17:26:14 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/06 17:54:30 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "cub3d.h"
 
-void	move_player_up(t_data *data)
+
+void	move_player_down(t_data *data)
 {
 	double x;
 	double y;
@@ -31,7 +32,7 @@ void	move_player_up(t_data *data)
 	castAllRay(data);
 }
 
-void	move_player_down(t_data *data)
+void	move_player_up(t_data *data)
 {
 	printf("== angle ==  = %f\n", data->angle);
 	double y = data->p_y + sin(data->angle) * 10.00;
@@ -48,7 +49,7 @@ void	move_player_down(t_data *data)
 	castAllRay(data);
 }
 
-void	move_player_right(t_data *data)
+void	move_player_left(t_data *data)
 { 
 	double y = data->p_y + sin(data->angle - M_PI_2) * 10.00;
 	double x = data->p_x + cos(data->angle - M_PI_2) * 10.00;
@@ -62,7 +63,8 @@ void	move_player_right(t_data *data)
 	drawplayer(data);
 	castAllRay(data);
 }
-void	move_player_left(t_data *data)
+
+void	move_player_right(t_data *data)
 {
 	double y = data->p_y + sin(data->angle + M_PI_2) * 10.00;
 	double x = data->p_x + cos(data->angle + M_PI_2) * 10.00;
@@ -91,8 +93,12 @@ int	key_press(int keycode, t_data *data)
 		move_player_right(data);
 	if (keycode == 123)
 	{
-		data->angle -= 0.1 * (M_PI / 180) * 100;
+		data->angle -= 0.1 * (M_PI / 180) * 50;
+		data->angle = normalize_angle(data->angle);
+		// printf("++++++++++++++++++++++++++++++\n");
 		// printf("%f\n", data->angle);
+		// printf("++++++++++++++++++++++++++++++\n");
+
 		mlx_clear_window(data->mlx, data->win);
 		// mlx_clear_window(data->mlx, data->win_test);
 		drawmap(data);
@@ -101,7 +107,11 @@ int	key_press(int keycode, t_data *data)
 	}
 	if (keycode == 124)
 	{
-		data->angle += 0.1 * (M_PI / 180) * 100;
+		data->angle += 0.1 * (M_PI / 180) * 50;
+		data->angle = normalize_angle(data->angle);
+		// printf("++++++++++++++++++++++++++++++\n");
+		// printf("%f\n", data->angle);
+		// printf("++++++++++++++++++++++++++++++\n");
 		// printf("%f\n", data->angle);
 		mlx_clear_window(data->mlx, data->win);
 		// mlx_clear_window(data->mlx, data->win_test);
