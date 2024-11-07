@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 23:38:53 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/07 00:03:43 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/07 10:58:35 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,13 +268,17 @@ void  castAllRay(t_data *data)
     rayAngle = data->angle - (FOV / 2 );
     rayStep = ( 5 * M_PI / 180) / 50;
    
+    printf("rayAngle : %f\n", rayAngle);
     rayAngle = normalize_angle(rayAngle);
     printf("************* rayAngle in castAllRay ***************\n");
     printf("rayAngle : %f\n", rayAngle);
+    printf("data->angle : %f\n", data->angle);
+    printf("data->angle + (FOV / 2) : %f\n", data->angle + (FOV / 2));
     printf("***************************************************\n");
     // rayAngle = normalize_angle(rayStep - ((FOV) / 2));
-    while (rayAngle < data->angle + (FOV / 2))
+    while (rayAngle <= data->angle + (FOV / 2))
     {
+        printf ("in while\n");
         ray(data, rayAngle);
         rayAngle += rayStep;
     }
@@ -285,7 +289,8 @@ int create_window(char **map)
     t_data data;
     data.p_y = 0;
     data.p_x = 0;
-    data.angle = M_PI / 2;
+    // data.angle = M_PI;
+    data.angle = 0.00;
     
     int len = 0;
     while (map[len])

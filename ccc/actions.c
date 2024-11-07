@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 17:47:52 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/06 23:44:08 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/07 11:28:13 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	move_player_up(t_data *data)
 void	move_player_left(t_data *data)
 { 
 	double y = data->p_y + sin(data->angle - M_PI_2) * 10.00;
-	double x = data->p_x + cos(data->angle - M_PI_2) * 10.00;
+	double x = data->p_x - cos(data->angle - M_PI_2) * 10.00;
 	if (data->all_map[(int)y / 50][(int)x / 50] == '1')
 		return ;
 	data->p_y = y;
@@ -65,7 +65,7 @@ void	move_player_left(t_data *data)
 void	move_player_right(t_data *data)
 {
 	double y = data->p_y + sin(data->angle + M_PI_2) * 10.00;
-	double x = data->p_x + cos(data->angle + M_PI_2) * 10.00;
+	double x = data->p_x - cos(data->angle + M_PI_2) * 10.00;
 	if (data->all_map[(int)y / 50][(int)x / 50] == '1')
 		return ;
 	data->p_y = y;
@@ -92,10 +92,13 @@ int	key_press(int keycode, t_data *data)
 	if (keycode == 123)
 	{
 		data->angle -= 0.1 * (M_PI / 180) * 50;
-		// data->angle = normalize_angle(data->angle);
+		// data->angle -= 1;
 		// printf("++++++++++++++++++++++++++++++\n");
 		// printf("%f\n", data->angle);
 		// printf("++++++++++++++++++++++++++++++\n");
+		
+  		if (data->angle < 0)
+			data->angle += 2 * M_PI;
 
 		mlx_clear_window(data->mlx, data->win);
 		// mlx_clear_window(data->mlx, data->win_test);
@@ -105,12 +108,15 @@ int	key_press(int keycode, t_data *data)
 	}
 	if (keycode == 124)
 	{
+		printf("right\n");
 		data->angle += 0.1 * (M_PI / 180) * 50;
-		// data->angle = normalize_angle(data->angle);
+		// data->angle += 1;
 		// printf("++++++++++++++++++++++++++++++\n");
 		// printf("%f\n", data->angle);
 		// printf("++++++++++++++++++++++++++++++\n");
 		// printf("%f\n", data->angle);
+		if (data->angle > 2 * M_PI)
+			data->angle -= 2 * M_PI;
 		mlx_clear_window(data->mlx, data->win);
 		// mlx_clear_window(data->mlx, data->win_test);
 		drawmap(data);
