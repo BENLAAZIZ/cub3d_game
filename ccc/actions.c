@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 17:47:52 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/07 11:39:10 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/07 11:51:48 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int	key_press(int keycode, t_data *data)
 		// printf("++++++++++++++++++++++++++++++\n");
 		// printf("%f\n", data->angle);
 		// printf("++++++++++++++++++++++++++++++\n");
-		
+		// data->angle = normalize_angle(data->angle);
   		if (data->angle < 0)
 			data->angle += 2 * M_PI;
 
@@ -115,6 +115,8 @@ int	key_press(int keycode, t_data *data)
 		// printf("%f\n", data->angle);
 		// printf("++++++++++++++++++++++++++++++\n");
 		// printf("%f\n", data->angle);
+		// data->angle = normalize_angle(data->angle);
+
 		if (data->angle > 2 * M_PI)
 			data->angle -= 2 * M_PI;
 		mlx_clear_window(data->mlx, data->win);

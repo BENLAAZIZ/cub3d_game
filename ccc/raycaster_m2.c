@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 23:38:53 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/07 10:58:35 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/07 13:15:48 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void get_player_position(t_data *data)
     data->p_y = (data->p_y * 50) + 25;
 }
 
-double get_v_distance(t_data *data, double rayAngle, double *v_hit_x, double *v_hit_y)
+double get_v_distance(t_data *data, double rayAngle, t_ray *ray)
 {
     double xintercept;
     double yintercept;
@@ -52,61 +52,47 @@ double get_v_distance(t_data *data, double rayAngle, double *v_hit_x, double *v_
     double xtocheck;
     double ytocheck;
     double v_distance;
-    double x = data->p_x;
-    double y = data->p_y;
-    double angle = rayAngle;
+  
     // ====================
-
-    // int foundVertWallHit = 0;
-    *v_hit_x = 0;
-    *v_hit_y = 0;
-    int vertWallContent = 0;
-    
-    // ====================
-    xintercept = floor(x / 50) * 50;
-    if (data->isRayFacingRight)
+    xintercept = floor(data->p_x / 50) * 50;
+    if (ray->lookingRight)
         xintercept += 50;
-    yintercept = y + (xintercept - x) * tan(angle);
+    yintercept = data->p_y + (xintercept - data->p_x) * tan(rayAngle);
 
     xstep = 50;
-    if (data->isRayFacingLeft)
+    if (ray->lookingLeft)
         xstep *= -1;
     
-    ystep = 50 * tan(angle);
+    ystep = 50 * tan(rayAngle);
 
-    if (data->isRayFacingUp && ystep > 0)
+    if (ray->lookingUp && ystep > 0)
         ystep *= -1;
-    if (data->isRayFacingDown && ystep < 0)
+    if (ray->lookingDown && ystep < 0)
         ystep *= -1;
-    float nextVertTouchX = xintercept;
-    float nextVertTouchY = yintercept;
-    
-    while (nextVertTouchX >= 0 && nextVertTouchX <= data->lenght * 50 && nextVertTouchY >= 0 && nextVertTouchY <= data->height * 50)
+
+    while (xintercept >= 0 && xintercept <= data->lenght * 50 && yintercept >= 0 && yintercept <= data->height * 50)
     {
-        if (data->isRayFacingLeft)
-            xtocheck = nextVertTouchX - 1;
+        if (ray->lookingLeft)
+            xtocheck = xintercept - 1;
         else
-           xtocheck = nextVertTouchX;
-        ytocheck = nextVertTouchY;
+           xtocheck = xintercept;
+        ytocheck = yintercept;
         if (is_wall(data, ytocheck, xtocheck))
         {
-            *v_hit_x = nextVertTouchX;
-            *v_hit_y = nextVertTouchY;
-            vertWallContent = data->all_map[(int)floor(ytocheck / 50)][(int)floor(xtocheck / 50)];
-
+            ray->v_hit_x = xintercept;
+            ray->v_hit_y = yintercept;
             // foundVertWallHit = 1;
-            v_distance = sqrt(pow(x - xtocheck, 2) + pow(y - ytocheck, 2));
+            v_distance = sqrt(pow(data->p_x - xtocheck, 2) + pow(data->p_y - ytocheck, 2));
             return (v_distance);
         }
-        nextVertTouchX += xstep;
-        nextVertTouchY += ystep;
-        
+        xintercept += xstep;
+        yintercept += ystep;
     }
     return (INT_MAX);
 }
 
 
-double get_h_distance(t_data *data, double rayAngle, double *h_hit_x, double *h_hit_y)
+double get_h_distance(t_data *data, double rayAngle, t_ray *ray)
 {
     double xintercept;
     double yintercept;
@@ -115,86 +101,73 @@ double get_h_distance(t_data *data, double rayAngle, double *h_hit_x, double *h_
     double xtocheck;
     double ytocheck;
     double h_distance;
-    double x = data->p_x;
-    double y = data->p_y;
-    double angle = rayAngle;
 
     // ====================
-    
 //  int foundHorzWallHit = 0;
     xintercept = 0;
     yintercept = 0;
-    *h_hit_x = 0;
-    *h_hit_y = 0;
 // int horzWallContent = 0;
-
     // ====================
 
-    yintercept = floor(y / 50) * 50;
-    if (data->isRayFacingDown)
+    yintercept = floor(data->p_y / 50) * 50;
+    if (ray->lookingDown)
         yintercept += 50;
  
-    xintercept = x + (yintercept - y) / tan(angle);
+    xintercept = data->p_x + (yintercept - data->p_y) / tan(rayAngle);
 
     ystep = 50;
-    if (data->isRayFacingUp)
+    if (ray->lookingUp)
         ystep *= -1;
    
-    xstep = 50 / tan(angle);
-    if (data->isRayFacingLeft && xstep > 0)
+    xstep = 50 / tan(rayAngle);
+    if (ray->lookingLeft && xstep > 0)
         xstep *= -1;
         
-    if (data->isRayFacingRight && xstep < 0)
+    if (ray->lookingRight && xstep < 0)
         xstep *= -1;
     
-    float nextHorzTouchX = xintercept;
-    float nextHorzTouchY = yintercept;
-    
-    while (nextHorzTouchX >= 0 && nextHorzTouchX <= data->lenght * 50 && nextHorzTouchY >= 0 && nextHorzTouchY <= data->height * 50)
+    while (xintercept >= 0 && xintercept <= data->lenght * 50 && yintercept >= 0 && yintercept <= data->height * 50)
     {
-        xtocheck = nextHorzTouchX;
-        if (data->isRayFacingUp)
-            ytocheck = nextHorzTouchY - 1;
+        xtocheck = xintercept;
+        if (ray->lookingUp)
+            ytocheck = yintercept - 1;
         else
-            ytocheck = nextHorzTouchY;
+            ytocheck = yintercept;
         if (is_wall(data, ytocheck, xtocheck))
         {
-            *h_hit_x = nextHorzTouchX;
-            *h_hit_y = nextHorzTouchY;
+            ray->h_hit_x = xintercept;
+            ray->h_hit_y = yintercept;
             // horzWallContent = data->all_map[(int)floor(ytocheck / 50)][(int)floor(xtocheck / 50)];
             // foundHorzWallHit = 1;
-            h_distance = sqrt(pow(x - xtocheck, 2) + pow(y - ytocheck, 2));
+            h_distance = sqrt(pow(data->p_x - xtocheck, 2) + pow(data->p_y - ytocheck, 2));
             return (h_distance);
         }
-        nextHorzTouchX += xstep;
-        nextHorzTouchY += ystep;
+        xintercept += xstep;
+        yintercept += ystep;
     }
     return (INT_MAX);
 }
 
-
+void init_ray(t_ray *ray)
+{
+    ray->v_distance = 0;
+    ray->h_distance = 0;
+    ray->v_hit_x = 0;
+    ray->v_hit_y = 0;
+    ray->h_hit_x = 0;
+    ray->h_hit_y = 0;
+    ray->lookingDown = 0;
+    ray->lookingUp = 0;
+    ray->lookingRight = 0;
+    ray->lookingLeft = 0;
+}
 
 void ray(t_data *data, double rayAngle)
-{
-    double v_distance;
-    double h_distance;
-    double h_hit_x;
-    double h_hit_y;
-    double v_hit_x;
-    double v_hit_y;
+{   
+    t_ray *ray; 
     
-
-    v_distance = 0;
-    h_distance = 0;
-    v_hit_x = 0;
-    v_hit_y = 0;
-    h_hit_x = 0;
-    h_hit_y = 0;
-
-    data->isRayFacingDown = 0;
-    data->isRayFacingUp = 0;
-    data->isRayFacingRight = 0;
-    data->isRayFacingLeft = 0;
+    ray = malloc(sizeof(t_ray)); 
+    init_ray(ray);
     
     if (rayAngle > 2 * M_PI)
         rayAngle -= 2 * M_PI;
@@ -202,17 +175,16 @@ void ray(t_data *data, double rayAngle)
         rayAngle += 2 * M_PI;
 
     if (rayAngle > 0 && rayAngle < M_PI)
-        data->isRayFacingDown = 1;
-    data->isRayFacingUp = !data->isRayFacingDown;
+        ray->lookingDown = 1;
+    ray->lookingUp = !ray->lookingDown;
 
     if (rayAngle < 0.5 * M_PI || rayAngle > 1.5 * M_PI)
-        data->isRayFacingRight = 1;
-    data->isRayFacingLeft = !data->isRayFacingRight;
-
-    
-    v_distance = get_v_distance(data, rayAngle, &v_hit_x, &v_hit_y);
-    h_distance = get_h_distance(data, rayAngle, &h_hit_x, &h_hit_y);
-    if (v_distance <= h_distance)
+        ray->lookingRight = 1;
+    ray->lookingLeft = !ray->lookingRight;
+  
+    ray->v_distance = get_v_distance(data, rayAngle, ray);
+    ray->h_distance = get_h_distance(data, rayAngle, ray);
+    if (ray->v_distance <= ray->h_distance)
     {
         int x = -3;
         int y = -3;
@@ -221,7 +193,7 @@ void ray(t_data *data, double rayAngle)
         x = -3;
         while (x < 3)
         {
-        mlx_pixel_put(data->mlx, data->win, v_hit_x + x, v_hit_y + y, 0xF62108);
+        mlx_pixel_put(data->mlx, data->win, ray->v_hit_x + x, ray->v_hit_y + y, 0xF62108);
             x++;
         }
         y++;
@@ -236,7 +208,7 @@ void ray(t_data *data, double rayAngle)
         x = -3;
         while (x < 3)
         {
-        mlx_pixel_put(data->mlx, data->win, h_hit_x + x, h_hit_y + y, 0xF62108);
+        mlx_pixel_put(data->mlx, data->win, ray->h_hit_x + x, ray->h_hit_y + y, 0xF62108);
             x++;
         }
         y++;
@@ -255,6 +227,28 @@ float	normalize_angle(float angle)
 		degree_angle = degree_angle + (360);
 	return (RAD(degree_angle));
 }
+
+// float ft_remainder(float x, float y) {
+//     // Calculate the quotient and round it towards zero
+//     int quotient = (int)(x / y);
+
+//     // Calculate the remainder
+//     float rem = x - (quotient * y);
+
+//     // Adjust remainder to be within the correct range
+//     if (rem > y / 2) rem -= y;
+//     else if (rem < -y / 2) rem += y;
+
+//     return rem;
+// }
+
+// float normalize_angle(float angle)
+// {
+//     angle = ft_remainder(angle, 2 * M_PI);
+//     if (angle < 0)
+//         angle = (2 * M_PI) + angle;
+//     return (angle);
+// }
 
 void  castAllRay(t_data *data)
 {

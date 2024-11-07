@@ -45,24 +45,31 @@ typedef struct s_data
 	float moveSpeed;
 	float rotationSpeed;
 	// *****************
-	int isRayFacingDown;
-	int isRayFacingUp;
-	int isRayFacingRight;
-	int isRayFacingLeft;
+	
 }t_data;
 
-// struct Ray {
-//     float rayAngle;
-//     float wallHitX;
-//     float wallHitY;
-//     float distance;
-//     int wasHitVertical;
-//     int isRayFacingUp;
-//     int isRayFacingDown;
-//     int isRayFacingLeft;
-//     int isRayFacingRight;
-//     int wallHitContent;
-// } rays[NUM_RAYS];
+typedef struct s_ray {
+    // float rayAngle;
+    // float wallHitX;
+    // float wallHitY;
+    // float distance;
+    // int wasHitVertical;
+    // int lookingUp;
+    // int lookingDown;
+    // int lookingLeft;
+    // int lookingRight;
+    // int wallHitContent;
+	double v_distance;
+    double h_distance;
+	double h_hit_x;
+    double h_hit_y;
+    double v_hit_x;
+    double v_hit_y;
+	int lookingDown;
+	int lookingUp;
+	int lookingRight;
+	int lookingLeft;
+}t_ray;
 
 typedef struct s_texture
 {
@@ -88,8 +95,10 @@ int			ft_atoi(const char *str);
 t_texture	*ft_lstnew(t_texture *new, char *line, int i);
 void		lstadd_back(t_texture **lst, t_texture *new);
 char		*ft_substr(char const *s, unsigned int start, size_t len);
-double 		get_h_distance(t_data *data, double rayAngle, double *h_hit_x, double *h_hit_y);
-double 		get_v_distance(t_data *data, double rayAngle, double *v_hit_x, double *v_hit_y);
+// double 		get_h_distance(t_data *data, double rayAngle, double *h_hit_x, double *h_hit_y);
+// double 		get_v_distance(t_data *data, double rayAngle, double *v_hit_x, double *v_hit_y);
+double get_v_distance(t_data *data, double rayAngle, t_ray *ray);
+double get_h_distance(t_data *data, double rayAngle, t_ray *ray);
 void 		ray(t_data *data, double rayAngle);
 void  		castAllRay(t_data *data);
 int			key_press(int keycode, t_data *data);
