@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 23:38:53 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/07 13:15:48 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/07 15:34:15 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,10 @@ void get_player_position(t_data *data)
     data->p_y = (data->p_y * 50) + 25;
 }
 
-double get_v_distance(t_data *data, double rayAngle, t_ray *ray)
+double get_v_distance(t_data *data, t_ray *ray, double xstep, double ystep)
 {
     double xintercept;
     double yintercept;
-    double xstep;
-    double ystep;
     double xtocheck;
     double ytocheck;
     double v_distance;
@@ -57,19 +55,18 @@ double get_v_distance(t_data *data, double rayAngle, t_ray *ray)
     xintercept = floor(data->p_x / 50) * 50;
     if (ray->lookingRight)
         xintercept += 50;
-    yintercept = data->p_y + (xintercept - data->p_x) * tan(rayAngle);
-
+        
+    yintercept = data->p_y + (xintercept - data->p_x) * tan(ray->rayAngle);
     xstep = 50;
+    ystep = 50 * tan(ray->rayAngle);
+    
     if (ray->lookingLeft)
         xstep *= -1;
-    
-    ystep = 50 * tan(rayAngle);
-
     if (ray->lookingUp && ystep > 0)
         ystep *= -1;
     if (ray->lookingDown && ystep < 0)
         ystep *= -1;
-
+    
     while (xintercept >= 0 && xintercept <= data->lenght * 50 && yintercept >= 0 && yintercept <= data->height * 50)
     {
         if (ray->lookingLeft)
@@ -92,37 +89,28 @@ double get_v_distance(t_data *data, double rayAngle, t_ray *ray)
 }
 
 
-double get_h_distance(t_data *data, double rayAngle, t_ray *ray)
+double get_h_distance(t_data *data, t_ray *ray, double xstep, double ystep)
 {
     double xintercept;
     double yintercept;
-    double xstep;
-    double ystep;
     double xtocheck;
     double ytocheck;
     double h_distance;
 
-    // ====================
-//  int foundHorzWallHit = 0;
-    xintercept = 0;
-    yintercept = 0;
-// int horzWallContent = 0;
-    // ====================
 
     yintercept = floor(data->p_y / 50) * 50;
     if (ray->lookingDown)
         yintercept += 50;
  
-    xintercept = data->p_x + (yintercept - data->p_y) / tan(rayAngle);
+    xintercept = data->p_x + (yintercept - data->p_y) / tan(ray->rayAngle);
 
     ystep = 50;
+    xstep = 50 / tan(ray->rayAngle);
+    
     if (ray->lookingUp)
         ystep *= -1;
-   
-    xstep = 50 / tan(rayAngle);
     if (ray->lookingLeft && xstep > 0)
         xstep *= -1;
-        
     if (ray->lookingRight && xstep < 0)
         xstep *= -1;
     
@@ -137,8 +125,6 @@ double get_h_distance(t_data *data, double rayAngle, t_ray *ray)
         {
             ray->h_hit_x = xintercept;
             ray->h_hit_y = yintercept;
-            // horzWallContent = data->all_map[(int)floor(ytocheck / 50)][(int)floor(xtocheck / 50)];
-            // foundHorzWallHit = 1;
             h_distance = sqrt(pow(data->p_x - xtocheck, 2) + pow(data->p_y - ytocheck, 2));
             return (h_distance);
         }
@@ -162,28 +148,28 @@ void init_ray(t_ray *ray)
     ray->lookingLeft = 0;
 }
 
-void ray(t_data *data, double rayAngle)
+void ray_function(t_data *data, double rayAngle)
 {   
-    t_ray *ray; 
-    
-    ray = malloc(sizeof(t_ray)); 
-    init_ray(ray);
-    
-    if (rayAngle > 2 * M_PI)
-        rayAngle -= 2 * M_PI;
-    if (rayAngle < 0)
-        rayAngle += 2 * M_PI;
+    t_ray *ray;
 
-    if (rayAngle > 0 && rayAngle < M_PI)
+    ray = malloc(sizeof(t_ray));
+    ray->rayAngle = rayAngle;
+    init_ray(ray);
+    if (ray->rayAngle > 2 * M_PI)
+        ray->rayAngle -= 2 * M_PI;
+    if (ray->rayAngle < 0)
+        ray->rayAngle += 2 * M_PI;
+        
+    if (ray->rayAngle > 0 && ray->rayAngle < M_PI)
         ray->lookingDown = 1;
     ray->lookingUp = !ray->lookingDown;
-
-    if (rayAngle < 0.5 * M_PI || rayAngle > 1.5 * M_PI)
+    if (ray->rayAngle < 0.5 * M_PI || ray->rayAngle > 1.5 * M_PI)
         ray->lookingRight = 1;
     ray->lookingLeft = !ray->lookingRight;
-  
-    ray->v_distance = get_v_distance(data, rayAngle, ray);
-    ray->h_distance = get_h_distance(data, rayAngle, ray);
+
+    
+    ray->v_distance = get_v_distance(data, ray, 0, 0);
+    ray->h_distance = get_h_distance(data, ray, 0, 0);
     if (ray->v_distance <= ray->h_distance)
     {
         int x = -3;
@@ -215,6 +201,7 @@ void ray(t_data *data, double rayAngle)
         }
     }
      printf("\n");
+    free(ray);
 }
 
 float	normalize_angle(float angle)
@@ -254,15 +241,15 @@ void  castAllRay(t_data *data)
 {
     double rayAngle;
     double rayStep;
-  
+    
 
     // double FOV = 60 * (M_PI / 180);
-
-    // rayAngle = data->angle;
+    // ray->rayAngle = data->angle;
+    // ray = malloc(sizeof(t_ray));
     rayAngle = data->angle - (FOV / 2 );
     rayStep = ( 5 * M_PI / 180) / 50;
    
-    printf("rayAngle : %f\n", rayAngle);
+    printf("ray->rayAngle : %f\n", rayAngle);
     rayAngle = normalize_angle(rayAngle);
     printf("************* rayAngle in castAllRay ***************\n");
     printf("rayAngle : %f\n", rayAngle);
@@ -273,7 +260,7 @@ void  castAllRay(t_data *data)
     while (rayAngle <= data->angle + (FOV / 2))
     {
         printf ("in while\n");
-        ray(data, rayAngle);
+        ray_function(data, rayAngle);
         rayAngle += rayStep;
     }
 }

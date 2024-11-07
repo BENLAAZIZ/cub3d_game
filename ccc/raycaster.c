@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 23:38:53 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/06 17:41:39 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/07 15:09:09 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void get_player_position(t_data *data)
     data->p_y = (data->p_y * 50) + 25;
 }
 
-double get_v_distance(t_data *data, double rayAngle, double *v_hit_x, double *v_hit_y)
+double get_v_distance(t_data *data, double ray->rayAngle, double *v_hit_x, double *v_hit_y)
 {
     double xintercept;
     double yintercept;
@@ -73,7 +73,7 @@ double get_v_distance(t_data *data, double rayAngle, double *v_hit_x, double *v_
     double v_distance;
     double x = data->p_x;
     double y = data->p_y;
-    double angle = rayAngle;
+    double angle = ray->rayAngle;
   
         
     // ************************************************************ 
@@ -125,7 +125,7 @@ double get_v_distance(t_data *data, double rayAngle, double *v_hit_x, double *v_
             // printf("x : %f y : %f\n", xtocheck, ytocheck);
             v_distance = sqrt(pow(x - xtocheck, 2) + pow(y - ytocheck, 2));
                printf ("======== v ============\n\n\n");
-                printf("rayAngle : %f\n", rayAngle);
+                printf("ray->rayAngle : %f\n", ray->rayAngle);
                 printf("x_p : %d y_p : %d\n", data->p_x, data->p_y);
                 printf("vertical in function\n");
                 printf("v_hit_x : %f v_hit_y : %f\n", *v_hit_x, *v_hit_y);
@@ -167,7 +167,7 @@ double get_v_distance(t_data *data, double rayAngle, double *v_hit_x, double *v_
 //     return (0);
 // }
 
-double get_h_distance(t_data *data, double rayAngle, double *h_hit_x, double *h_hit_y)
+double get_h_distance(t_data *data, double ray->rayAngle, double *h_hit_x, double *h_hit_y)
 {
     double xintercept;
     double yintercept;
@@ -178,7 +178,7 @@ double get_h_distance(t_data *data, double rayAngle, double *h_hit_x, double *h_
     double h_distance;
     double x = data->p_x;
     double y = data->p_y;
-    double angle = rayAngle;
+    double angle = ray->rayAngle;
     // int k = 0;
  
  //************************************************************
@@ -251,7 +251,7 @@ double get_h_distance(t_data *data, double rayAngle, double *h_hit_x, double *h_
             *h_hit_x = xtocheck;
             *h_hit_y = ytocheck;
          printf ("======= h with wall =============\n\n\n");
-                printf("rayAngle : %f\n", rayAngle);
+                printf("ray->rayAngle : %f\n", ray->rayAngle);
                 printf("x_p : %d y_p : %d\n", data->p_x, data->p_y);
                 printf("horizontal in function\n");
                 printf("h_hit_x : %f h_hit_y : %f\n", *h_hit_x, *h_hit_y);
@@ -276,7 +276,7 @@ double get_h_distance(t_data *data, double rayAngle, double *h_hit_x, double *h_
 
 
 
-void ray(t_data *data, double rayAngle)
+void ray(t_data *data, double ray->rayAngle)
 {
     double v_distance;
     double h_distance;
@@ -294,13 +294,13 @@ void ray(t_data *data, double rayAngle)
     h_hit_y = 0;
     
 
-    if (rayAngle > 2 * M_PI)
-        rayAngle -= 2 * M_PI;
-    if (rayAngle < 0)
-        rayAngle += 2 * M_PI;
+    if (ray->rayAngle > 2 * M_PI)
+        ray->rayAngle -= 2 * M_PI;
+    if (ray->rayAngle < 0)
+        ray->rayAngle += 2 * M_PI;
     
-    v_distance = get_v_distance(data, rayAngle, &v_hit_x, &v_hit_y);
-    h_distance = get_h_distance(data, rayAngle, &h_hit_x, &h_hit_y);
+    v_distance = get_v_distance(data, ray->rayAngle, &v_hit_x, &v_hit_y);
+    h_distance = get_h_distance(data, ray->rayAngle, &h_hit_x, &h_hit_y);
     printf("--------------------\n");
     printf("v_distance : %f\n", v_distance);
     printf("h_distance : %f\n", h_distance);
@@ -350,26 +350,26 @@ float	normalize_angle(float angle)
 
 void  castAllRay(t_data *data)
 {
-    double rayAngle;
+    double ray->rayAngle;
     double rayStep;
   
 
     // double FOV = 60 * (M_PI / 180);
 
-    rayAngle = data->angle;
-    // rayAngle = data->angle - (FOV / 2 );
+    ray->rayAngle = data->angle;
+    // ray->rayAngle = data->angle - (FOV / 2 );
     rayStep = ( 5 * M_PI / 180) / 50;
    
-    rayAngle = normalize_angle(rayAngle);
-    printf("************* rayAngle in castAllRay ***************\n");
-    printf("rayAngle : %f\n", rayAngle);
+    ray->rayAngle = normalize_angle(ray->rayAngle);
+    printf("************* ray->rayAngle in castAllRay ***************\n");
+    printf("ray->rayAngle : %f\n", ray->rayAngle);
     printf("***************************************************\n");
-    // rayAngle = normalize_angle(rayStep - ((FOV) / 2));
-    // while (rayAngle < data->angle + (FOV / 2))
+    // ray->rayAngle = normalize_angle(rayStep - ((FOV) / 2));
+    // while (ray->rayAngle < data->angle + (FOV / 2))
     // {
 
-        ray(data, rayAngle);
-    //     rayAngle += rayStep;
+        ray(data, ray->rayAngle);
+    //     ray->rayAngle += rayStep;
     // }
 
 }
