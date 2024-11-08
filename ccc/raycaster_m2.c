@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 23:38:53 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/07 15:34:15 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/08 21:02:00 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ double get_v_distance(t_data *data, t_ray *ray, double xstep, double ystep)
     double ytocheck;
     double v_distance;
   
-    // ====================
     xintercept = floor(data->p_x / 50) * 50;
     if (ray->lookingRight)
         xintercept += 50;
@@ -78,7 +77,6 @@ double get_v_distance(t_data *data, t_ray *ray, double xstep, double ystep)
         {
             ray->v_hit_x = xintercept;
             ray->v_hit_y = yintercept;
-            // foundVertWallHit = 1;
             v_distance = sqrt(pow(data->p_x - xtocheck, 2) + pow(data->p_y - ytocheck, 2));
             return (v_distance);
         }
@@ -136,6 +134,10 @@ double get_h_distance(t_data *data, t_ray *ray, double xstep, double ystep)
 
 void init_ray(t_ray *ray)
 {
+     if (ray->rayAngle > 2 * M_PI)
+        ray->rayAngle -= 2 * M_PI;
+    if (ray->rayAngle < 0)
+        ray->rayAngle += 2 * M_PI;
     ray->v_distance = 0;
     ray->h_distance = 0;
     ray->v_hit_x = 0;
@@ -148,18 +150,14 @@ void init_ray(t_ray *ray)
     ray->lookingLeft = 0;
 }
 
-void ray_function(t_data *data, double rayAngle)
-{   
-    t_ray *ray;
 
-    ray = malloc(sizeof(t_ray));
+void oneRay(t_data *data, double rayAngle, t_ray *ray)
+{   
+    // t_ray *ray;
+
+    // ray = malloc(sizeof(t_ray));
     ray->rayAngle = rayAngle;
     init_ray(ray);
-    if (ray->rayAngle > 2 * M_PI)
-        ray->rayAngle -= 2 * M_PI;
-    if (ray->rayAngle < 0)
-        ray->rayAngle += 2 * M_PI;
-        
     if (ray->rayAngle > 0 && ray->rayAngle < M_PI)
         ray->lookingDown = 1;
     ray->lookingUp = !ray->lookingDown;
@@ -167,11 +165,14 @@ void ray_function(t_data *data, double rayAngle)
         ray->lookingRight = 1;
     ray->lookingLeft = !ray->lookingRight;
 
-    
     ray->v_distance = get_v_distance(data, ray, 0, 0);
     ray->h_distance = get_h_distance(data, ray, 0, 0);
     if (ray->v_distance <= ray->h_distance)
     {
+        ray->distance = ray->v_distance;
+        ray->x_hit = ray->v_hit_x;
+        ray->y_hit = ray->v_hit_y;
+        ray->flag = 1;
         int x = -3;
         int y = -3;
            while (y < 3)
@@ -187,6 +188,11 @@ void ray_function(t_data *data, double rayAngle)
     }
     else
     {
+        ray->distance = ray->h_distance;
+        ray->x_hit = ray->h_hit_x;
+        ray->y_hit = ray->h_hit_y;
+        ray->flag = 0;
+        
          int x = -3;
         int y = -3;
            while (y < 3)
@@ -201,76 +207,35 @@ void ray_function(t_data *data, double rayAngle)
         }
     }
      printf("\n");
-    free(ray);
+    // free(ray);
 }
 
-float	normalize_angle(float angle)
-{
-	float degree_angle;
 
-	degree_angle = (angle * 360) / (2 * M_PI);
-	degree_angle = (int)degree_angle % (360);
-	if (degree_angle < 0)
-		degree_angle = degree_angle + (360);
-	return (RAD(degree_angle));
-}
-
-// float ft_remainder(float x, float y) {
-//     // Calculate the quotient and round it towards zero
-//     int quotient = (int)(x / y);
-
-//     // Calculate the remainder
-//     float rem = x - (quotient * y);
-
-//     // Adjust remainder to be within the correct range
-//     if (rem > y / 2) rem -= y;
-//     else if (rem < -y / 2) rem += y;
-
-//     return rem;
-// }
-
-// float normalize_angle(float angle)
-// {
-//     angle = ft_remainder(angle, 2 * M_PI);
-//     if (angle < 0)
-//         angle = (2 * M_PI) + angle;
-//     return (angle);
-// }
 
 void  castAllRay(t_data *data)
 {
     double rayAngle;
     double rayStep;
-    
+     t_ray *ray;
 
-    // double FOV = 60 * (M_PI / 180);
-    // ray->rayAngle = data->angle;
-    // ray = malloc(sizeof(t_ray));
+    
     rayAngle = data->angle - (FOV / 2 );
     rayStep = ( 5 * M_PI / 180) / 50;
-   
-    printf("ray->rayAngle : %f\n", rayAngle);
-    rayAngle = normalize_angle(rayAngle);
-    printf("************* rayAngle in castAllRay ***************\n");
-    printf("rayAngle : %f\n", rayAngle);
-    printf("data->angle : %f\n", data->angle);
-    printf("data->angle + (FOV / 2) : %f\n", data->angle + (FOV / 2));
-    printf("***************************************************\n");
-    // rayAngle = normalize_angle(rayStep - ((FOV) / 2));
     while (rayAngle <= data->angle + (FOV / 2))
     {
-        printf ("in while\n");
-        ray_function(data, rayAngle);
+        ray = malloc(sizeof(t_ray));
+        oneRay(data, rayAngle, ray);
         rayAngle += rayStep;
+        free(ray);
     }
 }
 
 int create_window(char **map)
 {
     t_data data;
+    
     data.p_y = 0;
     data.p_x = 0;
-    // data.angle = M_PI;
     data.angle = 0.00;
     
     int len = 0;
