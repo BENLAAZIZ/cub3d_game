@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 23:38:53 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/08 21:15:47 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/08 22:04:01 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,11 +211,69 @@ void oneRay(t_data *data, double rayAngle, t_ray *ray)
 
 
 
+// void draw_floor(t_data *data, double distance, double column)
+// {
+// 	double line_height;
+//    	double top_y;
+//    	double bottom_y;
+// 	double window_height = data->height * 50.00;
+//     line_height = (window_height  / distance) * 30.0;
+//     top_y = window_height / 2 - line_height / 2;
+//     bottom_y = top_y + line_height;
+
+// 	int i = bottom_y;
+// 	while(i < window_height)
+// 	{
+// 		mlx_pixel_put(data->mlx, data->win_test, column, i, 0x629584);
+// 		i++;
+// 	}
+// 	i = 0;
+// 	while (i < top_y)
+// 	{
+// 		mlx_pixel_put(data->mlx, data->win_test, column, i, 0x243642);
+// 		i++;
+// 	}
+// }
+// void draw_wall(t_data *data, double distance, double column)
+// {
+//     double line_height;
+//    	double top_y;
+//    	double bottom_y;
+//     int color = 0xff6347; 
+// 	double window_height = data->height * 50.00;
+//     line_height = (window_height  / distance) * 30.0;
+//     top_y = window_height / 2 - line_height / 2;
+//     bottom_y = top_y + line_height;
+//     if (top_y < 0)
+//         top_y = 0;
+//     if (bottom_y > window_height)
+//         bottom_y = window_height;
+// 	int i = top_y;
+//     while (top_y <= bottom_y)
+//     {
+// 		if (top_y < 0)
+// 			return ;
+//         mlx_pixel_put(data->mlx, data->win_test, column, top_y, color);
+//         top_y++;
+//     }
+// 	top_y = i;
+// 	while(i < top_y)
+// 	{
+// 		puts("here");
+// 		mlx_pixel_put(data->mlx, data->win_test, column, i, 0x88C273);
+// 		i++;
+// 	}
+
+// }
+
+
 void  castAllRay(t_data *data)
 {
     double  rayAngle;
     double  rayStep;
     t_ray   *ray;
+    // double column = 0;
+   
 
     rayAngle = data->angle - (FOV / 2 );
     rayStep = ( 5 * M_PI / 180) / 50;
@@ -223,7 +281,14 @@ void  castAllRay(t_data *data)
     {
         ray = malloc(sizeof(t_ray));
         oneRay(data, rayAngle, ray);
+        // ray->distance = ray->distance / rayStep;
+        // ray->distance *= cos(rayAngle - data->angle);
+        
+		// 		draw_wall(data, ray->distance, column);
+		// 		draw_floor(data, ray->distance, column);
+        
         rayAngle += rayStep;
+        // column++;
         free(ray);
     }
 }
@@ -241,6 +306,7 @@ int create_window(char **map)
         len++;
     data.mlx = mlx_init();
     data.win = mlx_new_window(data.mlx, (ft_strlen(map[0]) * 50), len * 50, "hello");
+    data.win_test = mlx_new_window(data.mlx, (ft_strlen(map[0]) * 50), len * 50, "test");
     data.all_map = map;
     data.height = len;
     get_player_position(&data);

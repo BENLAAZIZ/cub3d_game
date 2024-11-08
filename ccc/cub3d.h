@@ -37,6 +37,7 @@ typedef struct s_data
 	double	angle;
 	int		p_x;
 	int		p_y;
+	
 	// *****************
 	float turnDirection;
 	int walkDirection;
