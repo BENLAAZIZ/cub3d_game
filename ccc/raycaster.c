@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 23:38:53 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/07 15:09:09 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/08 21:07:11 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void get_player_position(t_data *data)
     data->p_y = (data->p_y * 50) + 25;
 }
 
-double get_v_distance(t_data *data, double ray->rayAngle, double *v_hit_x, double *v_hit_y)
+double get_v_intercept(t_data *data, double ray->rayAngle, double *v_hit_x, double *v_hit_y)
 {
     double xintercept;
     double yintercept;
@@ -167,7 +167,7 @@ double get_v_distance(t_data *data, double ray->rayAngle, double *v_hit_x, doubl
 //     return (0);
 // }
 
-double get_h_distance(t_data *data, double ray->rayAngle, double *h_hit_x, double *h_hit_y)
+double get_h_intercept(t_data *data, double ray->rayAngle, double *h_hit_x, double *h_hit_y)
 {
     double xintercept;
     double yintercept;
@@ -299,8 +299,8 @@ void ray(t_data *data, double ray->rayAngle)
     if (ray->rayAngle < 0)
         ray->rayAngle += 2 * M_PI;
     
-    v_distance = get_v_distance(data, ray->rayAngle, &v_hit_x, &v_hit_y);
-    h_distance = get_h_distance(data, ray->rayAngle, &h_hit_x, &h_hit_y);
+    v_distance = get_v_intercept(data, ray->rayAngle, &v_hit_x, &v_hit_y);
+    h_distance = get_h_intercept(data, ray->rayAngle, &h_hit_x, &h_hit_y);
     printf("--------------------\n");
     printf("v_distance : %f\n", v_distance);
     printf("h_distance : %f\n", h_distance);

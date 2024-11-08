@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 23:38:53 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/08 21:02:00 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/08 21:15:47 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void get_player_position(t_data *data)
     data->p_y = (data->p_y * 50) + 25;
 }
 
-double get_v_distance(t_data *data, t_ray *ray, double xstep, double ystep)
+double get_v_intercept(t_data *data, t_ray *ray, double xstep, double ystep)
 {
     double xintercept;
     double yintercept;
@@ -87,7 +87,7 @@ double get_v_distance(t_data *data, t_ray *ray, double xstep, double ystep)
 }
 
 
-double get_h_distance(t_data *data, t_ray *ray, double xstep, double ystep)
+double get_h_intercept(t_data *data, t_ray *ray, double xstep, double ystep)
 {
     double xintercept;
     double yintercept;
@@ -165,20 +165,20 @@ void oneRay(t_data *data, double rayAngle, t_ray *ray)
         ray->lookingRight = 1;
     ray->lookingLeft = !ray->lookingRight;
 
-    ray->v_distance = get_v_distance(data, ray, 0, 0);
-    ray->h_distance = get_h_distance(data, ray, 0, 0);
+    ray->v_distance = get_v_intercept(data, ray, 0, 0);
+    ray->h_distance = get_h_intercept(data, ray, 0, 0);
     if (ray->v_distance <= ray->h_distance)
     {
         ray->distance = ray->v_distance;
         ray->x_hit = ray->v_hit_x;
         ray->y_hit = ray->v_hit_y;
         ray->flag = 1;
-        int x = -3;
-        int y = -3;
-           while (y < 3)
+        int x = -2;
+        int y = -2;
+           while (y < 2)
         {
-        x = -3;
-        while (x < 3)
+        x = -2;
+        while (x < 2)
         {
         mlx_pixel_put(data->mlx, data->win, ray->v_hit_x + x, ray->v_hit_y + y, 0xF62108);
             x++;
@@ -192,13 +192,12 @@ void oneRay(t_data *data, double rayAngle, t_ray *ray)
         ray->x_hit = ray->h_hit_x;
         ray->y_hit = ray->h_hit_y;
         ray->flag = 0;
-        
-         int x = -3;
-        int y = -3;
-           while (y < 3)
+         int x = -2;
+        int y = -2;
+           while (y < 2)
         {
-        x = -3;
-        while (x < 3)
+        x = -2;
+        while (x < 2)
         {
         mlx_pixel_put(data->mlx, data->win, ray->h_hit_x + x, ray->h_hit_y + y, 0xF62108);
             x++;
@@ -214,11 +213,10 @@ void oneRay(t_data *data, double rayAngle, t_ray *ray)
 
 void  castAllRay(t_data *data)
 {
-    double rayAngle;
-    double rayStep;
-     t_ray *ray;
+    double  rayAngle;
+    double  rayStep;
+    t_ray   *ray;
 
-    
     rayAngle = data->angle - (FOV / 2 );
     rayStep = ( 5 * M_PI / 180) / 50;
     while (rayAngle <= data->angle + (FOV / 2))
