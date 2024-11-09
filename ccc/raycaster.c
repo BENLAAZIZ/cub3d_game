@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 23:38:53 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/09 18:37:46 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/09 20:36:15 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ double get_v_intercept(t_data *data, t_ray *ray, double xstep, double ystep)
             ray->v_hit_x = xintercept;
             ray->v_hit_y = yintercept;
             v_distance = sqrt(pow(data->p_x - xtocheck, 2) + pow(data->p_y - ytocheck, 2));
-            // printf ("v_distance = %f\n", v_distance);
             return (v_distance);
         }
         xintercept += xstep;
@@ -199,6 +198,13 @@ void oneRay(t_data *data, t_ray *ray)
     }
 }
 
+void render_wall(t_data *data, t_ray *ray, double *column)
+{
+     ray->distance *= cos(ray->rayAngle - data->angle);
+        draw_floor(data, ray->distance , *column);
+        draw_wall(data, ray->distance  , *column);
+        (*column)++;
+}
 
 void  castAllRay(t_data *data)
 {
@@ -215,11 +221,8 @@ void  castAllRay(t_data *data)
         ray = malloc(sizeof(t_ray));
         ray->rayAngle = rayAngle;
         oneRay(data, ray);
-        ray->distance *= cos(rayAngle - data->angle);
-        draw_floor(data, ray->distance , column);
-        draw_wall(data, ray->distance  , column);
+        render_wall(data, ray, &column);
         rayAngle += rayStep;
-        column++;
         free(ray);
     }
 }
