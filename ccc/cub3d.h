@@ -1,3 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cub3d.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aaaraba <aaaraba@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/09 15:06:34 by hben-laz          #+#    #+#             */
+/*   Updated: 2024/11/09 15:11:41 by aaaraba          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+
+
 #ifndef CUB3D_H
 #define	CUB3D_H
 
@@ -35,8 +49,8 @@ typedef struct s_data
 	int		height;
 	int		lenght;
 	double	angle;
-	int		p_x;
-	int		p_y;
+	double		p_x;
+	double		p_y;
 	
 	// *****************
 	float turnDirection;

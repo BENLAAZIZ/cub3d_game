@@ -201,5 +201,5 @@ int main (int argc, char **argv)
 		i++;
 	}
 	create_window(new_map);
-	puts("ok");
+	// puts("ok");
 }

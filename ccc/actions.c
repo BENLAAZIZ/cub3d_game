@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   actions.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaaraba <aaaraba@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 17:47:52 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/07 11:51:48 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/09 16:20:19 by aaaraba          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	move_player_down(t_data *data)
 	data->p_y = y;
 	data->p_x = x;
 	mlx_clear_window(data->mlx, data->win);
-	// mlx_clear_window(data->mlx, data->win_test);
+	mlx_clear_window(data->mlx, data->win_test);
 	drawmap(data);
 	drawplayer(data);
 	castAllRay(data);
@@ -41,7 +41,7 @@ void	move_player_up(t_data *data)
 	data->p_y = y;
 	data->p_x = x;
 	mlx_clear_window(data->mlx, data->win);
-	// mlx_clear_window(data->mlx, data->win_test);
+	mlx_clear_window(data->mlx, data->win_test);
 	drawmap(data);
 	drawplayer(data); 
 	castAllRay(data);
@@ -50,13 +50,13 @@ void	move_player_up(t_data *data)
 void	move_player_left(t_data *data)
 { 
 	double y = data->p_y + sin(data->angle - M_PI_2) * 10.00;
-	double x = data->p_x - cos(data->angle - M_PI_2) * 10.00;
+	double x = data->p_x + cos(data->angle - M_PI_2) * 10.00;
 	if (data->all_map[(int)y / 50][(int)x / 50] == '1')
 		return ;
 	data->p_y = y;
 	data->p_x = x;
 	mlx_clear_window(data->mlx, data->win);
-	// mlx_clear_window(data->mlx, data->win_test);
+	mlx_clear_window(data->mlx, data->win_test);
 	drawmap(data);
 	drawplayer(data);
 	castAllRay(data);
@@ -65,13 +65,13 @@ void	move_player_left(t_data *data)
 void	move_player_right(t_data *data)
 {
 	double y = data->p_y + sin(data->angle + M_PI_2) * 10.00;
-	double x = data->p_x - cos(data->angle + M_PI_2) * 10.00;
+	double x = data->p_x + cos(data->angle + M_PI_2) * 10.00;
 	if (data->all_map[(int)y / 50][(int)x / 50] == '1')
 		return ;
 	data->p_y = y;
 	data->p_x = x;
 	mlx_clear_window(data->mlx, data->win);
-	// mlx_clear_window(data->mlx, data->win_test);
+	mlx_clear_window(data->mlx, data->win_test);
 	drawmap(data);
 	drawplayer(data);
 	castAllRay(data);
