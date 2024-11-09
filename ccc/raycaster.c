@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycaster.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaaraba <aaaraba@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 23:38:53 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/09 17:06:56 by aaaraba          ###   ########.fr       */
+/*   Updated: 2024/11/09 18:37:46 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,23 +96,18 @@ double get_h_intercept(t_data *data, t_ray *ray, double xstep, double ystep)
     double ytocheck;
     double h_distance;
 
-
     yintercept = floor(data->p_y / 50) * 50;
     if (ray->lookingDown)
         yintercept += 50;
- 
     xintercept = data->p_x + (yintercept - data->p_y) / tan(ray->rayAngle);
-
     ystep = 50;
-    xstep = 50 / tan(ray->rayAngle);
-    
+    xstep = 50 / tan(ray->rayAngle); 
     if (ray->lookingUp)
         ystep *= -1;
     if (ray->lookingLeft && xstep > 0)
         xstep *= -1;
     if (ray->lookingRight && xstep < 0)
         xstep *= -1;
-    
     while (xintercept >= 0 && xintercept <= data->lenght * 50 && yintercept >= 0 && yintercept <= data->height * 50)
     {
         xtocheck = xintercept;
@@ -125,7 +120,6 @@ double get_h_intercept(t_data *data, t_ray *ray, double xstep, double ystep)
             ray->h_hit_x = xintercept;
             ray->h_hit_y = yintercept;
             h_distance = sqrt(pow(data->p_x - xtocheck, 2) + pow(data->p_y - ytocheck, 2));
-            // printf ("hdistance = %f\n", h_distance);
             return (h_distance);
         }
         xintercept += xstep;
@@ -153,24 +147,20 @@ void init_ray(t_ray *ray)
 }
 
 
-void oneRay(t_data *data, double rayAngle, t_ray *ray)
+void oneRay(t_data *data, t_ray *ray)
 {   
-    ray->rayAngle = rayAngle;
     init_ray(ray);
     if (ray->rayAngle > 0 && ray->rayAngle < M_PI)
         ray->lookingDown = 1;
     ray->lookingUp = !ray->lookingDown;
-    if (ray->rayAngle < 0.5 * M_PI || ray->rayAngle > 1.5 * M_PI)
+    if (ray->rayAngle < M_PI_2 || ray->rayAngle > 3 * M_PI_2)
         ray->lookingRight = 1;
     ray->lookingLeft = !ray->lookingRight;
-
     ray->v_distance = get_v_intercept(data, ray, 0, 0);
     ray->h_distance = get_h_intercept(data, ray, 0, 0);
     if (ray->v_distance <= ray->h_distance)
     {
         ray->distance = ray->v_distance;
-        printf ("ray->distance = %f\n", ray->distance);
-
         ray->x_hit = ray->v_hit_x;
         ray->y_hit = ray->v_hit_y;
         ray->flag = 1;
@@ -207,69 +197,6 @@ void oneRay(t_data *data, double rayAngle, t_ray *ray)
         y++;
         }
     }
-    //  printf("\n");
-    // free(ray);
-}
-
-
-
-void draw_floor(t_data *data, double distance, double column)
-{
-	double line_height;
-   	double top_y;
-   	double bottom_y;
-	double window_height = data->height * 50.00;
-    line_height = (window_height  / distance) * 30.0;
-    top_y = window_height / 2 - line_height / 2;
-    bottom_y = top_y + line_height;
-
-	int i = bottom_y;
-	while(i < window_height)
-	{
-		mlx_pixel_put(data->mlx, data->win_test, column, i, 0x629584);
-		i++;
-	}
-	i = 0;
-	while (i < top_y)
-	{
-		mlx_pixel_put(data->mlx, data->win_test, column, i, 0x243642);
-		i++;
-	}
-}
-void draw_wall(t_data *data, double distance, double column)
-{
-    double line_height;
-   	double top_y;
-   	double bottom_y;
-    int color = 0xff6347; 
-	double window_height = data->height * 50.00;
-    // printf("distance : %f\n", distance);
-    line_height = (window_height  / distance) * 30.0;
-    top_y = window_height / 2 - line_height / 2;
-    bottom_y = top_y + line_height;
-    if (top_y < 0)
-        top_y = 0;
-    if (bottom_y > window_height)
-        bottom_y = window_height;
-	int i = top_y;
-    // printf("y : %f\n", top_y);
-    // printf("b_y : %f\n", bottom_y);
-    
-    while (top_y <= bottom_y)
-    {
-		if (top_y < 0)
-			return ;
-        mlx_pixel_put(data->mlx, data->win_test, column, top_y, color);
-        top_y++;
-    }
-	top_y = i;
-	while(i < top_y)
-	{
-		puts("here");
-		mlx_pixel_put(data->mlx, data->win_test, column, i, 0x88C273);
-		i++;
-	}
-
 }
 
 
@@ -278,52 +205,41 @@ void  castAllRay(t_data *data)
     double  rayAngle;
     double  rayStep;
     t_ray   *ray;
-    double column = 0;
-   
-
+    double column;
+    
+    column = 0;
     rayAngle = data->angle - (FOV / 2 );
     rayStep = ( 5 * M_PI / 180) / 50;
     while (rayAngle <= data->angle + (FOV / 2))
     {
         ray = malloc(sizeof(t_ray));
-        oneRay(data, rayAngle, ray);
-    //      if (ray->rayAngle > 2 * M_PI)
-    //     ray->rayAngle -= 2 * M_PI;
-    // if (ray->rayAngle < 0)
-    //     ray->rayAngle += 2 * M_PI;
-        ray->distance = ray->distance;
+        ray->rayAngle = rayAngle;
+        oneRay(data, ray);
         ray->distance *= cos(rayAngle - data->angle);
-        printf("dis : %f\n ", ray->distance);
         draw_floor(data, ray->distance , column);
         draw_wall(data, ray->distance  , column);
-        
         rayAngle += rayStep;
         column++;
         free(ray);
     }
-    printf("column : %f\n", column);
 }
 
 int create_window(char **map)
 {
     t_data data;
+    int len = 0;
     
     data.p_y = 0;
     data.p_x = 0;
-    data.angle = 0.00;
-    
-    int len = 0;
+    data.angle = M_PI_2;
     while (map[len])
         len++;
-    printf("weigth : %zu  len : %d\n", ft_strlen(map[0]), len);
-    // return (0);
     data.mlx = mlx_init();
     data.win = mlx_new_window(data.mlx, (ft_strlen(map[0]) * 50), len * 50, "hello");
     data.win_test = mlx_new_window(data.mlx, ((ft_strlen(map[0]) - 1) * 100), len * 50, "test");
     data.all_map = map;
     data.height = len;
     get_player_position(&data);
-    // printf("p_x : %d p_y : %d\n", data.p_x, data.p_y);
     data.lenght = ft_strlen(map[0]);
     drawmap(&data);
     drawplayer(&data);

@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 18:12:27 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/06 15:33:01 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/09 18:24:36 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,3 +123,57 @@ void    drawplayer(t_data *data)
 }
 
 
+void draw_floor(t_data *data, double distance, double column)
+{
+	double line_height;
+   	double top_y;
+   	double bottom_y;
+	double window_height = data->height * 50.00;
+    line_height = (window_height  / distance) * 30.0;
+    top_y = window_height / 2 - line_height / 2;
+    bottom_y = top_y + line_height;
+
+	int i = bottom_y;
+	while(i < window_height)
+	{
+		mlx_pixel_put(data->mlx, data->win_test, column, i, 0x629584);
+		i++;
+	}
+	i = 0;
+	while (i < top_y)
+	{
+		mlx_pixel_put(data->mlx, data->win_test, column, i, 0x243642);
+		i++;
+	}
+}
+void draw_wall(t_data *data, double distance, double column)
+{
+    double line_height;
+   	double top_y;
+   	double bottom_y;
+    int color = 0xff6347; 
+	double window_height = data->height * 50.00;
+    
+    line_height = (window_height  / distance) * 30.0;
+    top_y = window_height / 2 - line_height / 2;
+    bottom_y = top_y + line_height;
+    if (top_y < 0)
+        top_y = 0;
+    if (bottom_y > window_height)
+        bottom_y = window_height;
+	int i = top_y;
+    while (top_y <= bottom_y)
+    {
+		if (top_y < 0)
+			return ;
+        mlx_pixel_put(data->mlx, data->win_test, column, top_y, color);
+        top_y++;
+    }
+	top_y = i;
+	while(i < top_y)
+	{
+		mlx_pixel_put(data->mlx, data->win_test, column, i, 0x88C273);
+		i++;
+	}
+
+}

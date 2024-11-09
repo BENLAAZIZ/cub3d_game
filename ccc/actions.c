@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   actions.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaaraba <aaaraba@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 17:47:52 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/09 16:20:19 by aaaraba          ###   ########.fr       */
+/*   Updated: 2024/11/09 18:33:58 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,33 @@ void	move_player_right(t_data *data)
 	castAllRay(data);
 }
 
+void	player_rot(t_data *data, int keycode)
+{
+	if (keycode == 123)
+	{
+		data->angle -= 0.1 * (M_PI / 180) * 50;
+  		if (data->angle < 0)
+			data->angle += 2 * M_PI;
+
+		mlx_clear_window(data->mlx, data->win);
+		mlx_clear_window(data->mlx, data->win_test);
+		drawmap(data);
+		drawplayer(data);
+		castAllRay(data);
+	}
+	if (keycode == 124)
+	{
+		data->angle += 0.1 * (M_PI / 180) * 50;
+		if (data->angle > 2 * M_PI)
+			data->angle -= 2 * M_PI;
+		mlx_clear_window(data->mlx, data->win);
+		mlx_clear_window(data->mlx, data->win_test);
+		drawmap(data);
+		drawplayer(data);
+		castAllRay(data);
+	}
+}
+
 int	key_press(int keycode, t_data *data)
 {
 	if (keycode == 53)
@@ -89,41 +116,7 @@ int	key_press(int keycode, t_data *data)
 		move_player_left(data);
 	if (keycode == 2)
 		move_player_right(data);
-	if (keycode == 123)
-	{
-		data->angle -= 0.1 * (M_PI / 180) * 50;
-		// data->angle -= 1;
-		// printf("++++++++++++++++++++++++++++++\n");
-		// printf("%f\n", data->angle);
-		// printf("++++++++++++++++++++++++++++++\n");
-		// data->angle = normalize_angle(data->angle);
-  		if (data->angle < 0)
-			data->angle += 2 * M_PI;
-
-		mlx_clear_window(data->mlx, data->win);
-		// mlx_clear_window(data->mlx, data->win_test);
-		drawmap(data);
-		drawplayer(data);
-		castAllRay(data);
-	}
-	if (keycode == 124)
-	{
-		printf("right\n");
-		data->angle += 0.1 * (M_PI / 180) * 50;
-		// data->angle += 1;
-		// printf("++++++++++++++++++++++++++++++\n");
-		// printf("%f\n", data->angle);
-		// printf("++++++++++++++++++++++++++++++\n");
-		// printf("%f\n", data->angle);
-		// data->angle = normalize_angle(data->angle);
-
-		if (data->angle > 2 * M_PI)
-			data->angle -= 2 * M_PI;
-		mlx_clear_window(data->mlx, data->win);
-		// mlx_clear_window(data->mlx, data->win_test);
-		drawmap(data);
-		drawplayer(data);
-		castAllRay(data);
-	}
+	if (keycode == 123 || keycode == 124)
+		player_rot(data, keycode);
 	return (0);
 }

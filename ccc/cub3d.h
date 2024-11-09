@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaaraba <aaaraba@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 15:06:34 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/09 15:11:41 by aaaraba          ###   ########.fr       */
+/*   Updated: 2024/11/09 18:27:36 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ void		lstadd_back(t_texture **lst, t_texture *new);
 char		*ft_substr(char const *s, unsigned int start, size_t len);
 double 		get_v_intercept(t_data *data, t_ray *ray, double xstep, double ystep);
 double 		get_h_intercept(t_data *data, t_ray *ray, double xstep, double ystep);
-void 		oneRay(t_data *data, double rayAngle, t_ray *ray);
+void 		oneRay(t_data *data, t_ray *ray);
 void  		castAllRay(t_data *data);
 int			key_press(int keycode, t_data *data);
 void		get_player_position(t_data *data);
@@ -126,5 +126,7 @@ void    drawmap(t_data *data);
 void    drawplayer(t_data *data);
 int 	is_wall(t_data *data, double y, double x);
 float	normalize_angle(float angle);
+void draw_wall(t_data *data, double distance, double column);
+void draw_floor(t_data *data, double distance, double column);
 
 #endif

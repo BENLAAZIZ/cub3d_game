@@ -124,6 +124,9 @@ int check_char(char c)
 		return (1);
 	return (0);
 }
+
+
+
 int main (int argc, char **argv)
 {
 	if (argc != 2)
@@ -201,5 +204,4 @@ int main (int argc, char **argv)
 		i++;
 	}
 	create_window(new_map);
-	// puts("ok");
 }
