@@ -6,12 +6,15 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 23:38:53 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/09 20:36:15 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/10 10:27:53 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "cub3d.h"
+
+
+
 
 int is_wall(t_data *data, double y, double x)
 {

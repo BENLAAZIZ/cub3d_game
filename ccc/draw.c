@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 18:12:27 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/09 18:24:36 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/10 10:33:30 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,13 +146,26 @@ void draw_floor(t_data *data, double distance, double column)
 		i++;
 	}
 }
+
+int get_color_from_distance(double distance)
+{
+    unsigned char r, g, b;
+    
+
+    r = 255 - distance * 255;
+    g = 255 - distance * 255;
+    b = 255 - distance * 255;
+    int color = r << 16 | g << 8 | b;
+    return (color);
+}
 void draw_wall(t_data *data, double distance, double column)
 {
     double line_height;
    	double top_y;
    	double bottom_y;
-    int color = 0xff6347; 
+    // int color = 0xff6347; 
 	double window_height = data->height * 50.00;
+    int color;
     
     line_height = (window_height  / distance) * 30.0;
     top_y = window_height / 2 - line_height / 2;
@@ -164,6 +177,7 @@ void draw_wall(t_data *data, double distance, double column)
 	int i = top_y;
     while (top_y <= bottom_y)
     {
+        color = get_color_from_distance(distance); 
 		if (top_y < 0)
 			return ;
         mlx_pixel_put(data->mlx, data->win_test, column, top_y, color);
@@ -172,7 +186,7 @@ void draw_wall(t_data *data, double distance, double column)
 	top_y = i;
 	while(i < top_y)
 	{
-		mlx_pixel_put(data->mlx, data->win_test, column, i, 0x88C273);
+		mlx_pixel_put(data->mlx, data->win_test, column, i, color);
 		i++;
 	}
 
