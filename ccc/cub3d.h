@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 15:06:34 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/09 18:27:36 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/11 16:51:14 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,15 @@ typedef struct s_data
 	void	*mlx;
 	void	*win;
 	void	*win_test;
+	void    *image;
+	char    *addr;
+	
+
+	//-----------------
+		int     bits_per_pixel;
+   		int     line_length;
+   		int     endian;
+	//--------------------
 	int		height;
 	int		lenght;
 	double	angle;
@@ -59,6 +68,7 @@ typedef struct s_data
 	float rotationAngle;
 	float moveSpeed;
 	float rotationSpeed;
+	void *img;
 	// *****************
 	
 }t_data;
@@ -90,6 +100,17 @@ typedef struct s_texture
 	int				identifier;
 	struct s_texture	*next;
 } t_texture;
+
+typedef struct s_mlx
+{
+	char	*no;
+	char	*so;
+	char	*we;
+	char	*ea;
+	char	*s;
+	char	*f;
+	char	*c;
+} t_mlx;
 
 #define BUFFER_SIZE 10
 char	*get_next_line(int fd);

@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 18:12:27 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/10 10:33:30 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/11 16:50:02 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void    drawplayer(t_data *data)
         }
         y++;
     }
-    double z = 400;
+    double z = 800;
     while (z)
     {
         if (is_wall(data, ray_y, ray_x))
@@ -95,7 +95,7 @@ void    drawplayer(t_data *data)
     ray_x = data->p_x;
     step_x = cos(angle - (FOV / 2)) * ray_step;
     step_y = sin(angle - (FOV / 2)) * ray_step;
-    z = 400;
+    z = 800;
     while (z)
     {
         if (is_wall(data, ray_y, ray_x))
@@ -109,7 +109,7 @@ void    drawplayer(t_data *data)
     ray_x = data->p_x;
     step_x = cos(angle + (FOV / 2)) * ray_step;
     step_y = sin(angle + (FOV / 2)) * ray_step;
-    z = 400;
+    z = 800;
     while (z)
     {
         if (is_wall(data, ray_y, ray_x))
@@ -149,21 +149,27 @@ void draw_floor(t_data *data, double distance, double column)
 
 int get_color_from_distance(double distance)
 {
-    unsigned char r, g, b;
-    
+    unsigned char   r;
+    unsigned char   g;
+    unsigned char   b;
+    int             color;
 
-    r = 255 - distance * 255;
-    g = 255 - distance * 255;
-    b = 255 - distance * 255;
-    int color = r << 16 | g << 8 | b;
+    r = 255 - distance;
+    g = 191 - distance;
+    b = 200 - distance;
+    color = r << 16 | g << 8 | b;
     return (color);
 }
+
+
 void draw_wall(t_data *data, double distance, double column)
 {
     double line_height;
    	double top_y;
    	double bottom_y;
     // int color = 0xff6347; 
+    // int image ;
+    
 	double window_height = data->height * 50.00;
     int color;
     
@@ -178,6 +184,9 @@ void draw_wall(t_data *data, double distance, double column)
     while (top_y <= bottom_y)
     {
         color = get_color_from_distance(distance); 
+
+        // draw_textured_wall(data, screen_x, top_y, bottom_y, texture_x);
+        
 		if (top_y < 0)
 			return ;
         mlx_pixel_put(data->mlx, data->win_test, column, top_y, color);
