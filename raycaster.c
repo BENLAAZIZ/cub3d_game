@@ -6,25 +6,13 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 23:38:53 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/13 22:00:49 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/13 22:16:26 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "cub3d.h"
 
-
-
-
-// int is_wall(t_data *data, double y, double x)
-// {
-//     if (x <= 0 || x >= data->lenght * 10 || y <= 0 || y >= data->height * 10)
-//         return (1);
-//     if (data->all_map[(int)y / 10][(int)x / 10] == '1')
-//         return (1);
-      
-//     return (0);
-// }
 
 void get_player_position(t_data *data)
 {
@@ -187,23 +175,23 @@ int create_window(char **map)
     while (map[len])
         len++;
     data.mlx = mlx_init();
-    data.win = mlx_new_window(data.mlx, (ft_strlen(map[0])*10 ), len*10 , "hello");
-    data.win_test = mlx_new_window(data.mlx, 600, len * 50, "test");
+    data.lenght = ft_strlen(map[0]);
+    data.height = len;
+    data.win = mlx_new_window(data.mlx, data.lenght*10 , data.height*10 , "hello");
+    data.win_test = mlx_new_window(data.mlx, 600, data.height * 50, "test");
 //****************************************
-
      if (get_image_texture(&data))
         return 1;
     if (get_addr_texture(&data))
         return 1;
 //*******************************************
     data.all_map = map;
-    data.height = len;
     get_player_position(&data);
-    data.lenght = ft_strlen(map[0]);
     drawmap(&data);
     drawplayer(&data);
     castAllRay(&data);
     mlx_hook(data.win, 2, 0, key_press, &data);
+    mlx_hook(data.win_test, 2, 0, key_press, &data);
     mlx_loop(data.mlx);
     return (0);
 }

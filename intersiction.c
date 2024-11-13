@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 21:56:12 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/13 22:02:53 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/13 22:09:07 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,19 +33,16 @@ double get_v_intercept(t_data *data, t_ray *ray, double xstep, double ystep)
   
     xintercept = floor(data->p_x / 10) * 10;
     if (ray->lookingRight)
-        xintercept += 10;
-        
+        xintercept += 10;   
     yintercept = data->p_y + (xintercept - data->p_x) * tan(ray->rayAngle);
     xstep = 10;
     ystep = 10 * tan(ray->rayAngle);
-    
     if (ray->lookingLeft)
         xstep *= -1;
     if (ray->lookingUp && ystep > 0)
         ystep *= -1;
     if (ray->lookingDown && ystep < 0)
         ystep *= -1;
-    
     while (xintercept >= 0 && xintercept <= data->lenght * 10 && yintercept >= 0 && yintercept <= data->height * 10)
     {
         if (ray->lookingLeft)
