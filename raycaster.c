@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 23:38:53 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/13 18:17:55 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/13 21:46:23 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@
 
 int is_wall(t_data *data, double y, double x)
 {
-    if (x <= 0 || x >= data->lenght * 50 || y <= 0 || y >= data->height * 50)
+    if (x <= 0 || x >= data->lenght * 10 || y <= 0 || y >= data->height * 10)
         return (1);
-    if (data->all_map[(int)y / 50][(int)x / 50] == '1')
+    if (data->all_map[(int)y / 10][(int)x / 10] == '1')
         return (1);
       
     return (0);
@@ -43,8 +43,8 @@ void get_player_position(t_data *data)
             break;
         data->p_y++;
     }
-    data->p_x = (data->p_x * 50) + 25;
-    data->p_y = (data->p_y * 50) + 25;
+    data->p_x = (data->p_x * 10) + 5;
+    data->p_y = (data->p_y * 10) + 5;
 }
 
 double get_v_intercept(t_data *data, t_ray *ray, double xstep, double ystep)
@@ -55,13 +55,13 @@ double get_v_intercept(t_data *data, t_ray *ray, double xstep, double ystep)
     double ytocheck;
     double v_distance;
   
-    xintercept = floor(data->p_x / 50) * 50;
+    xintercept = floor(data->p_x / 10) * 10;
     if (ray->lookingRight)
-        xintercept += 50;
+        xintercept += 10;
         
     yintercept = data->p_y + (xintercept - data->p_x) * tan(ray->rayAngle);
-    xstep = 50;
-    ystep = 50 * tan(ray->rayAngle);
+    xstep = 10;
+    ystep = 10 * tan(ray->rayAngle);
     
     if (ray->lookingLeft)
         xstep *= -1;
@@ -70,7 +70,7 @@ double get_v_intercept(t_data *data, t_ray *ray, double xstep, double ystep)
     if (ray->lookingDown && ystep < 0)
         ystep *= -1;
     
-    while (xintercept >= 0 && xintercept <= data->lenght * 50 && yintercept >= 0 && yintercept <= data->height * 50)
+    while (xintercept >= 0 && xintercept <= data->lenght * 10 && yintercept >= 0 && yintercept <= data->height * 10)
     {
         if (ray->lookingLeft)
             xtocheck = xintercept - 1;
@@ -99,19 +99,19 @@ double get_h_intercept(t_data *data, t_ray *ray, double xstep, double ystep)
     double ytocheck;
     double h_distance;
 
-    yintercept = floor(data->p_y / 50) * 50;
+    yintercept = floor(data->p_y / 10) * 10;
     if (ray->lookingDown)
-        yintercept += 50;
+        yintercept += 10;
     xintercept = data->p_x + (yintercept - data->p_y) / tan(ray->rayAngle);
-    ystep = 50;
-    xstep = 50 / tan(ray->rayAngle); 
+    ystep = 10;
+    xstep = 10 / tan(ray->rayAngle); 
     if (ray->lookingUp)
         ystep *= -1;
     if (ray->lookingLeft && xstep > 0)
         xstep *= -1;
     if (ray->lookingRight && xstep < 0)
         xstep *= -1;
-    while (xintercept >= 0 && xintercept <= data->lenght * 50 && yintercept >= 0 && yintercept <= data->height * 50)
+    while (xintercept >= 0 && xintercept <= data->lenght * 10 && yintercept >= 0 && yintercept <= data->height * 10)
     {
         xtocheck = xintercept;
         if (ray->lookingUp)
@@ -231,6 +231,7 @@ void  castAllRay(t_data *data)
     }
 }
 
+
 int get_image_texture(t_data *data)
 {
     data->image[0].image = mlx_xpm_file_to_image(data->mlx, "monaliza_xpm.xpm", &data->image[0].whith, &data->image[0].height);
@@ -263,32 +264,19 @@ int create_window(char **map)
     
     data.p_y = 0;
     data.p_x = 0;
-    data.angle = M_PI_2;
+    data.angle = 0.0;
     while (map[len])
         len++;
     data.mlx = mlx_init();
-    data.win = mlx_new_window(data.mlx, (ft_strlen(map[0]) * 50) + 1, len * 50 + 1, "hello");
-    data.win_test = mlx_new_window(data.mlx, ((ft_strlen(map[0]) - 1) * 100), len * 50, "test");
-
+    data.win = mlx_new_window(data.mlx, (ft_strlen(map[0])*10 ), len*10 , "hello");
+    data.win_test = mlx_new_window(data.mlx, 600, len * 50, "test");
 //****************************************
 
-    // data.image = mlx_xpm_file_to_image(data.mlx, "monaliza_xpm.xpm", &data.lenght, &data.height);
-    // if (!data.image)
-    // {
-    //     printf("Failed to load texture\n");
-    //     return (1);
-    // }
-
-    if (get_image_texture(&data))
+     if (get_image_texture(&data))
         return 1;
     if (get_addr_texture(&data))
         return 1;
-
-    // Get the address of the pixel array within the image
-    // data.addr = mlx_get_data_addr(data.img, &data.bits_per_pixel, &data.line_length, &data.endian);
-
 //*******************************************
-    
     data.all_map = map;
     data.height = len;
     get_player_position(&data);

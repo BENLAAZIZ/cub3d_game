@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 18:12:27 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/13 18:32:04 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/13 21:47:05 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,12 @@ void    drawmap(t_data *data)
             {
                 int y = 1;
                 int x = 1;
-                while (y < 50)
+                while (y < 10)
                 {
                     x = 1;
-                    while (x < 50)
+                    while (x < 10)
                     {
-                        mlx_pixel_put(data->mlx, data->win, (j * 50) + y, (i * 50) + x, 0x00FFFFFF);
+                        mlx_pixel_put(data->mlx, data->win, (j * 10) + y, (i * 10) + x, 0x00FFFFFF);
                         x++;
                     }
                     y++;
@@ -41,12 +41,12 @@ void    drawmap(t_data *data)
             {
                 int y = 1;
                 int x = 1;
-                while (y < 50)
+                while (y < 10)
                 {
                     x = 1;
-                    while (x < 50)
+                    while (x < 10)
                     {
-                        mlx_pixel_put(data->mlx, data->win, (j * 50) + y, (i * 50) + x, 0x808080);
+                        mlx_pixel_put(data->mlx, data->win, (j * 10) + y, (i * 10) + x, 0x808080);
                         x++;
                     }
                     y++;
@@ -62,8 +62,8 @@ void    drawmap(t_data *data)
 
 void    drawplayer(t_data *data)
 {
-    double x = -3;
-    double y = -3;
+    double x = -2;
+    double y = -2;
     double ray_y = data->p_y;
     double ray_x = data->p_x;
     double angle = data->angle;
@@ -71,10 +71,10 @@ void    drawplayer(t_data *data)
     double step_x = cos(angle) * ray_step;
     double step_y = sin(angle) * ray_step;
 
-    while (y < 3)
+    while (y < 2)
     {
-        x = -3;
-        while (x < 3)
+        x = -2;
+        while (x < 2)
         {
             mlx_pixel_put(data->mlx, data->win, data->p_x + x, data->p_y + y, 0xFF0000);
             x++;
@@ -157,10 +157,49 @@ int get_color_from_distance(double distance)
     r = 255 - distance;
     g = 191 - distance;
     b = 200 - distance;
-    color = r << 24 | g << 16 | b << 8;
+    color = r << 16 | g << 8 | b;
     return (color);
 }
 
+
+// void draw_wall(t_data *data, double distance, double column)
+// {
+//     double line_height;
+//    	double top_y;
+//    	double bottom_y;
+//     // int color = 0xff6347; 
+//     // int image ;
+    
+// 	double window_height = data->height * 50.00;
+//     int color;
+    
+//     line_height = (window_height  / distance) * 30.0;
+//     top_y = window_height / 2 - line_height / 2;
+//     bottom_y = top_y + line_height;
+//     if (top_y < 0)
+//         top_y = 0;
+//     if (bottom_y > window_height)
+//         bottom_y = window_height;
+// 	int i = top_y;
+//     while (top_y <= bottom_y)
+//     {
+//         color = get_color_from_distance(distance); 
+
+//         // draw_textured_wall(data, screen_x, top_y, bottom_y, texture_x);
+        
+// 		if (top_y < 0)
+// 			return ;
+//         mlx_pixel_put(data->mlx, data->win_test, column, top_y, color);
+//         top_y++;
+//     }
+// 	top_y = i;
+// 	while(i < top_y)
+// 	{
+// 		mlx_pixel_put(data->mlx, data->win_test, column, i, color);
+// 		i++;
+// 	}
+
+// }
 
 
 

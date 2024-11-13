@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   actions.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaaraba <aaaraba@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 17:47:52 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/12 18:29:19 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/13 17:50:21 by aaaraba          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	move_player_down(t_data *data)
 	
 	x = data->p_x - cos(data->angle) * 10.00;
 	y = data->p_y - sin(data->angle) * 10.00;
-	if (data->all_map[(int)y / 50][(int)x / 50] == '1')
+	if (data->all_map[(int)y / 10][(int)x / 10] == '1')
 		return ;
 	data->p_y = y;
 	data->p_x = x;
@@ -36,7 +36,7 @@ void	move_player_up(t_data *data)
 {
 	double y = data->p_y + sin(data->angle) * 10.00;
 	double x = data->p_x + cos(data->angle) * 10.00;
-	if (data->all_map[(int)y / 50][(int)x / 50] == '1')
+	if (data->all_map[(int)y / 10][(int)x / 10] == '1')
 		return ;
 	data->p_y = y;
 	data->p_x = x;
@@ -51,7 +51,7 @@ void	move_player_left(t_data *data)
 { 
 	double y = data->p_y + sin(data->angle - M_PI_2) * 10.00;
 	double x = data->p_x + cos(data->angle - M_PI_2) * 10.00;
-	if (data->all_map[(int)y / 50][(int)x / 50] == '1')
+	if (data->all_map[(int)y / 10][(int)x / 10] == '1')
 		return ;
 	data->p_y = y;
 	data->p_x = x;
@@ -66,7 +66,7 @@ void	move_player_right(t_data *data)
 {
 	double y = data->p_y + sin(data->angle + M_PI_2) * 10.00;
 	double x = data->p_x + cos(data->angle + M_PI_2) * 10.00;
-	if (data->all_map[(int)y / 50][(int)x / 50] == '1')
+	if (data->all_map[(int)y / 10][(int)x / 10] == '1')
 		return ;
 	data->p_y = y;
 	data->p_x = x;
@@ -81,7 +81,7 @@ void	player_rot(t_data *data, int keycode)
 {
 	if (keycode == 123)
 	{
-		data->angle -= 0.1 * (M_PI / 180) * 50;
+		data->angle -= 0.1 * (M_PI / 180) * 10;
   		if (data->angle < 0)
 			data->angle += 2 * M_PI;
 
@@ -93,7 +93,7 @@ void	player_rot(t_data *data, int keycode)
 	}
 	if (keycode == 124)
 	{
-		data->angle += 0.1 * (M_PI / 180) * 50;
+		data->angle += 0.1 * (M_PI / 180) * 10;
 		if (data->angle > 2 * M_PI)
 			data->angle -= 2 * M_PI;
 		mlx_clear_window(data->mlx, data->win);

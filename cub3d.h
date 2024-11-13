@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 15:06:34 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/12 17:43:39 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/13 21:31:16 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,7 @@
 # define DEGREE(X) ((X * 360) / 2 * M_PI)
 #define NUM_RAYS 60
 
-typedef enum e_type 
-{
+typedef enum e_type {
 	NO,
 	SO,
 	WE,
@@ -60,14 +59,6 @@ typedef struct s_data
 	void	*mlx;
 	void	*win;
 	void	*win_test;
-
-	//-----------------
-		// void    *image;
-		// char    *addr;
-		// int		bits_per_pixel;
-   		// int     line_length;
-   		// int     endian;
-	//--------------------
 	int		height;
 	int		lenght;
 	double	angle;
