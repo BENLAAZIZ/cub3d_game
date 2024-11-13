@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 18:12:27 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/13 21:47:05 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/13 23:09:37 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,7 +225,7 @@ void draw_wall(t_data *data, t_ray *ray, int column)
 	double window_height = data->height * 50.00;
     int color;
      int y;
-    int t_x = 0;
+    int t_x;
     int tex_y;
     int texture_x;
     
@@ -247,7 +247,7 @@ void draw_wall(t_data *data, t_ray *ray, int column)
         // Calculate the Y coordinate on the texture
         tex_y = (y - top_y) * data->image[0].height / (bottom_y - top_y);
         // Get the pixel color from the texture at (texture_x, tex_y)
-        color = get_texture_pixel_color(data, texture_x, tex_y);
+        color = get_texture_pixel_color(data, texture_x, tex_y );
         // Draw the pixel on the screen
         mlx_pixel_put(data->mlx, data->win_test, column, y, color);
         y++;
