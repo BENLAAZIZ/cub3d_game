@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 23:38:53 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/13 21:46:23 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/13 22:00:49 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,15 @@
 
 
 
-int is_wall(t_data *data, double y, double x)
-{
-    if (x <= 0 || x >= data->lenght * 10 || y <= 0 || y >= data->height * 10)
-        return (1);
-    if (data->all_map[(int)y / 10][(int)x / 10] == '1')
-        return (1);
+// int is_wall(t_data *data, double y, double x)
+// {
+//     if (x <= 0 || x >= data->lenght * 10 || y <= 0 || y >= data->height * 10)
+//         return (1);
+//     if (data->all_map[(int)y / 10][(int)x / 10] == '1')
+//         return (1);
       
-    return (0);
-}
+//     return (0);
+// }
 
 void get_player_position(t_data *data)
 {
@@ -45,90 +45,6 @@ void get_player_position(t_data *data)
     }
     data->p_x = (data->p_x * 10) + 5;
     data->p_y = (data->p_y * 10) + 5;
-}
-
-double get_v_intercept(t_data *data, t_ray *ray, double xstep, double ystep)
-{
-    double xintercept;
-    double yintercept;
-    double xtocheck;
-    double ytocheck;
-    double v_distance;
-  
-    xintercept = floor(data->p_x / 10) * 10;
-    if (ray->lookingRight)
-        xintercept += 10;
-        
-    yintercept = data->p_y + (xintercept - data->p_x) * tan(ray->rayAngle);
-    xstep = 10;
-    ystep = 10 * tan(ray->rayAngle);
-    
-    if (ray->lookingLeft)
-        xstep *= -1;
-    if (ray->lookingUp && ystep > 0)
-        ystep *= -1;
-    if (ray->lookingDown && ystep < 0)
-        ystep *= -1;
-    
-    while (xintercept >= 0 && xintercept <= data->lenght * 10 && yintercept >= 0 && yintercept <= data->height * 10)
-    {
-        if (ray->lookingLeft)
-            xtocheck = xintercept - 1;
-        else
-           xtocheck = xintercept;
-        ytocheck = yintercept;
-        if (is_wall(data, ytocheck, xtocheck))
-        {
-            ray->v_hit_x = xintercept;
-            ray->v_hit_y = yintercept;
-            v_distance = sqrt(pow(data->p_x - xtocheck, 2) + pow(data->p_y - ytocheck, 2));
-            return (v_distance);
-        }
-        xintercept += xstep;
-        yintercept += ystep;
-    }
-    return (INT_MAX);
-}
-
-
-double get_h_intercept(t_data *data, t_ray *ray, double xstep, double ystep)
-{
-    double xintercept;
-    double yintercept;
-    double xtocheck;
-    double ytocheck;
-    double h_distance;
-
-    yintercept = floor(data->p_y / 10) * 10;
-    if (ray->lookingDown)
-        yintercept += 10;
-    xintercept = data->p_x + (yintercept - data->p_y) / tan(ray->rayAngle);
-    ystep = 10;
-    xstep = 10 / tan(ray->rayAngle); 
-    if (ray->lookingUp)
-        ystep *= -1;
-    if (ray->lookingLeft && xstep > 0)
-        xstep *= -1;
-    if (ray->lookingRight && xstep < 0)
-        xstep *= -1;
-    while (xintercept >= 0 && xintercept <= data->lenght * 10 && yintercept >= 0 && yintercept <= data->height * 10)
-    {
-        xtocheck = xintercept;
-        if (ray->lookingUp)
-            ytocheck = yintercept - 1;
-        else
-            ytocheck = yintercept;
-        if (is_wall(data, ytocheck, xtocheck))
-        {
-            ray->h_hit_x = xintercept;
-            ray->h_hit_y = yintercept;
-            h_distance = sqrt(pow(data->p_x - xtocheck, 2) + pow(data->p_y - ytocheck, 2));
-            return (h_distance);
-        }
-        xintercept += xstep;
-        yintercept += ystep;
-    }
-    return (INT_MAX);
 }
 
 void init_ray(t_ray *ray)
@@ -168,14 +84,14 @@ void oneRay(t_data *data, t_ray *ray)
         ray->y_hit = ray->v_hit_y;
         ray->flag = 1;
         
-        int x = -2;
-        int y = -2;
-        while (y < 2)
+        int x = -1;
+        int y = -1;
+        while (y < 1)
         {
-            x = -2;
-            while (x < 2)
+            x = -1;
+            while (x < 1)
             {
-                mlx_pixel_put(data->mlx, data->win, ray->v_hit_x + x, ray->v_hit_y + y, 0xF62108);
+                mlx_pixel_put(data->mlx, data->win, ray->v_hit_x + x, ray->v_hit_y + y, 0xF61108);
                     x++;
             }
             y++;
@@ -187,14 +103,14 @@ void oneRay(t_data *data, t_ray *ray)
         ray->x_hit = ray->h_hit_x;
         ray->y_hit = ray->h_hit_y;
         ray->flag = 0;
-         int x = -2;
-        int y = -2;
-           while (y < 2)
+         int x = -1;
+        int y = -1;
+           while (y < 1)
         {
-        x = -2;
-        while (x < 2)
+        x = -1;
+        while (x < 1)
         {
-        mlx_pixel_put(data->mlx, data->win, ray->h_hit_x + x, ray->h_hit_y + y, 0xF62108);
+        mlx_pixel_put(data->mlx, data->win, ray->h_hit_x + x, ray->h_hit_y + y, 0xF61108);
             x++;
         }
         y++;
@@ -251,7 +167,10 @@ int get_addr_texture(t_data *data)
     int i = 0;
     while (i < 4)
     {
-        data->image[i].addr = mlx_get_data_addr(data->image[i].image, &data->image[i].bits_per_pixel, &data->image[i].line_length, &data->image[i].endian);
+        data->image[i].addr = mlx_get_data_addr(data->image[i].image, 
+                                    &data->image[i].bits_per_pixel,
+                                     &data->image[i].line_length,
+                                      &data->image[i].endian);
         i++;
     }
     return (0);

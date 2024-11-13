@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   actions.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaaraba <aaaraba@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 17:47:52 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/13 17:50:21 by aaaraba          ###   ########.fr       */
+/*   Updated: 2024/11/13 22:01:51 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	player_rot(t_data *data, int keycode)
 {
 	if (keycode == 123)
 	{
-		data->angle -= 0.1 * (M_PI / 180) * 10;
+		data->angle -= 0.1 * (M_PI / 180) * 50;
   		if (data->angle < 0)
 			data->angle += 2 * M_PI;
 
@@ -93,7 +93,7 @@ void	player_rot(t_data *data, int keycode)
 	}
 	if (keycode == 124)
 	{
-		data->angle += 0.1 * (M_PI / 180) * 10;
+		data->angle += 0.1 * (M_PI / 180) * 50;
 		if (data->angle > 2 * M_PI)
 			data->angle -= 2 * M_PI;
 		mlx_clear_window(data->mlx, data->win);

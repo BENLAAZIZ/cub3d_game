@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 15:06:34 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/13 21:31:16 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/13 21:58:50 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,5 +154,6 @@ int 	is_wall(t_data *data, double y, double x);
 float	normalize_angle(float angle);
 void draw_wall(t_data *data, t_ray *ray, int column);
 void draw_floor(t_data *data, double distance, double column);
+// int is_wall(t_data *data, double y, double x);
 
 #endif
