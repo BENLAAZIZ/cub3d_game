@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 18:12:27 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/13 23:09:37 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/13 23:18:03 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,7 +209,9 @@ int get_texture_pixel_color(t_data *data, int texture_x, int texture_y)
     char *dst;
 
     // Calculate the address of the pixel in the texture
-    dst = data->image[0].addr + (texture_y * data->image[0].line_length + texture_x * (data->image[0].bits_per_pixel / 8));
+    dst = data->image[0].addr 
+            + (texture_y * data->image[0].line_length
+            + texture_x * (data->image[0].bits_per_pixel / 8));
 
     // Read the color of the pixel from the texture
     color = *(unsigned int *)dst;
@@ -240,7 +242,7 @@ void draw_wall(t_data *data, t_ray *ray, int column)
         t_x = (int)ray->v_hit_y % 50;
     else
         t_x = (int)ray->h_hit_x % 50;
-    texture_x = (int)(t_x * data->image[0].whith / 50);
+    texture_x = (int)(t_x * (data->image[0].whith / 50));
     y = top_y;
     while (y < bottom_y)
     {
