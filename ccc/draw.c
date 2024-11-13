@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 18:12:27 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/11 16:50:02 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/13 18:32:04 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,46 +157,60 @@ int get_color_from_distance(double distance)
     r = 255 - distance;
     g = 191 - distance;
     b = 200 - distance;
-    color = r << 16 | g << 8 | b;
+    color = r << 24 | g << 16 | b << 8;
     return (color);
 }
 
 
-void draw_wall(t_data *data, double distance, double column)
+
+
+int get_texture_pixel_color(t_data *data, int texture_x, int texture_y)
+{
+    int color;
+    char *dst;
+
+    // Calculate the address of the pixel in the texture
+    dst = data->image[0].addr + (texture_y * data->image[0].line_length + texture_x * (data->image[0].bits_per_pixel / 8));
+
+    // Read the color of the pixel from the texture
+    color = *(unsigned int *)dst;
+    return (color);
+}
+
+
+void draw_wall(t_data *data, t_ray *ray, int column)
 {
     double line_height;
    	double top_y;
    	double bottom_y;
-    // int color = 0xff6347; 
-    // int image ;
-    
 	double window_height = data->height * 50.00;
     int color;
+     int y;
+    int t_x = 0;
+    int tex_y;
+    int texture_x;
     
-    line_height = (window_height  / distance) * 30.0;
+    line_height = (window_height  / ray->distance) * 30.0;
     top_y = window_height / 2 - line_height / 2;
     bottom_y = top_y + line_height;
     if (top_y < 0)
         top_y = 0;
     if (bottom_y > window_height)
         bottom_y = window_height;
-	int i = top_y;
-    while (top_y <= bottom_y)
+    if (ray->flag == 1)
+        t_x = (int)ray->v_hit_y % 50;
+    else
+        t_x = (int)ray->h_hit_x % 50;
+    texture_x = (int)(t_x * data->image[0].whith / 50);
+    y = top_y;
+    while (y < bottom_y)
     {
-        color = get_color_from_distance(distance); 
-
-        // draw_textured_wall(data, screen_x, top_y, bottom_y, texture_x);
-        
-		if (top_y < 0)
-			return ;
-        mlx_pixel_put(data->mlx, data->win_test, column, top_y, color);
-        top_y++;
+        // Calculate the Y coordinate on the texture
+        tex_y = (y - top_y) * data->image[0].height / (bottom_y - top_y);
+        // Get the pixel color from the texture at (texture_x, tex_y)
+        color = get_texture_pixel_color(data, texture_x, tex_y);
+        // Draw the pixel on the screen
+        mlx_pixel_put(data->mlx, data->win_test, column, y, color);
+        y++;
     }
-	top_y = i;
-	while(i < top_y)
-	{
-		mlx_pixel_put(data->mlx, data->win_test, column, i, color);
-		i++;
-	}
-
 }

@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 23:38:53 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/11 16:51:25 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/13 18:17:55 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,7 +205,7 @@ void oneRay(t_data *data, t_ray *ray)
 void render_wall(t_data *data, t_ray *ray, double *column)
 {
      ray->distance *= cos(ray->rayAngle - data->angle);
-        draw_wall(data, ray->distance  , *column);
+        draw_wall(data, ray  , *column);
         draw_floor(data, ray->distance , *column);
         (*column)++;
 }
@@ -231,6 +231,31 @@ void  castAllRay(t_data *data)
     }
 }
 
+int get_image_texture(t_data *data)
+{
+    data->image[0].image = mlx_xpm_file_to_image(data->mlx, "monaliza_xpm.xpm", &data->image[0].whith, &data->image[0].height);
+    data->image[1].image = mlx_xpm_file_to_image(data->mlx, "monaliza_xpm.xpm", &data->image[1].whith, &data->image[1].height);
+    data->image[2].image = mlx_xpm_file_to_image(data->mlx, "monaliza_xpm.xpm", &data->image[2].whith, &data->image[2].height);
+    data->image[3].image = mlx_xpm_file_to_image(data->mlx, "monaliza_xpm.xpm", &data->image[3].whith, &data->image[3].height);
+    if (!data->image[0].image || !data->image[1].image || !data->image[2].image || !data->image[3].image)
+    {
+        printf("Failed to load texture\n");
+        return (1);
+    }
+    return (0);
+}
+
+int get_addr_texture(t_data *data)
+{
+    int i = 0;
+    while (i < 4)
+    {
+        data->image[i].addr = mlx_get_data_addr(data->image[i].image, &data->image[i].bits_per_pixel, &data->image[i].line_length, &data->image[i].endian);
+        i++;
+    }
+    return (0);
+}
+
 int create_window(char **map)
 {
     t_data data;
@@ -242,17 +267,22 @@ int create_window(char **map)
     while (map[len])
         len++;
     data.mlx = mlx_init();
-    data.win = mlx_new_window(data.mlx, (ft_strlen(map[0]) * 50), len * 50, "hello");
+    data.win = mlx_new_window(data.mlx, (ft_strlen(map[0]) * 50) + 1, len * 50 + 1, "hello");
     data.win_test = mlx_new_window(data.mlx, ((ft_strlen(map[0]) - 1) * 100), len * 50, "test");
 
 //****************************************
 
-    data.image = mlx_xpm_file_to_image(data.mlx, "monaliza_xpm.xpm", &data.lenght, &data.height);
-    if (!data.image)
-    {
-        printf("Failed to load texture\n");
-        return (1);
-    }
+    // data.image = mlx_xpm_file_to_image(data.mlx, "monaliza_xpm.xpm", &data.lenght, &data.height);
+    // if (!data.image)
+    // {
+    //     printf("Failed to load texture\n");
+    //     return (1);
+    // }
+
+    if (get_image_texture(&data))
+        return 1;
+    if (get_addr_texture(&data))
+        return 1;
 
     // Get the address of the pixel array within the image
     // data.addr = mlx_get_data_addr(data.img, &data.bits_per_pixel, &data.line_length, &data.endian);

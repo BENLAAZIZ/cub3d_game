@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 15:06:34 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/11 16:51:14 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/12 17:43:39 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@
 # define DEGREE(X) ((X * 360) / 2 * M_PI)
 #define NUM_RAYS 60
 
-typedef enum e_type {
+typedef enum e_type 
+{
 	NO,
 	SO,
 	WE,
@@ -39,6 +40,19 @@ typedef enum e_type {
 	C
 } t_type;
 
+typedef struct s_image 
+{
+	void	*image;
+	char	*addr;
+	
+	int		whith;
+	int		height;
+	
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+} t_image;
+
 typedef struct s_data
 {
 	
@@ -46,14 +60,13 @@ typedef struct s_data
 	void	*mlx;
 	void	*win;
 	void	*win_test;
-	void    *image;
-	char    *addr;
-	
 
 	//-----------------
-		int     bits_per_pixel;
-   		int     line_length;
-   		int     endian;
+		// void    *image;
+		// char    *addr;
+		// int		bits_per_pixel;
+   		// int     line_length;
+   		// int     endian;
 	//--------------------
 	int		height;
 	int		lenght;
@@ -68,7 +81,8 @@ typedef struct s_data
 	float rotationAngle;
 	float moveSpeed;
 	float rotationSpeed;
-	void *img;
+	// void *img;
+	t_image image[4];
 	// *****************
 	
 }t_data;
@@ -147,7 +161,7 @@ void    drawmap(t_data *data);
 void    drawplayer(t_data *data);
 int 	is_wall(t_data *data, double y, double x);
 float	normalize_angle(float angle);
-void draw_wall(t_data *data, double distance, double column);
+void draw_wall(t_data *data, t_ray *ray, int column);
 void draw_floor(t_data *data, double distance, double column);
 
 #endif
