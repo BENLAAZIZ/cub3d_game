@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 23:38:53 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/14 13:20:58 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/14 17:00:59 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,27 +115,70 @@ void render_wall(t_data *data, t_ray *ray, double *column)
         (*column)++;
 }
 
+// void  castAllRay(t_data *data)
+// {
+//     double  rayAngle;
+//     double  rayStep;
+//     t_ray   *ray;
+//     double column;
+        
+//     column = 0;
+//     rayAngle = data->angle - (FOV / 2 );
+//     rayStep = ( 5 * M_PI / 180) / 50;
+//     while (rayAngle <= data->angle + (FOV / 2))
+//     {
+//         ray = malloc(sizeof(t_ray));
+//         ray->rayAngle = rayAngle;
+//         oneRay(data, ray);
+//         printf("v_hit_y = %f\n", ray->v_hit_y);
+//         printf ("ray->h_hit_x = %f\n", ray->h_hit_x);
+//         render_wall(data, ray, &column);
+//         rayAngle += rayStep;
+//         free(ray);
+//     }
+// }
+
+void lstadd_back_ray(t_ray **lst, t_ray *new)
+{
+    t_ray *tmp;
+    if (!*lst)
+    {
+        *lst = new;
+        return ;
+    }
+    tmp = *lst;
+    while (tmp->next)
+        tmp = tmp->next;
+    tmp->next = new;
+}
+
 void  castAllRay(t_data *data)
 {
     double  rayAngle;
     double  rayStep;
-    t_ray   *ray;
+    t_ray   *ray = NULL;
+    t_ray  *tmp;
     double column;
         
     column = 0;
-    rayAngle = data->angle - (FOV / 2 );
+    rayAngle = data->angle - (FOV / 2);
     rayStep = ( 5 * M_PI / 180) / 50;
     while (rayAngle <= data->angle + (FOV / 2))
     {
-        ray = malloc(sizeof(t_ray));
-        ray->rayAngle = rayAngle;
-        oneRay(data, ray);
-        printf("v_hit_y = %f\n", ray->v_hit_y);
-        printf ("ray->h_hit_x = %f\n", ray->h_hit_x);
-        render_wall(data, ray, &column);
+        tmp = malloc(sizeof(t_ray));
+        tmp->next = NULL;
+        tmp->rayAngle = rayAngle;
+        oneRay(data, tmp);
+        lstadd_back_ray(&ray, tmp);
         rayAngle += rayStep;
-        free(ray);
     }
+    while(ray)
+    {
+        // printf("ray->distance : %f\n", ray->distance);
+        render_wall(data, ray, &column);
+        ray = ray->next;
+    }
+    // exit (1);
 }
 
 

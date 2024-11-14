@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 15:06:34 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/14 13:21:23 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/14 16:56:54 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ typedef struct s_ray {
 	int lookingRight;
 	int lookingLeft;
 	int flag;
+	struct s_ray *next;
 }t_ray;
 
 
