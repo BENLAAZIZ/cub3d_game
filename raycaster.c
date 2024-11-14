@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 23:38:53 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/14 11:03:05 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/14 13:20:58 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,13 +141,13 @@ void  castAllRay(t_data *data)
 
 int get_image_texture(t_data *data)
 {
-    data->image[0].image = mlx_xpm_file_to_image(data->mlx, "monaliza_xpm.xpm", &data->image[0].whith, &data->image[0].height);
+    data->image[0].image = mlx_xpm_file_to_image(data->mlx, "textures/t3.xpm", &data->image[0].whith, &data->image[0].height);
     data->image[1].image = mlx_xpm_file_to_image(data->mlx, "monaliza_xpm.xpm", &data->image[1].whith, &data->image[1].height);
     data->image[2].image = mlx_xpm_file_to_image(data->mlx, "monaliza_xpm.xpm", &data->image[2].whith, &data->image[2].height);
     data->image[3].image = mlx_xpm_file_to_image(data->mlx, "monaliza_xpm.xpm", &data->image[3].whith, &data->image[3].height);
     if (!data->image[0].image || !data->image[1].image || !data->image[2].image || !data->image[3].image)
     {
-        printf("Failed to load texture\n");
+        printf("Failed to load texture in get_image_texture\n");
         return (1);
     }
     return (0);
@@ -167,7 +167,7 @@ int get_addr_texture(t_data *data)
     return (0);
 }
 
-int create_window(char **map)
+int create_window(char **map, t_texture *tex)
 {
     t_data data;
     int len = 0;
@@ -182,7 +182,11 @@ int create_window(char **map)
     data.height = len;
     data.win = mlx_new_window(data.mlx, data.lenght*10 , data.height*10 , "hello");
     data.win_test = mlx_new_window(data.mlx, 600, data.height * 50, "test");
+
+    
 //****************************************
+
+    data.tex = tex;
      if (get_image_texture(&data))
         return 1;
     if (get_addr_texture(&data))

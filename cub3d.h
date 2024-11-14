@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 15:06:34 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/13 21:58:50 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/14 13:21:23 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,14 @@ typedef enum e_type {
 	F,
 	C
 } t_type;
+
+typedef struct s_texture
+{
+	char			*Path;
+	char			*rgp_color;
+	int				identifier;
+	struct s_texture	*next;
+} t_texture;
 
 typedef struct s_image 
 {
@@ -75,6 +83,7 @@ typedef struct s_data
 	// void *img;
 	t_image image[4];
 	// *****************
+	t_texture *tex;
 	
 }t_data;
 
@@ -98,13 +107,6 @@ typedef struct s_ray {
 	int flag;
 }t_ray;
 
-typedef struct s_texture
-{
-	char			*Path;
-	char			*rgp_color;
-	int				identifier;
-	struct s_texture	*next;
-} t_texture;
 
 typedef struct s_mlx
 {
@@ -141,7 +143,7 @@ int			key_press(int keycode, t_data *data);
 void		get_player_position(t_data *data);
 
 //window
-int 		create_window(char **map);
+int 		create_window(char **map, t_texture *tex);
 
 // action
 void	move_player_down(t_data *data);

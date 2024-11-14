@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 18:12:27 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/14 11:05:07 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/14 13:16:13 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,21 +203,38 @@ int get_color_from_distance(double distance)
 
 
 
-int get_texture_pixel_color(t_data *data, int texture_x, int texture_y)
+int get_texture_pixel_color(t_data *data, int texture_x, int texture_y, t_image *img)
 {
     int color;
     char *dst;
 
     // Calculate the address of the pixel in the texture
     dst = data->image[0].addr 
-            + (texture_y * data->image[0].line_length
-            + texture_x * (data->image[0].bits_per_pixel / 8));
+            + (texture_y * img->line_length
+            + texture_x * (img->bits_per_pixel / 8));
 
     // Read the color of the pixel from the texture
     color = *(unsigned int *)dst;
     return (color);
 }
 
+
+t_image *point_image_texture(t_data *data, int flag)
+{
+    while (data->tex)
+    {
+        if (data->tex->identifier == flag)
+            return (data->image[0].image);
+        if (data->tex->identifier == flag)
+            return (data->image[1].image);
+        if (data->tex->identifier == flag)
+            return (data->image[2].image);
+        if (data->tex->identifier == flag)
+            return (data->image[3].image);
+        data->tex = data->tex->next;
+    }
+    return (NULL);
+}
 
 void draw_wall(t_data *data, t_ray *ray, int column)
 {
@@ -231,7 +248,7 @@ void draw_wall(t_data *data, t_ray *ray, int column)
     int tex_y;
     int texture_x;
     
-    line_height = (window_height  / ray->distance) * 30.0;
+    line_height = (window_height  / ray->distance) * 50.0;
     top_y = window_height / 2 - line_height / 2;
     bottom_y = top_y + line_height;
     if (top_y < 0)
@@ -242,15 +259,37 @@ void draw_wall(t_data *data, t_ray *ray, int column)
         t_x = (int)ray->v_hit_y % 50;
     else
         t_x = (int)ray->h_hit_x % 50;
-    texture_x = (int)(t_x * (data->image[0].whith / 50));
+
+    //
+    int flag = 0;
+    
+    if (ray->lookingDown && ray->flag == 1)
+        flag = 1;
+    else if (ray->lookingUp && ray->flag == 1)
+        flag = 0;
+    else if (ray->lookingRight && ray->flag == 0)
+        flag = 2;
+    else if (ray->lookingLeft && ray->flag == 0)
+        flag = 3;
+    flag = 0;
+    printf("flag = %d\n", flag);
+    t_image *img = point_image_texture(data, flag);
+    if (img == NULL)
+    {
+        printf("Failed to load texture in *****\n");
+        return ;
+    }
+        
+    //
+    texture_x = (int)(t_x * img->whith / 50);
     
     y = top_y;
     while (y < bottom_y)
     {
         // Calculate the Y coordinate on the texture
-        tex_y = (y - top_y) * data->image[0].height / (bottom_y - top_y);
+        tex_y = (y - top_y) * img->height / (bottom_y - top_y);
         // Get the pixel color from the texture at (texture_x, tex_y)
-        color = get_texture_pixel_color(data, texture_x, tex_y );
+        color = get_texture_pixel_color(data, texture_x, tex_y , img);
         // Draw the pixel on the screen
         mlx_pixel_put(data->mlx, data->win_test, column, y, color);
         y++;
