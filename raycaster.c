@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 23:38:53 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/13 22:16:26 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/14 11:03:05 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ void oneRay(t_data *data, t_ray *ray)
 void render_wall(t_data *data, t_ray *ray, double *column)
 {
      ray->distance *= cos(ray->rayAngle - data->angle);
+     ray->distance = ray->distance * 5;
         draw_wall(data, ray  , *column);
         draw_floor(data, ray->distance , *column);
         (*column)++;
@@ -129,6 +130,8 @@ void  castAllRay(t_data *data)
         ray = malloc(sizeof(t_ray));
         ray->rayAngle = rayAngle;
         oneRay(data, ray);
+        printf("v_hit_y = %f\n", ray->v_hit_y);
+        printf ("ray->h_hit_x = %f\n", ray->h_hit_x);
         render_wall(data, ray, &column);
         rayAngle += rayStep;
         free(ray);

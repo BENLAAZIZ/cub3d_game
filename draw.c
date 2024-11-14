@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 18:12:27 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/13 23:18:03 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/14 11:05:07 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -243,6 +243,7 @@ void draw_wall(t_data *data, t_ray *ray, int column)
     else
         t_x = (int)ray->h_hit_x % 50;
     texture_x = (int)(t_x * (data->image[0].whith / 50));
+    
     y = top_y;
     while (y < bottom_y)
     {
