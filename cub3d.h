@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 15:06:34 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/14 16:56:54 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/17 22:17:43 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,12 @@
 
 
 #define FOV (60 * (M_PI / 180))
-# define RAD(X) (X * (M_PI / (float)180))
-# define DEGREE(X) ((X * 360) / 2 * M_PI)
+
 #define NUM_RAYS 60
+
+# define Scren_W 1900 // screen width
+# define Scren_H 1000 // screen height
+# define TILE_SIZE 30 // tile size
 
 typedef enum e_type {
 	NO,
@@ -72,6 +75,10 @@ typedef struct s_data
 	double	angle;
 	double		p_x;
 	double		p_y;
+
+	// *****************
+
+	int 	tile_size;
 	
 	// *****************
 	float turnDirection;
@@ -142,6 +149,9 @@ void 		oneRay(t_data *data, t_ray *ray);
 void  		castAllRay(t_data *data);
 int			key_press(int keycode, t_data *data);
 void		get_player_position(t_data *data);
+char		*ft_strchr(const char *s, int c);
+char		*ft_strtrim(char const *s1, char const *set);
+char		*ft_strrchr(const char *s, int c);
 
 //window
 int 		create_window(char **map, t_texture *tex);

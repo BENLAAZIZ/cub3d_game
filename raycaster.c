@@ -6,13 +6,12 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 23:38:53 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/14 17:00:59 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/17 22:27:10 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "cub3d.h"
-
 
 void get_player_position(t_data *data)
 {
@@ -37,7 +36,7 @@ void get_player_position(t_data *data)
 
 void init_ray(t_ray *ray)
 {
-     if (ray->rayAngle > 2 * M_PI)
+    if (ray->rayAngle > 2 * M_PI)
         ray->rayAngle -= 2 * M_PI;
     if (ray->rayAngle < 0)
         ray->rayAngle += 2 * M_PI;
@@ -115,28 +114,6 @@ void render_wall(t_data *data, t_ray *ray, double *column)
         (*column)++;
 }
 
-// void  castAllRay(t_data *data)
-// {
-//     double  rayAngle;
-//     double  rayStep;
-//     t_ray   *ray;
-//     double column;
-        
-//     column = 0;
-//     rayAngle = data->angle - (FOV / 2 );
-//     rayStep = ( 5 * M_PI / 180) / 50;
-//     while (rayAngle <= data->angle + (FOV / 2))
-//     {
-//         ray = malloc(sizeof(t_ray));
-//         ray->rayAngle = rayAngle;
-//         oneRay(data, ray);
-//         printf("v_hit_y = %f\n", ray->v_hit_y);
-//         printf ("ray->h_hit_x = %f\n", ray->h_hit_x);
-//         render_wall(data, ray, &column);
-//         rayAngle += rayStep;
-//         free(ray);
-//     }
-// }
 
 void lstadd_back_ray(t_ray **lst, t_ray *new)
 {
@@ -163,37 +140,61 @@ void  castAllRay(t_data *data)
     column = 0;
     rayAngle = data->angle - (FOV / 2);
     rayStep = ( 5 * M_PI / 180) / 50;
-    while (rayAngle <= data->angle + (FOV / 2))
+    // while (rayAngle <= data->angle + (FOV / 2))
+    // {
+    //     tmp = malloc(sizeof(t_ray));
+    //     tmp->next = NULL;
+    //     tmp->rayAngle = rayAngle;
+    //     oneRay(data, tmp);
+    //     lstadd_back_ray(&ray, tmp);
+    //     rayAngle += rayStep;
+    // }
+
+    int i = 0;
+    int max_num_rays = 1800;
+    rayAngle = data->angle - (FOV / 2);
+     while (i < max_num_rays)
     {
         tmp = malloc(sizeof(t_ray));
         tmp->next = NULL;
         tmp->rayAngle = rayAngle;
         oneRay(data, tmp);
         lstadd_back_ray(&ray, tmp);
-        rayAngle += rayStep;
+        i++;
+        rayAngle += FOV / max_num_rays;
     }
     while(ray)
     {
-        // printf("ray->distance : %f\n", ray->distance);
         render_wall(data, ray, &column);
         ray = ray->next;
     }
-    // exit (1);
 }
 
 
-int get_image_texture(t_data *data)
+int get_image_texture(t_data *data, t_texture *tex)
 {
-    data->image[0].image = mlx_xpm_file_to_image(data->mlx, "textures/t3.xpm", &data->image[0].whith, &data->image[0].height);
-    data->image[1].image = mlx_xpm_file_to_image(data->mlx, "monaliza_xpm.xpm", &data->image[1].whith, &data->image[1].height);
-    data->image[2].image = mlx_xpm_file_to_image(data->mlx, "monaliza_xpm.xpm", &data->image[2].whith, &data->image[2].height);
-    data->image[3].image = mlx_xpm_file_to_image(data->mlx, "monaliza_xpm.xpm", &data->image[3].whith, &data->image[3].height);
-    if (!data->image[0].image || !data->image[1].image || !data->image[2].image || !data->image[3].image)
+    while (tex)
     {
-        printf("Failed to load texture in get_image_texture\n");
-        return (1);
+        if (tex->identifier == 0)
+            data->image[0].image = mlx_xpm_file_to_image(data->mlx, tex->Path, 
+                                &data->image[0].whith, &data->image[0].height);
+        if (data->image[0].image == NULL)
+            return (1);
+        if (tex->identifier == 1)
+            data->image[1].image = mlx_xpm_file_to_image(data->mlx, tex->Path, 
+                                &data->image[1].whith, &data->image[1].height);
+        if (tex->identifier == 2)
+            data->image[2].image = mlx_xpm_file_to_image(data->mlx, tex->Path, 
+                        &data->image[2].whith, &data->image[2].height);
+        if (tex->identifier == 3)
+            data->image[3].image = mlx_xpm_file_to_image(data->mlx, tex->Path, &data->image[3].whith, &data->image[3].height);
+        tex = tex->next;
     }
-    return (0);
+    if (data->image[0].image == NULL || data->image[1].image == NULL || data->image[2].image == NULL || data->image[3].image == NULL)
+    {
+            return (1);
+    }
+    return (0); 
 }
 
 int get_addr_texture(t_data *data)
@@ -217,7 +218,7 @@ int create_window(char **map, t_texture *tex)
     
     data.p_y = 0;
     data.p_x = 0;
-    data.angle = 0.0;
+    data.angle = M_PI_2;
     while (map[len])
         len++;
     data.mlx = mlx_init();
@@ -228,9 +229,8 @@ int create_window(char **map, t_texture *tex)
 
     
 //****************************************
-
-    data.tex = tex;
-     if (get_image_texture(&data))
+   data.tex = tex;
+     if (get_image_texture(&data, tex))
         return 1;
     if (get_addr_texture(&data))
         return 1;

@@ -67,7 +67,7 @@ t_texture	*ft_lstnew(t_texture *new, char *line, int i)
 		new->rgp_color = ft_strdup(line + i);
 	}
 	else
-		new->Path = ft_strdup(line + i);
+		new->Path = ft_strtrim(line + i, " \n");
 	new->next = NULL;
 	return (new);
 }

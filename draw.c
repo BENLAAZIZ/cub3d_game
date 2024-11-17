@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 18:12:27 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/14 18:00:15 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/17 21:40:47 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,9 +207,17 @@ int get_texture_pixel_color(t_data *data, int texture_x, int texture_y, t_image 
 {
     int color;
     char *dst;
+    (void)data;
+
+    
+     if (texture_x < 0 || texture_x >= img->whith || texture_y < 0 || texture_y >= img->height)
+    {
+        printf("Invalid texture coordinates: x=%d, y=%d\n", texture_x, texture_y);
+        return 0; // Default color (black)
+    }
 
     // Calculate the address of the pixel in the texture
-    dst = data->image[0].addr 
+    dst = img->addr 
             + (texture_y * img->line_length
             + texture_x * (img->bits_per_pixel / 8));
 
@@ -219,86 +227,141 @@ int get_texture_pixel_color(t_data *data, int texture_x, int texture_y, t_image 
 }
 
 
-t_image *point_image_texture(t_data *data, int flag)
+int point_image_texture(t_data *data, int flag, t_image **img)
 {
-    while (data->tex)
-    {
-        if (data->tex->identifier == flag)
-            return (data->image[0].image);
-        if (data->tex->identifier == flag)
-            return (data->image[1].image);
-        if (data->tex->identifier == flag)
-            return (data->image[2].image);
-        if (data->tex->identifier == flag)
-            return (data->image[3].image);
-        data->tex = data->tex->next;
-    }
-    return (NULL);
+   
+        if (flag == 0)
+            *img = &data->image[0];
+        if (flag == 1)
+            *img = &data->image[1];
+        if (flag == 2)
+            *img = &data->image[2];
+        if (flag == 3)
+            *img = &data->image[3];
+        if (*img == NULL)
+            return (1);
+    return (0);
 }
 
-
-// void	texture_mapping(t_main *main, t_ray *ray, int index, int wall_height)
+// int _minimap(t_data *data, int x, int y)
 // {
-// 	int	y;
-// 	int	ystart;
-// 	int	yoffset;
-
-// 	ystart = (main->screen_height / 2) - (wall_height / 2);
-// 	yoffset = 0;
-// 	if (ystart < 0)
-// 	{
-// 		yoffset = ystart * -1;
-// 		ystart = 0;
-// 	}
-// 	y = 0;
-// 	while (y < wall_height && ystart + y < main->screen_height)
-// 	{
-// 		if (in_minimap_field(main, index, ystart + y))
-// 			;
-// 		else
-// 			px_put(&main->img, index, ystart + y, get_color(main, ray,
-// 					y + yoffset, wall_height));
-// 		y++;
-// 	}
+// 	if (x < 10 + (data->lenght * 0.1) && x >= 10
+// 		&& y < 10 + (data->height * 0.1) && y >= 10)
+// 		return (1);
+// 	return (0);
 // }
 
-int _minimap(t_data *data, int x, int y)
-{
-	if (x < 10 + (data->lenght * 0.1) && x >= 10
-		&& y < 10 + (data->height * 0.1) && y >= 10)
-		return (1);
-	return (0);
-}
+// void draw_wall(t_data *data, t_ray *ray, int column)
+// {
+//     double line_height;
+//    	double top_y;
+//    	double bottom_y;
+// 	double window_height = data->height * 50.00;
+//     int color;
+//      int y;
+//     int t_x;
+//     int tex_y;
+//     double texture_x;
+    
+//     line_height = (window_height  / ray->distance) * 50.0;
+//     top_y = window_height / 2 - line_height / 2;
+
+//     //+++++++++++++++++++
+//     bottom_y = top_y + line_height;
+//     // if (ray->flag == 1)
+//     //     t_x = (int)ray->v_hit_y % 50/(double)50 *;
+//     // else
+//     //     t_x = (int)ray->h_hit_x % 50;
+
+//     //
+//     int flag = 0;
+    
+//     if (ray->lookingDown && ray->flag == 1)
+//         flag = 1;
+//     else if (ray->lookingUp && ray->flag == 1)
+//         flag = 0;
+//     else if (ray->lookingRight && ray->flag == 0)
+//         flag = 2;
+//     else if (ray->lookingLeft && ray->flag == 0)
+//         flag = 3;
+
+//     // if ((ray->rayAngle > 0 && ray->rayAngle < M_PI_4) || (ray->rayAngle > 7 * M_PI_4 && ray->rayAngle <= 2 * M_PI))
+//     //     flag = 0;
+//     // else if (ray->rayAngle >= M_PI_4 && ray->rayAngle < 3 * M_PI_4)
+//     //     flag = 1;
+//     // else if (ray->rayAngle >= 3 * M_PI_4 && ray->rayAngle < 5 * M_PI_4)
+//     //     flag = 2;
+//     // else if (ray->rayAngle >= 5 * M_PI_4 && ray->rayAngle <= 7 * M_PI_4)
+//     //     flag = 3;
+//     // flag = 0;
+//     printf("flag = %d\n", flag);
+//     // t_image *img = malloc(sizeof(t_image));
+    
+//     t_image *img;
+//     if (point_image_texture(data, flag, &img))
+//     {
+//         printf("Failed to load texture in *****\n");
+//         return ;
+//     }
+        
+//     //
+//     // texture_x = (int)(t_x * img->whith / 50);
+//     if (ray->flag == 1)
+//         t_x = (int)ray->v_hit_y % 50;
+//     else
+//         t_x = (int)ray->h_hit_x % 50;
+//     texture_x = (int)(t_x * img->whith / 50);
+    
+//     if (top_y < 0)
+//         top_y = 0;
+//     // if (bottom_y > window_height)
+//     //     bottom_y = window_height;
+
+        
+//     y = top_y;
+//     while (y < bottom_y && y < window_height)
+//     {
+//         // printf("y = %d\n", y);
+//         // Calculate the Y coordinate on the texture
+        
+//     //    if (_minimap(data, texture_x, y))
+//     //         return ;
+        
+//         // tex_y = (y - top_y) * img->height / (bottom_y - top_y);
+//         tex_y = (y - top_y) * img->height / (bottom_y - top_y);
+
+//         // Get the pixel color from the texture at (texture_x, tex_y)
+//         // color = get_texture_pixel_color(data, texture_x, tex_y , img);
+//         color = get_texture_pixel_color(data, texture_x, tex_y , img);
+//         if (color == 0)
+//             return ;
+//         // Draw the pixel on the screen
+//         mlx_pixel_put(data->mlx, data->win_test, column, y, color);
+//         y++;
+//     }
+//     // free(img);
+// }
+
+
+
+
 
 void draw_wall(t_data *data, t_ray *ray, int column)
 {
     double line_height;
-   	double top_y;
-   	double bottom_y;
-	double window_height = data->height * 50.00;
-    int color;
-     int y;
-    int t_x;
-    int tex_y;
-    int texture_x;
-    
-    line_height = (window_height  / ray->distance) * 50.0;
-    top_y = window_height / 2 - line_height / 2;
+    double top_y, bottom_y;
+    double window_height = data->height * 50.00;
+    int color, y, tex_y, t_x;
+    double texture_x;
 
-    //+++++++++++++++++++
+    line_height = (window_height / ray->distance) * 50.0;
+    top_y = window_height / 2 - line_height / 2;
     bottom_y = top_y + line_height;
+
     if (top_y < 0)
         top_y = 0;
-    if (bottom_y > window_height)
-        bottom_y = window_height;
-    if (ray->flag == 1)
-        t_x = (int)ray->v_hit_y % 50;
-    else
-        t_x = (int)ray->h_hit_x % 50;
 
-    //
     int flag = 0;
-    
     if (ray->lookingDown && ray->flag == 1)
         flag = 1;
     else if (ray->lookingUp && ray->flag == 1)
@@ -307,34 +370,36 @@ void draw_wall(t_data *data, t_ray *ray, int column)
         flag = 2;
     else if (ray->lookingLeft && ray->flag == 0)
         flag = 3;
-    flag = 0;
-    printf("flag = %d\n", flag);
-    t_image *img = point_image_texture(data, flag);
-    if (img == NULL)
-    {
-        printf("Failed to load texture in *****\n");
-        return ;
-    }
-        
-    //
-    // texture_x = (int)(t_x * img->whith / 50);
-    texture_x = (int)(t_x * data->image[0].whith / 50);
-    
-    y = top_y;
-    while (y < bottom_y)
-    {
-        // Calculate the Y coordinate on the texture
-        
-       if (_minimap(data, texture_x, y))
-            return ;
-        
-        // tex_y = (y - top_y) * img->height / (bottom_y - top_y);
-        tex_y = (y - top_y) * data->image[0].height / (bottom_y - top_y);
 
-        // Get the pixel color from the texture at (texture_x, tex_y)
-        // color = get_texture_pixel_color(data, texture_x, tex_y , img);
-        color = get_texture_pixel_color(data, texture_x, tex_y , data->image);
-        // Draw the pixel on the screen
+    t_image *img;
+    if (point_image_texture(data, flag, &img))
+    {
+        printf("Failed to load texture\n");
+        return;
+    }
+
+    if (ray->flag == 1)
+        t_x = (int)ray->v_hit_y % 50;
+    else
+        t_x = (int)ray->h_hit_x % 50;
+
+    texture_x = (int)((t_x / 50.0) * img->whith);
+    if (texture_x < 0)
+        texture_x = 0;
+    else if (texture_x >= img->whith)
+        texture_x = img->whith - 1;
+
+    y = top_y;
+    while (y < bottom_y && y < window_height)
+    {
+        tex_y = (y - top_y) * img->height / (bottom_y - top_y);
+        // if (tex_y < 0 || tex_y >= img->height)
+        // {
+        //     y++;
+        //     continue;
+        // }
+
+        color = get_texture_pixel_color(data, texture_x, tex_y, img);
         mlx_pixel_put(data->mlx, data->win_test, column, y, color);
         y++;
     }
