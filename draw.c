@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 18:12:27 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/18 16:47:43 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/18 17:11:50 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,6 @@ void draw_floor(t_data *data, double distance, double column)
     bottom_y = top_y + line_height;
 
 	int i = bottom_y;
-    printf("%d   %f\n", i, window_height);
 	while(i < window_height)
 	{
 		mlx_pixel_put(data->mlx, data->win_test, column, i, 0x629584);
@@ -148,19 +147,19 @@ void draw_floor(t_data *data, double distance, double column)
 	}
 }
 
-int get_color_from_distance(double distance)
-{
-    unsigned char   r;
-    unsigned char   g;
-    unsigned char   b;
-    int             color;
+// int get_color_from_distance(double distance)
+// {
+//     unsigned char   r;
+//     unsigned char   g;
+//     unsigned char   b;
+//     int             color;
 
-    r = 255 - distance;
-    g = 191 - distance;
-    b = 200 - distance;
-    color = r << 16 | g << 8 | b;
-    return (color);
-}
+//     r = 255 - distance;
+//     g = 191 - distance;
+//     b = 200 - distance;
+//     color = r << 16 | g << 8 | b;
+//     return (color);
+// }
 
 
 int get_texture_pixel_color(t_data *data, int texture_x, int texture_y, t_image *img)

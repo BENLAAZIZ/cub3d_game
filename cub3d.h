@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 15:06:34 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/18 13:02:49 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/18 17:07:53 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 #define FOV (60 * (M_PI / 180))
 
 
-# define Scren_W 1024 // screen width
+# define Scren_W 1000 // screen width
 # define Scren_H 768 // screen height
 # define TILE_SIZE 50.0 // tile size
 #define NUM_RAYS Scren_W
@@ -112,7 +112,7 @@ typedef struct s_ray {
 	int lookingRight;
 	int lookingLeft;
 	int flag;
-	struct s_ray *next;
+	// struct s_ray *next;
 }t_ray;
 
 

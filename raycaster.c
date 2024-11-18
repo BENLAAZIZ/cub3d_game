@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 23:38:53 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/18 16:43:41 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/18 17:12:21 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,59 +106,80 @@ void oneRay(t_data *data, t_ray *ray)
     }
 }
 
-void render_wall(t_data *data, t_ray *ray, double *column)
+void render_wall(t_data *data, t_ray *ray, double column)
 {
      ray->distance *= cos(ray->rayAngle - data->angle);
      ray->distance = ray->distance * 5;
-     draw_wall(data, ray  , *column);
-     draw_floor(data, ray->distance , *column);
-        (*column)++;
+     draw_wall(data, ray  , column);
+     draw_floor(data, ray->distance , column);
+        // (*column)++;
 }
 
 
-void lstadd_back_ray(t_ray **lst, t_ray *new)
-{
-    t_ray *tmp;
-    if (!*lst)
-    {
-        *lst = new;
-        return ;
-    }
-    tmp = *lst;
-    while (tmp->next)
-        tmp = tmp->next;
-    tmp->next = new;
-}
+// void lstadd_back_ray(t_ray **lst, t_ray *new)
+// {
+//     t_ray *tmp;
+//     if (!*lst)
+//     {
+//         *lst = new;
+//         return ;
+//     }
+//     tmp = *lst;
+//     while (tmp->next)
+//         tmp = tmp->next;
+//     tmp->next = new;
+// }
+
+// void  castAllRay(t_data *data)
+// {
+//     double  rayAngle;
+//     t_ray   *ray = NULL;
+//     t_ray  *tmp;
+//     double column;
+        
+//     column = 0;
+//     rayAngle = data->angle - (FOV / 2);
+ 
+//     int i = 0;
+//     rayAngle = data->angle - (FOV / 2);
+//     while (i < NUM_RAYS)
+//     {
+//         tmp = malloc(sizeof(t_ray));
+//         tmp->next = NULL;
+//         tmp->rayAngle = rayAngle;
+//         oneRay(data, tmp);
+//         lstadd_back_ray(&ray, tmp);
+//         i++;
+//         rayAngle += FOV / NUM_RAYS;
+//     }
+//     while(ray)
+//     {
+//         // printf("ray->distance = %f %f %f\n", ray->distance, ray->x_hit, ray->y_hit);
+//         render_wall(data, ray, &column);
+//         ray = ray->next;
+//     }
+//     // exit(0);
+// }
+
 
 void  castAllRay(t_data *data)
 {
     double  rayAngle;
     t_ray   *ray = NULL;
-    t_ray  *tmp;
     double column;
         
     column = 0;
     rayAngle = data->angle - (FOV / 2);
- 
-    int i = 0;
-    rayAngle = data->angle - (FOV / 2);
-    while (i < NUM_RAYS)
+    while (column < NUM_RAYS)
     {
-        tmp = malloc(sizeof(t_ray));
-        tmp->next = NULL;
-        tmp->rayAngle = rayAngle;
-        oneRay(data, tmp);
-        lstadd_back_ray(&ray, tmp);
-        i++;
+        ray = malloc(sizeof(t_ray));
+        ray->rayAngle = rayAngle;
+        oneRay(data, ray);
+        render_wall(data, ray, column);
+        column++;
         rayAngle += FOV / NUM_RAYS;
+        free(ray);
     }
-    while(ray)
-    {
-        // printf("ray->distance = %f %f %f\n", ray->distance, ray->x_hit, ray->y_hit);
-        render_wall(data, ray, &column);
-        ray = ray->next;
-    }
-    // exit(0);
 }
 
 
@@ -228,8 +249,8 @@ int create_window(char **map, t_texture *tex)
 //*******************************************
     data.all_map = map;
     get_player_position(&data);
-    drawmap(&data);
-    drawplayer(&data);
+    // drawmap(&data);
+    // drawplayer(&data);
     castAllRay(&data);
     mlx_hook(data.win, 2, 0, key_press, &data);
     mlx_hook(data.win_test, 2, 0, key_press, &data);
