@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 18:12:27 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/18 00:23:47 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/18 12:47:26 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -379,11 +379,12 @@ void draw_wall(t_data *data, t_ray *ray, int column)
     }
 
     if (ray->flag == 1)
-        t_x = (int)ray->v_hit_y % 50;
+        t_x = (int)ray->v_hit_y % 10;
     else
-        t_x = (int)ray->h_hit_x % 50;
+        t_x = (int)ray->h_hit_x % 10;
+    printf ("t_x = %d\n", t_x);
 
-    texture_x = (int)((t_x / 50.0) * img->whith);
+    texture_x = (int)((t_x / 10.0) * img->whith);
     if (texture_x < 0)
         texture_x = 0;
     else if (texture_x >= img->whith)
@@ -393,11 +394,11 @@ void draw_wall(t_data *data, t_ray *ray, int column)
     while (y < bottom_y && y < window_height)
     {
         tex_y = (y - top_y) * img->height / (bottom_y - top_y);
-        if (tex_y < 0 || tex_y >= img->height)
-        {
-            y++;
-            continue;
-        }
+        // if (tex_y < 0 || tex_y >= img->height)
+        // {
+        //     y++;
+        //     continue;
+        // }
 
         color = get_texture_pixel_color(data, texture_x, tex_y, img);
         mlx_pixel_put(data->mlx, data->win_test, column, y, color);
