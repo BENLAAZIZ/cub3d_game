@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 18:12:27 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/14 12:49:53 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/18 13:02:38 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ void draw_wall(t_data *data, t_ray *ray, int column)
     double line_height;
    	double top_y;
    	double bottom_y;
-	double window_height = data->height * 50.00;
+	double window_height = data->height * TILE_SIZE;
     int color;
      int y;
     int t_x;

@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 23:38:53 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/17 22:27:10 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/18 13:01:17 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,9 +151,9 @@ void  castAllRay(t_data *data)
     // }
 
     int i = 0;
-    int max_num_rays = 1800;
+    // int max_num_rays = 1800;
     rayAngle = data->angle - (FOV / 2);
-     while (i < max_num_rays)
+     while (i < NUM_RAYS)
     {
         tmp = malloc(sizeof(t_ray));
         tmp->next = NULL;
@@ -161,7 +161,7 @@ void  castAllRay(t_data *data)
         oneRay(data, tmp);
         lstadd_back_ray(&ray, tmp);
         i++;
-        rayAngle += FOV / max_num_rays;
+        rayAngle += FOV / NUM_RAYS;
     }
     while(ray)
     {
@@ -225,7 +225,7 @@ int create_window(char **map, t_texture *tex)
     data.lenght = ft_strlen(map[0]);
     data.height = len;
     data.win = mlx_new_window(data.mlx, data.lenght*10 , data.height*10 , "hello");
-    data.win_test = mlx_new_window(data.mlx, 600, data.height * 50, "test");
+    data.win_test = mlx_new_window(data.mlx, Scren_W, Scren_H, "test");
 
     
 //****************************************

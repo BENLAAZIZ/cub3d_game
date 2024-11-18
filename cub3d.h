@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 15:06:34 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/17 22:17:43 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/18 13:02:49 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@
 
 #define FOV (60 * (M_PI / 180))
 
-#define NUM_RAYS 60
 
-# define Scren_W 1900 // screen width
-# define Scren_H 1000 // screen height
-# define TILE_SIZE 30 // tile size
+# define Scren_W 1024 // screen width
+# define Scren_H 768 // screen height
+# define TILE_SIZE 50.0 // tile size
+#define NUM_RAYS Scren_W
 
 typedef enum e_type {
 	NO,

@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 18:12:27 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/18 12:47:26 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/18 13:24:23 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ void draw_floor(t_data *data, double distance, double column)
 	double line_height;
    	double top_y;
    	double bottom_y;
-	double window_height = data->height * 50.00;
+	double window_height = Scren_H;
     line_height = (window_height  / distance) * 30.0;
     top_y = window_height / 2 - line_height / 2;
     bottom_y = top_y + line_height;
@@ -350,16 +350,14 @@ void draw_wall(t_data *data, t_ray *ray, int column)
 {
     double line_height;
     double top_y, bottom_y;
-    double window_height = data->height * 50.00;
-    int color, y, tex_y, t_x;
+    double window_height = Scren_H;
+    double color, y, tex_y, t_x;
     double texture_x;
 
-    line_height = (window_height / ray->distance) * 50.0;
+    line_height = (window_height / ray->distance) * TILE_SIZE;
     top_y = window_height / 2 - line_height / 2;
     bottom_y = top_y + line_height;
 
-    if (top_y < 0)
-        top_y = 0;
 
     int flag = 0;
     if (ray->lookingDown && ray->flag == 1)
@@ -382,23 +380,28 @@ void draw_wall(t_data *data, t_ray *ray, int column)
         t_x = (int)ray->v_hit_y % 10;
     else
         t_x = (int)ray->h_hit_x % 10;
-    printf ("t_x = %d\n", t_x);
+    printf ("t_x = %f\n", t_x);
 
     texture_x = (int)((t_x / 10.0) * img->whith);
     if (texture_x < 0)
         texture_x = 0;
     else if (texture_x >= img->whith)
         texture_x = img->whith - 1;
+    printf ("texture_x = %f\n", texture_x);
+        
+    if (top_y < 0)
+        top_y = 0;
 
     y = top_y;
-    while (y < bottom_y && y < window_height)
+    while (y < bottom_y)
     {
         tex_y = (y - top_y) * img->height / (bottom_y - top_y);
-        // if (tex_y < 0 || tex_y >= img->height)
-        // {
-        //     y++;
-        //     continue;
-        // }
+        if (tex_y < 0 || tex_y >= img->height)
+        {
+            printf("her : x=%f, y=%f\n", texture_x, tex_y);
+            y++;
+            continue;
+        }
 
         color = get_texture_pixel_color(data, texture_x, tex_y, img);
         mlx_pixel_put(data->mlx, data->win_test, column, y, color);
