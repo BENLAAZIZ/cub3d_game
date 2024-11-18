@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 23:38:53 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/18 16:15:32 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/18 16:43:41 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,8 +110,8 @@ void render_wall(t_data *data, t_ray *ray, double *column)
 {
      ray->distance *= cos(ray->rayAngle - data->angle);
      ray->distance = ray->distance * 5;
-        draw_wall(data, ray  , *column);
-        draw_floor(data, ray->distance , *column);
+     draw_wall(data, ray  , *column);
+     draw_floor(data, ray->distance , *column);
         (*column)++;
 }
 

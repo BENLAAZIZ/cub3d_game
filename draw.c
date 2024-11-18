@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 18:12:27 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/18 16:20:38 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/18 16:47:43 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,11 +129,12 @@ void draw_floor(t_data *data, double distance, double column)
    	double top_y;
    	double bottom_y;
 	double window_height = Scren_H;
-    line_height = (window_height  / distance) * 30.0;
+    line_height = (window_height / distance) * 5;
     top_y = window_height / 2 - line_height / 2;
     bottom_y = top_y + line_height;
 
 	int i = bottom_y;
+    printf("%d   %f\n", i, window_height);
 	while(i < window_height)
 	{
 		mlx_pixel_put(data->mlx, data->win_test, column, i, 0x629584);
