@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 18:12:27 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/18 13:24:23 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/18 16:13:38 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,7 +206,7 @@ int get_color_from_distance(double distance)
 int get_texture_pixel_color(t_data *data, int texture_x, int texture_y, t_image *img)
 {
     int color;
-    char *dst;
+    // char *dst;
     (void)data;
 
     
@@ -217,12 +217,11 @@ int get_texture_pixel_color(t_data *data, int texture_x, int texture_y, t_image 
     }
 
     // Calculate the address of the pixel in the texture
-    dst = img->addr 
-            + (texture_y * img->line_length
-            + texture_x * (img->bits_per_pixel / 8));
+    int *add = (int *)img->addr;
+    color = add[((int)(texture_y * img->height + texture_x))];
 
     // Read the color of the pixel from the texture
-    color = *(unsigned int *)dst;
+    // color = *(unsigned int *)dst;
     return (color);
 }
 
@@ -354,19 +353,19 @@ void draw_wall(t_data *data, t_ray *ray, int column)
     double color, y, tex_y, t_x;
     double texture_x;
 
-    line_height = (window_height / ray->distance) * TILE_SIZE;
+    line_height = (window_height / ray->distance) * 5;
+    // printf("line_height = %f\n", line_height);
     top_y = window_height / 2 - line_height / 2;
-    bottom_y = top_y + line_height;
-
+    bottom_y = window_height / 2 + line_height / 2;
 
     int flag = 0;
-    if (ray->lookingDown && ray->flag == 1)
-        flag = 1;
-    else if (ray->lookingUp && ray->flag == 1)
+      if ((ray->rayAngle > 0 && ray->rayAngle < M_PI_4) || (ray->rayAngle > 7 * M_PI_4 && ray->rayAngle <= 2 * M_PI))
         flag = 0;
-    else if (ray->lookingRight && ray->flag == 0)
+    else if (ray->rayAngle >= M_PI_4 && ray->rayAngle < 3 * M_PI_4)
+        flag = 1;
+    else if (ray->rayAngle >= 3 * M_PI_4 && ray->rayAngle < 5 * M_PI_4)
         flag = 2;
-    else if (ray->lookingLeft && ray->flag == 0)
+    else if (ray->rayAngle >= 5 * M_PI_4 && ray->rayAngle <= 7 * M_PI_4)
         flag = 3;
 
     t_image *img;
@@ -377,31 +376,42 @@ void draw_wall(t_data *data, t_ray *ray, int column)
     }
 
     if (ray->flag == 1)
-        t_x = (int)ray->v_hit_y % 10;
+        t_x = ray->v_hit_y / 10.0;
     else
-        t_x = (int)ray->h_hit_x % 10;
-    printf ("t_x = %f\n", t_x);
+        t_x = ray->h_hit_x / 10.0;
+    // t_x = t_x - (int)t_x;
+    // printf ("          %f\n", t_x);
 
-    texture_x = (int)((t_x / 10.0) * img->whith);
-    if (texture_x < 0)
-        texture_x = 0;
-    else if (texture_x >= img->whith)
-        texture_x = img->whith - 1;
-    printf ("texture_x = %f\n", texture_x);
+    texture_x = t_x - floor(t_x);
+    texture_x *= 400;
+    // if (texture_x < 0)
+    //     texture_x = 0;
+    // else if (texture_x >= img->whith)
+    //     texture_x = img->whith - 1;
+    // printf ("texture_x = %f\n", texture_x);
+    // exit(0);
         
-    if (top_y < 0)
-        top_y = 0;
+    // if (top_y < 0)
+    //     top_y = 0;
 
     y = top_y;
     while (y < bottom_y)
     {
-        tex_y = (y - top_y) * img->height / (bottom_y - top_y);
-        if (tex_y < 0 || tex_y >= img->height)
-        {
-            printf("her : x=%f, y=%f\n", texture_x, tex_y);
-            y++;
-            continue;
-        }
+        if (y < 0)
+            y = 0;
+        if (y >= window_height)
+            break;
+
+        tex_y = (y - top_y) / (bottom_y - top_y);
+        tex_y *= 400;
+        // printf("tex_y = %f\n", tex_y);
+        
+        // if (tex_y < 0 || tex_y >= img->height)
+        // {
+        //     printf("her : x=%f, y=%f\n", texture_x, tex_y);
+        //     y++;
+        //     continue;
+        // }
 
         color = get_texture_pixel_color(data, texture_x, tex_y, img);
         mlx_pixel_put(data->mlx, data->win_test, column, y, color);

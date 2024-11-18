@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 23:38:53 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/18 13:01:17 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/18 16:15:32 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,12 @@ void oneRay(t_data *data, t_ray *ray)
     if (ray->rayAngle < M_PI_2 || ray->rayAngle > 3 * M_PI_2)
         ray->lookingRight = 1;
     ray->lookingLeft = !ray->lookingRight;
+    
     ray->v_distance = get_v_intercept(data, ray, 0, 0);
     ray->h_distance = get_h_intercept(data, ray, 0, 0);
     if (ray->v_distance <= ray->h_distance)
     {
-        ray->distance = ray->v_distance;
+        ray->distance = ray->v_distance / 10;
         ray->x_hit = ray->v_hit_x;
         ray->y_hit = ray->v_hit_y;
         ray->flag = 1;
@@ -86,7 +87,7 @@ void oneRay(t_data *data, t_ray *ray)
     }
     else
     {
-        ray->distance = ray->h_distance;
+        ray->distance = ray->h_distance / 10;
         ray->x_hit = ray->h_hit_x;
         ray->y_hit = ray->h_hit_y;
         ray->flag = 0;
@@ -132,28 +133,16 @@ void lstadd_back_ray(t_ray **lst, t_ray *new)
 void  castAllRay(t_data *data)
 {
     double  rayAngle;
-    double  rayStep;
     t_ray   *ray = NULL;
     t_ray  *tmp;
     double column;
         
     column = 0;
     rayAngle = data->angle - (FOV / 2);
-    rayStep = ( 5 * M_PI / 180) / 50;
-    // while (rayAngle <= data->angle + (FOV / 2))
-    // {
-    //     tmp = malloc(sizeof(t_ray));
-    //     tmp->next = NULL;
-    //     tmp->rayAngle = rayAngle;
-    //     oneRay(data, tmp);
-    //     lstadd_back_ray(&ray, tmp);
-    //     rayAngle += rayStep;
-    // }
-
+ 
     int i = 0;
-    // int max_num_rays = 1800;
     rayAngle = data->angle - (FOV / 2);
-     while (i < NUM_RAYS)
+    while (i < NUM_RAYS)
     {
         tmp = malloc(sizeof(t_ray));
         tmp->next = NULL;
@@ -165,9 +154,11 @@ void  castAllRay(t_data *data)
     }
     while(ray)
     {
+        // printf("ray->distance = %f %f %f\n", ray->distance, ray->x_hit, ray->y_hit);
         render_wall(data, ray, &column);
         ray = ray->next;
     }
+    // exit(0);
 }
 
 
@@ -242,6 +233,7 @@ int create_window(char **map, t_texture *tex)
     castAllRay(&data);
     mlx_hook(data.win, 2, 0, key_press, &data);
     mlx_hook(data.win_test, 2, 0, key_press, &data);
+    
     mlx_loop(data.mlx);
     return (0);
 }

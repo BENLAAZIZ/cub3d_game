@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 11:58:15 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/18 12:11:58 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/18 16:16:15 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,10 +195,10 @@ void draw_wall(t_data *data, t_ray *ray, int column)
     }
     
     if (ray->flag == 1)
-        t_x = (int)ray->v_hit_y % 10;
+        t_x = (int)ray->v_hit_y;
     else
-        t_x = (int)ray->h_hit_x % 10;
-        
+        t_x = (int)ray->h_hit_x;
+    printf("%f\n", t_x / 10.00);
     texture_x = (int)((t_x / 10.00) * img->whith);
     if (texture_x < 0)
         texture_x = 0;
@@ -211,6 +211,7 @@ void draw_wall(t_data *data, t_ray *ray, int column)
     y = top_y;
     while (y < bottom_y )
     {
+        
         tex_y = (y - top_y) * img->height / (bottom_y - top_y);
         // if (tex_y < 0 || tex_y >= img->height)
         // {
