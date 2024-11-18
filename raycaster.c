@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 23:38:53 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/18 17:12:21 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/18 17:57:15 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,8 +190,6 @@ int get_image_texture(t_data *data, t_texture *tex)
         if (tex->identifier == 0)
             data->image[0].image = mlx_xpm_file_to_image(data->mlx, tex->Path, 
                                 &data->image[0].whith, &data->image[0].height);
-        if (data->image[0].image == NULL)
-            return (1);
         if (tex->identifier == 1)
             data->image[1].image = mlx_xpm_file_to_image(data->mlx, tex->Path, 
                                 &data->image[1].whith, &data->image[1].height);
@@ -249,8 +247,8 @@ int create_window(char **map, t_texture *tex)
 //*******************************************
     data.all_map = map;
     get_player_position(&data);
-    // drawmap(&data);
-    // drawplayer(&data);
+    drawmap(&data);
+    drawplayer(&data);
     castAllRay(&data);
     mlx_hook(data.win, 2, 0, key_press, &data);
     mlx_hook(data.win_test, 2, 0, key_press, &data);
