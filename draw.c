@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 18:12:27 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/18 16:13:38 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/18 16:20:38 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,47 +162,6 @@ int get_color_from_distance(double distance)
 }
 
 
-// void draw_wall(t_data *data, double distance, double column)
-// {
-//     double line_height;
-//    	double top_y;
-//    	double bottom_y;
-//     // int color = 0xff6347; 
-//     // int image ;
-    
-// 	double window_height = data->height * 50.00;
-//     int color;
-    
-//     line_height = (window_height  / distance) * 30.0;
-//     top_y = window_height / 2 - line_height / 2;
-//     bottom_y = top_y + line_height;
-//     if (top_y < 0)
-//         top_y = 0;
-//     if (bottom_y > window_height)
-//         bottom_y = window_height;
-// 	int i = top_y;
-//     while (top_y <= bottom_y)
-//     {
-//         color = get_color_from_distance(distance); 
-
-//         // draw_textured_wall(data, screen_x, top_y, bottom_y, texture_x);
-        
-// 		if (top_y < 0)
-// 			return ;
-//         mlx_pixel_put(data->mlx, data->win_test, column, top_y, color);
-//         top_y++;
-//     }
-// 	top_y = i;
-// 	while(i < top_y)
-// 	{
-// 		mlx_pixel_put(data->mlx, data->win_test, column, i, color);
-// 		i++;
-// 	}
-
-// }
-
-
-
 int get_texture_pixel_color(t_data *data, int texture_x, int texture_y, t_image *img)
 {
     int color;
@@ -242,108 +201,6 @@ int point_image_texture(t_data *data, int flag, t_image **img)
     return (0);
 }
 
-// int _minimap(t_data *data, int x, int y)
-// {
-// 	if (x < 10 + (data->lenght * 0.1) && x >= 10
-// 		&& y < 10 + (data->height * 0.1) && y >= 10)
-// 		return (1);
-// 	return (0);
-// }
-
-// void draw_wall(t_data *data, t_ray *ray, int column)
-// {
-//     double line_height;
-//    	double top_y;
-//    	double bottom_y;
-// 	double window_height = data->height * 50.00;
-//     int color;
-//      int y;
-//     int t_x;
-//     int tex_y;
-//     double texture_x;
-    
-//     line_height = (window_height  / ray->distance) * 50.0;
-//     top_y = window_height / 2 - line_height / 2;
-
-//     //+++++++++++++++++++
-//     bottom_y = top_y + line_height;
-//     // if (ray->flag == 1)
-//     //     t_x = (int)ray->v_hit_y % 50/(double)50 *;
-//     // else
-//     //     t_x = (int)ray->h_hit_x % 50;
-
-//     //
-//     int flag = 0;
-    
-//     if (ray->lookingDown && ray->flag == 1)
-//         flag = 1;
-//     else if (ray->lookingUp && ray->flag == 1)
-//         flag = 0;
-//     else if (ray->lookingRight && ray->flag == 0)
-//         flag = 2;
-//     else if (ray->lookingLeft && ray->flag == 0)
-//         flag = 3;
-
-//     // if ((ray->rayAngle > 0 && ray->rayAngle < M_PI_4) || (ray->rayAngle > 7 * M_PI_4 && ray->rayAngle <= 2 * M_PI))
-//     //     flag = 0;
-//     // else if (ray->rayAngle >= M_PI_4 && ray->rayAngle < 3 * M_PI_4)
-//     //     flag = 1;
-//     // else if (ray->rayAngle >= 3 * M_PI_4 && ray->rayAngle < 5 * M_PI_4)
-//     //     flag = 2;
-//     // else if (ray->rayAngle >= 5 * M_PI_4 && ray->rayAngle <= 7 * M_PI_4)
-//     //     flag = 3;
-//     // flag = 0;
-//     printf("flag = %d\n", flag);
-//     // t_image *img = malloc(sizeof(t_image));
-    
-//     t_image *img;
-//     if (point_image_texture(data, flag, &img))
-//     {
-//         printf("Failed to load texture in *****\n");
-//         return ;
-//     }
-        
-//     //
-//     // texture_x = (int)(t_x * img->whith / 50);
-//     if (ray->flag == 1)
-//         t_x = (int)ray->v_hit_y % 50;
-//     else
-//         t_x = (int)ray->h_hit_x % 50;
-//     texture_x = (int)(t_x * img->whith / 50);
-    
-//     if (top_y < 0)
-//         top_y = 0;
-//     // if (bottom_y > window_height)
-//     //     bottom_y = window_height;
-
-        
-//     y = top_y;
-//     while (y < bottom_y && y < window_height)
-//     {
-//         // printf("y = %d\n", y);
-//         // Calculate the Y coordinate on the texture
-        
-//     //    if (_minimap(data, texture_x, y))
-//     //         return ;
-        
-//         // tex_y = (y - top_y) * img->height / (bottom_y - top_y);
-//         tex_y = (y - top_y) * img->height / (bottom_y - top_y);
-
-//         // Get the pixel color from the texture at (texture_x, tex_y)
-//         // color = get_texture_pixel_color(data, texture_x, tex_y , img);
-//         color = get_texture_pixel_color(data, texture_x, tex_y , img);
-//         if (color == 0)
-//             return ;
-//         // Draw the pixel on the screen
-//         mlx_pixel_put(data->mlx, data->win_test, column, y, color);
-//         y++;
-//     }
-//     // free(img);
-// }
-
-
-
-
 
 void draw_wall(t_data *data, t_ray *ray, int column)
 {
@@ -354,7 +211,6 @@ void draw_wall(t_data *data, t_ray *ray, int column)
     double texture_x;
 
     line_height = (window_height / ray->distance) * 5;
-    // printf("line_height = %f\n", line_height);
     top_y = window_height / 2 - line_height / 2;
     bottom_y = window_height / 2 + line_height / 2;
 
@@ -374,25 +230,13 @@ void draw_wall(t_data *data, t_ray *ray, int column)
         printf("Failed to load texture\n");
         return;
     }
-
     if (ray->flag == 1)
         t_x = ray->v_hit_y / 10.0;
     else
         t_x = ray->h_hit_x / 10.0;
-    // t_x = t_x - (int)t_x;
-    // printf ("          %f\n", t_x);
 
     texture_x = t_x - floor(t_x);
     texture_x *= 400;
-    // if (texture_x < 0)
-    //     texture_x = 0;
-    // else if (texture_x >= img->whith)
-    //     texture_x = img->whith - 1;
-    // printf ("texture_x = %f\n", texture_x);
-    // exit(0);
-        
-    // if (top_y < 0)
-    //     top_y = 0;
 
     y = top_y;
     while (y < bottom_y)
