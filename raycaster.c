@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 23:38:53 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/18 18:19:23 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/18 23:19:46 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,10 @@ void get_player_position(t_data *data)
             break;
         data->p_y++;
     }
-    data->p_x = (data->p_x * 10) + 5;
-    data->p_y = (data->p_y * 10) + 5;
+    data->p_x = (data->p_x * TILE_SIZE) + TILE_SIZE / 2;
+    data->p_y = (data->p_y * TILE_SIZE) + TILE_SIZE / 2;
+    printf("data->p_x = %f data->p_y = %f\n", data->p_x, data->p_y);
+    // exit(0);
 }
 
 void init_ray(t_ray *ray)
@@ -67,19 +69,19 @@ void oneRay(t_data *data, t_ray *ray)
     ray->h_distance = get_h_intercept(data, ray, 0, 0);
     if (ray->v_distance <= ray->h_distance)
     {
-        ray->distance = ray->v_distance / 10;
+        ray->distance = ray->v_distance / TILE_SIZE;
         ray->x_hit = ray->v_hit_x;
         ray->y_hit = ray->v_hit_y;
         ray->flag = 1;
         
-        int x = -1;
-        int y = -1;
-        while (y < 1)
+        int x = -2;
+        int y = -2;
+        while (y < 2)
         {
-            x = -1;
-            while (x < 1)
+            x = -2;
+            while (x < 2)
             {
-                mlx_pixel_put(data->mlx, data->win, ray->v_hit_x + x, ray->v_hit_y + y, 0xF61108);
+                mlx_pixel_put(data->mlx, data->win_test, ray->v_hit_x + x, ray->v_hit_y + y, 0xF61108);
                     x++;
             }
             y++;
@@ -87,18 +89,18 @@ void oneRay(t_data *data, t_ray *ray)
     }
     else
     {
-        ray->distance = ray->h_distance / 10;
+        ray->distance = ray->h_distance / TILE_SIZE;
         ray->x_hit = ray->h_hit_x;
         ray->y_hit = ray->h_hit_y;
         ray->flag = 0;
-         int x = -1;
-        int y = -1;
-           while (y < 1)
+         int x = -2;
+        int y = -2;
+           while (y < 2)
         {
-        x = -1;
-        while (x < 1)
+        x = -2;
+        while (x < 2)
         {
-        mlx_pixel_put(data->mlx, data->win, ray->h_hit_x + x, ray->h_hit_y + y, 0xF61108);
+        mlx_pixel_put(data->mlx, data->win_test, ray->h_hit_x + x, ray->h_hit_y + y, 0xF61108);
             x++;
         }
         y++;
@@ -180,6 +182,8 @@ void  castAllRay(t_data *data)
         rayAngle += FOV / NUM_RAYS;
         free(ray);
     }
+    drawmap(data);
+    drawplayer(data);
 }
 
 
@@ -228,13 +232,13 @@ int create_window(char **map, t_texture *tex)
     
     data.p_y = 0;
     data.p_x = 0;
-    data.angle = M_PI_2;
+    data.angle = 3 * M_PI_2;
     while (map[len])
         len++;
     data.mlx = mlx_init();
     data.lenght = ft_strlen(map[0]);
     data.height = len;
-    data.win = mlx_new_window(data.mlx, data.lenght*10 , data.height*10 , "hello");
+    // data.win = mlx_new_window(data.mlx, data.lenght*10 , data.height*10 , "hello");
     data.win_test = mlx_new_window(data.mlx, Scren_W, Scren_H, "test");
  
 //****************************************
@@ -247,13 +251,11 @@ int create_window(char **map, t_texture *tex)
 
     data.all_map = map;
     get_player_position(&data);
-    drawmap(&data);
-    drawplayer(&data);
+    // drawmap(&data);
+    // drawplayer(&data);
     castAllRay(&data);
-    mlx_hook(data.win, 2, 0, key_press, &data);
+    // mlx_hook(data.win, 2, 0, key_press, &data);
     mlx_hook(data.win_test, 2, 0, key_press, &data);
-    
-    mlx_loop_hook(data.mlx, key_press, &data);
     mlx_loop(data.mlx);
     return (0);
 }

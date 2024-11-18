@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 15:06:34 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/18 18:10:57 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/18 23:43:25 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,12 @@
 #include <limits.h>
 
 
-#define FOV (60 * (M_PI / 180))
+#define FOV (60.0 * (M_PI / 180.0))
 
 
-# define Scren_W 1800 // screen width
+# define Scren_W 1000 // screen width
 # define Scren_H 720 // screen height
-# define TILE_SIZE 32.0 // tile size
+# define TILE_SIZE 32 // tile size
 #define NUM_RAYS Scren_W
 
 typedef enum e_type {
@@ -44,9 +44,9 @@ typedef enum e_type {
 
 typedef struct s_texture
 {
-	char			*Path;
-	char			*rgp_color;
-	int				identifier;
+	char				*Path;
+	char				*rgp_color;
+	int					identifier;
 	struct s_texture	*next;
 } t_texture;
 
@@ -73,24 +73,24 @@ typedef struct s_data
 	int		height;
 	int		lenght;
 	double	angle;
-	double		p_x;
-	double		p_y;
+	double	p_x;
+	double	p_y;
 
 	// *****************
 
-	int 	tile_size;
+	int		tile_size;
 	
 	// *****************
-	float turnDirection;
-	int walkDirection;
-	float radius;
-	float rotationAngle;
-	float moveSpeed;
-	float rotationSpeed;
+	float		turnDirection;
+	int			walkDirection;
+	float		radius;
+	float		rotationAngle;
+	float		moveSpeed;
+	float		rotationSpeed;
 	// void *img;
-	t_image image[4];
+	t_image		image[4];
 	// *****************
-	t_texture *tex;
+	t_texture	*tex;
 	
 }t_data;
 
@@ -164,9 +164,8 @@ void	move_player_up(t_data *data);
 void    drawmap(t_data *data);
 void    drawplayer(t_data *data);
 int 	is_wall(t_data *data, double y, double x);
-float	normalize_angle(float angle);
-void draw_wall(t_data *data, t_ray *ray, int column);
-void draw_floor(t_data *data, double distance, double column);
+void 	draw_wall(t_data *data, t_ray *ray, int column);
+void 	draw_floor(t_data *data, double distance, double column);
 // int is_wall(t_data *data, double y, double x);
 
 #endif

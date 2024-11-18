@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 17:47:52 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/18 17:45:19 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/18 23:12:45 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,14 @@ void	move_player_down(t_data *data)
 	
 	x = data->p_x - cos(data->angle) * 5.00;
 	y = data->p_y - sin(data->angle) * 5.00;
-	if (data->all_map[(int)y / 10][(int)x / 10] == '1')
+	if (data->all_map[(int)(y / TILE_SIZE)][(int)(x / TILE_SIZE)] == '1')
 		return ;
 	data->p_y = y;
 	data->p_x = x;
-	mlx_clear_window(data->mlx, data->win);
+	// mlx_clear_window(data->mlx, data->win);
 	mlx_clear_window(data->mlx, data->win_test);
-	drawmap(data);
-	drawplayer(data);
+	// drawmap(data);
+	// drawplayer(data);
 	castAllRay(data);
 }
 
@@ -36,44 +36,44 @@ void	move_player_up(t_data *data)
 {
 	double y = data->p_y + sin(data->angle) * 5.00;
 	double x = data->p_x + cos(data->angle) * 5.00;
-	if (data->all_map[(int)y / 10][(int)x / 10] == '1')
+	if(data->all_map[(int)(y / TILE_SIZE)][(int)x / (int)TILE_SIZE] == '1')
 		return ;
 	data->p_y = y;
 	data->p_x = x;
-	mlx_clear_window(data->mlx, data->win);
+	// mlx_clear_window(data->mlx, data->win);
 	mlx_clear_window(data->mlx, data->win_test);
-	drawmap(data);
-	drawplayer(data); 
+	// drawmap(data);
+	// drawplayer(data); 
 	castAllRay(data);
 }
 
 void	move_player_left(t_data *data)
 { 
-	double y = data->p_y + sin(data->angle - M_PI_2) * 5.00;
-	double x = data->p_x + cos(data->angle - M_PI_2) * 5.00;
-	if (data->all_map[(int)y / 10][(int)x / 10] == '1')
+	double y = data->p_y + sin(data->angle - M_PI_2) * 10.00;
+	double x = data->p_x + cos(data->angle - M_PI_2) * 10.00;
+	if (data->all_map[(int)(y / TILE_SIZE)][(int)(x / TILE_SIZE)] == '1')
 		return ;
 	data->p_y = y;
 	data->p_x = x;
-	mlx_clear_window(data->mlx, data->win);
+	// mlx_clear_window(data->mlx, data->win);
 	mlx_clear_window(data->mlx, data->win_test);
-	drawmap(data);
-	drawplayer(data);
+	// drawmap(data);
+	// drawplayer(data);
 	castAllRay(data);
 }
 
 void	move_player_right(t_data *data)
 {
-	double y = data->p_y + sin(data->angle + M_PI_2) * 5.00;
-	double x = data->p_x + cos(data->angle + M_PI_2) * 5.00;
-	if (data->all_map[(int)y / 10][(int)x / 10] == '1')
+	double y = data->p_y + sin(data->angle + M_PI_2) * 10.00;
+	double x = data->p_x + cos(data->angle + M_PI_2) * 10.00;
+	if (data->all_map[(int)(y / TILE_SIZE)][(int)(x / TILE_SIZE)] == '1')
 		return ;
 	data->p_y = y;
 	data->p_x = x;
-	mlx_clear_window(data->mlx, data->win);
+	// mlx_clear_window(data->mlx, data->win);
 	mlx_clear_window(data->mlx, data->win_test);
-	drawmap(data);
-	drawplayer(data);
+	// drawmap(data);
+	// drawplayer(data);
 	castAllRay(data);
 }
 
@@ -81,25 +81,25 @@ void	player_rot(t_data *data, int keycode)
 {
 	if (keycode == 123)
 	{
-		data->angle -= 0.1 * (M_PI / 180) * 50;
+		data->angle -= 0.1 * (M_PI / 180) * 80.00;
   		if (data->angle < 0)
 			data->angle += 2 * M_PI;
 
-		mlx_clear_window(data->mlx, data->win);
+		// mlx_clear_window(data->mlx, data->win);
 		mlx_clear_window(data->mlx, data->win_test);
-		drawmap(data);
-		drawplayer(data);
+		// drawmap(data);
+		// drawplayer(data);
 		castAllRay(data);
 	}
 	if (keycode == 124)
 	{
-		data->angle += 0.1 * (M_PI / 180) * 50;
+		data->angle += 0.1 * (M_PI / 180) * 80.00;
 		if (data->angle > 2 * M_PI)
 			data->angle -= 2 * M_PI;
-		mlx_clear_window(data->mlx, data->win);
+		// mlx_clear_window(data->mlx, data->win);
 		mlx_clear_window(data->mlx, data->win_test);
-		drawmap(data);
-		drawplayer(data);
+		// drawmap(data);
+		// drawplayer(data);
 		castAllRay(data);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 21:56:12 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/14 10:32:19 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/18 22:38:25 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 int is_wall(t_data *data, double y, double x)
 {
-    if (x < 0 || x > data->lenght * 10 || y < 0 || y > data->height * 10)
+    if (x < 0 || x > data->lenght * TILE_SIZE || y < 0 || y > data->height * TILE_SIZE)
         return (1);
-    if (data->all_map[(int)(y / 10)][(int)(x / 10)] == '1')
+    if (data->all_map[(int)y / (int)TILE_SIZE][(int)x / (int)TILE_SIZE] == '1')
         return (1);
       
     return (0);
@@ -31,19 +31,19 @@ double get_v_intercept(t_data *data, t_ray *ray, double xstep, double ystep)
     double ytocheck;
     double v_distance;
   
-    xintercept = floor(data->p_x / 10) * 10;
+    xintercept = floor(data->p_x / TILE_SIZE) * TILE_SIZE;
     if (ray->lookingRight)
-        xintercept += 10;   
+        xintercept += TILE_SIZE;   
     yintercept = data->p_y + (xintercept - data->p_x) * tan(ray->rayAngle);
-    xstep = 10;
-    ystep = 10 * tan(ray->rayAngle);
+    xstep = TILE_SIZE;
+    ystep = TILE_SIZE * tan(ray->rayAngle);
     if (ray->lookingLeft)
         xstep *= -1;
     if (ray->lookingUp && ystep > 0)
         ystep *= -1;
     if (ray->lookingDown && ystep < 0)
         ystep *= -1;
-    while (xintercept >= 0 && xintercept <= data->lenght * 10 && yintercept >= 0 && yintercept <= data->height * 10)
+    while (xintercept >= 0 && xintercept <= data->lenght * TILE_SIZE && yintercept >= 0 && yintercept <= data->height * TILE_SIZE)
     {
         if (ray->lookingLeft)
             xtocheck = xintercept - 1;
@@ -72,19 +72,19 @@ double get_h_intercept(t_data *data, t_ray *ray, double xstep, double ystep)
     double ytocheck;
     double h_distance;
 
-    yintercept = floor(data->p_y / 10) * 10;
+    yintercept = floor(data->p_y / TILE_SIZE) * TILE_SIZE;
     if (ray->lookingDown)
-        yintercept += 10;
+        yintercept += TILE_SIZE;
     xintercept = data->p_x + (yintercept - data->p_y) / tan(ray->rayAngle);
-    ystep = 10;
-    xstep = 10 / tan(ray->rayAngle); 
+    ystep = TILE_SIZE;
+    xstep = TILE_SIZE / tan(ray->rayAngle); 
     if (ray->lookingUp)
         ystep *= -1;
     if (ray->lookingLeft && xstep > 0)
         xstep *= -1;
     if (ray->lookingRight && xstep < 0)
         xstep *= -1;
-    while (xintercept >= 0 && xintercept <= data->lenght * 10 && yintercept >= 0 && yintercept <= data->height * 10)
+    while (xintercept >= 0 && xintercept <= data->lenght * TILE_SIZE && yintercept >= 0 && yintercept <= data->height * TILE_SIZE)
     {
         xtocheck = xintercept;
         if (ray->lookingUp)

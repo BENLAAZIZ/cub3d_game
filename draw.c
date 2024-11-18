@@ -6,19 +6,18 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 18:12:27 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/18 18:28:42 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/19 00:07:30 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int _minimap(t_data *data, double y, double x)
-{
-    if (x < 0 || x > data->lenght * TILE_SIZE || y < 0 || y > data->height * TILE_SIZE)
-        return (0);
-    
-    return (1);
-}
+// int _minimap(t_data *data, double y, double x)
+// {
+//     if (x <= 0 || x > data->lenght * TILE_SIZE || y <= 0 || y > data->height * TILE_SIZE)
+//         return (0);
+//     return (1);
+// }
 
 
 
@@ -33,14 +32,14 @@ void    drawmap(t_data *data)
         {
             if (data->all_map[i][j] == '1')
             {
-                int y = 1;
-                int x = 1;
-                while (y < 10)
+                int y = 0;
+                int x = 0;
+                while (y < TILE_SIZE)
                 {
-                    x = 1;
-                    while (x < 10)
+                    x = 0;
+                    while (x < TILE_SIZE)
                     {
-                        mlx_pixel_put(data->mlx, data->win, (j * 10) + y, (i * 10) + x, 0x00FFFFFF);
+                        mlx_pixel_put(data->mlx, data->win_test, (j * TILE_SIZE) + y, (i * TILE_SIZE) + x, 0x00FFFFFF);
                         x++;
                     }
                     y++;
@@ -48,14 +47,14 @@ void    drawmap(t_data *data)
             }
             else if (data->all_map[i][j] == '0' || data->all_map[i][j] == 'N')
             {
-                int y = 1;
-                int x = 1;
-                while (y < 10)
+                int y = 0;
+                int x = 0;
+                while (y < TILE_SIZE)
                 {
-                    x = 1;
-                    while (x < 10)
+                    x = 0;
+                    while (x < TILE_SIZE)
                     {
-                        mlx_pixel_put(data->mlx, data->win, (j * 10) + y, (i * 10) + x, 0x808080);
+                        mlx_pixel_put(data->mlx, data->win_test, (j * TILE_SIZE) + y, (i * TILE_SIZE) + x, 0x808080);
                         x++;
                     }
                     y++;
@@ -73,62 +72,47 @@ void    drawplayer(t_data *data)
 {
     double x = -2;
     double y = -2;
-    double ray_y = data->p_y;
-    double ray_x = data->p_x;
-    double angle = data->angle;
-    double ray_step = 0.5;
-    double step_x = cos(angle) * ray_step;
-    double step_y = sin(angle) * ray_step;
-
+   
     while (y < 2)
     {
         x = -2;
         while (x < 2)
         {
-            mlx_pixel_put(data->mlx, data->win, data->p_x + x, data->p_y + y, 0xFF0000);
+            mlx_pixel_put(data->mlx, data->win_test, data->p_x  + x, data->p_y + y, 0xFF0000);
             x++;
         }
         y++;
     }
-    double z = 800;
-    while (z)
-    {
-        if (is_wall(data, ray_y, ray_x))
-                break;
-        mlx_pixel_put(data->mlx, data->win, ray_x, ray_y, 0x40ff00);
-        ray_x += step_x;
-        ray_y += step_y;
-        z--;
-    }
-    ray_y = data->p_y;
-    ray_x = data->p_x;
-    step_x = cos(angle - (FOV / 2)) * ray_step;
-    step_y = sin(angle - (FOV / 2)) * ray_step;
-    z = 800;
-    while (z)
-    {
-        if (is_wall(data, ray_y, ray_x))
-                break;
-        mlx_pixel_put(data->mlx, data->win, ray_x, ray_y, 0x40ff00);
-        ray_x += step_x;
-        ray_y += step_y;
-        z--;
-    }
-    ray_y = data->p_y;
-    ray_x = data->p_x;
-    step_x = cos(angle + (FOV / 2)) * ray_step;
-    step_y = sin(angle + (FOV / 2)) * ray_step;
-    z = 800;
-    while (z)
-    {
-        if (is_wall(data, ray_y, ray_x))
-                break;
-        mlx_pixel_put(data->mlx, data->win, ray_x, ray_y, 0x40ff00);
-        ray_x += step_x;
-        ray_y += step_y;
-        z--;
-    }
+
+
+    double ray_y = data->p_y;
+    double ray_x = data->p_x;
+    double ray_step = 0.5;
+    double z = 100;
+    double step_x = cos(data->angle - (FOV / 2)) * ray_step;
+    double step_y = sin(data->angle - (FOV / 2)) * ray_step;
+    double rayAngle = data->angle - (FOV / 2);
+    printf("angle = %f\n", data->angle);
+    printf("data->angle - (FOV / 2) = %f\n", data->angle - (FOV / 2));
+    printf("data->angle + (FOV / 2) = %f\n", data->angle + (FOV / 2));
     
+    while (rayAngle < data->angle + (FOV / 2))
+    {
+        while (z)
+        {
+            if (is_wall(data, ray_y, ray_x))
+                    break;
+            mlx_pixel_put(data->mlx, data->win_test, ray_x, ray_y, 0x40ff00);
+            ray_x += step_x;
+            ray_y += step_y;
+            z--;
+        }
+        rayAngle += 0.01;
+        step_x = cos(rayAngle) * ray_step;
+        step_y = sin(rayAngle) * ray_step;
+        // printf(" ======== rayAngle = %f ========\n", rayAngle);
+        z = 100;
+    }
 }
 
 
@@ -145,17 +129,24 @@ void draw_floor(t_data *data, double distance, double column)
 	int i = bottom_y;
 	while(i < window_height)
 	{
-        if(_minimap(data, i, column))
-        {
-            i++;
-            continue;
-        }
+        // if(_minimap(data,i , column))
+        // {
+        //     // drawmap(data);
+        //     i++;
+        //     continue;
+        // }
 		mlx_pixel_put(data->mlx, data->win_test, column, i, 0x629584);
 		i++;
 	}
 	i = 0;
 	while (i < top_y)
 	{
+        // if(_minimap(data,i , column))
+        // {
+        //     // drawmap(data);
+        //     i++;
+        //     continue;
+        // }
 		mlx_pixel_put(data->mlx, data->win_test, column, i, 0x243642);
 		i++;
 	}
@@ -258,12 +249,6 @@ void draw_wall(t_data *data, t_ray *ray, int column)
             y = 0;
         if (y >= window_height)
             break;
-        if (_minimap(data, y, column))
-        {
-            y++;
-            continue;
-        }
-
         tex_y = (y - top_y) / (bottom_y - top_y);
         tex_y *= img->height;
         color = get_texture_pixel_color(data, texture_x, tex_y, img);
