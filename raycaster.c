@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 23:38:53 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/18 17:57:15 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/18 18:19:23 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -236,8 +236,7 @@ int create_window(char **map, t_texture *tex)
     data.height = len;
     data.win = mlx_new_window(data.mlx, data.lenght*10 , data.height*10 , "hello");
     data.win_test = mlx_new_window(data.mlx, Scren_W, Scren_H, "test");
-
-    
+ 
 //****************************************
    data.tex = tex;
      if (get_image_texture(&data, tex))
@@ -245,6 +244,7 @@ int create_window(char **map, t_texture *tex)
     if (get_addr_texture(&data))
         return 1;
 //*******************************************
+
     data.all_map = map;
     get_player_position(&data);
     drawmap(&data);
@@ -253,6 +253,7 @@ int create_window(char **map, t_texture *tex)
     mlx_hook(data.win, 2, 0, key_press, &data);
     mlx_hook(data.win_test, 2, 0, key_press, &data);
     
+    mlx_loop_hook(data.mlx, key_press, &data);
     mlx_loop(data.mlx);
     return (0);
 }

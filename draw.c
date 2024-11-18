@@ -6,11 +6,20 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 18:12:27 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/18 17:40:11 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/18 18:28:42 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+int _minimap(t_data *data, double y, double x)
+{
+    if (x < 0 || x > data->lenght * TILE_SIZE || y < 0 || y > data->height * TILE_SIZE)
+        return (0);
+    
+    return (1);
+}
+
 
 
 void    drawmap(t_data *data)
@@ -136,6 +145,11 @@ void draw_floor(t_data *data, double distance, double column)
 	int i = bottom_y;
 	while(i < window_height)
 	{
+        if(_minimap(data, i, column))
+        {
+            i++;
+            continue;
+        }
 		mlx_pixel_put(data->mlx, data->win_test, column, i, 0x629584);
 		i++;
 	}
@@ -201,7 +215,6 @@ int point_image_texture(t_data *data, int flag, t_image **img)
     return (0);
 }
 
-
 void draw_wall(t_data *data, t_ray *ray, int column)
 {
     double line_height;
@@ -245,6 +258,11 @@ void draw_wall(t_data *data, t_ray *ray, int column)
             y = 0;
         if (y >= window_height)
             break;
+        if (_minimap(data, y, column))
+        {
+            y++;
+            continue;
+        }
 
         tex_y = (y - top_y) / (bottom_y - top_y);
         tex_y *= img->height;
