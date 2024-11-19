@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 15:06:34 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/19 23:12:29 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/19 23:46:00 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@
 
 
 # define Scren_W 1000 // screen width
-# define Scren_H 720 // screen height
-# define TILE_SIZE 50 // tile size
+# define Scren_H 700 // screen height
+# define TILE_SIZE 10 // tile size
 #define NUM_RAYS Scren_W
 
 typedef enum e_type {
@@ -166,6 +166,7 @@ void 	draw_floor(t_data *data, double distance, double column);
 int 	get_image_texture(t_data *data, t_texture *tex);
 int 	get_addr_texture(t_data *data);
 void 	clear_texture(t_texture *tex);
+int	mouse_rotate(int x, int y, t_data *data);
 
 
 #endif

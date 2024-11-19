@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 17:47:52 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/19 21:47:29 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/19 23:31:57 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,5 +118,27 @@ int	key_press(int keycode, t_data *data)
 		move_player_right(data);
 	else if (keycode == 123 || keycode == 124)
 		player_rot(data, keycode);
+	return (0);
+}
+
+int	mouse_rotate(int x, int y, t_data *data)
+{
+	int	safe_zone;
+
+	if (x < 0 || x > Scren_W || y < 0 || y > Scren_H)
+		return (0);
+	safe_zone = abs(x - (Scren_W / 2));
+	if (safe_zone < 100)
+		return (0);
+	if (x > Scren_W / 2)
+		data->angle -= safe_zone / 100;
+	else
+		data->angle += safe_zone / 100;
+        if (data->angle > 2 * M_PI)
+            data->angle -= 2 * M_PI;
+        if (data->angle < 0)
+            data->angle += 2 * M_PI;
+    castAllRay(data);
+
 	return (0);
 }
