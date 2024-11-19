@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 18:12:27 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/19 22:39:45 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/19 22:53:12 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,13 +206,22 @@ void draw_wall(t_data *data, t_ray *ray, int column)
     bottom_y = window_height / 2 + line_height / 2;
 
     int flag = 0;
-    //   if ((ray->rayAngle > 0 && ray->rayAngle < M_PI_4) || (ray->rayAngle > 7 * M_PI_4 && ray->rayAngle <= 2 * M_PI))
+      if ((ray->rayAngle > 0 && ray->rayAngle < M_PI_4) || (ray->rayAngle > 7 * M_PI_4 && ray->rayAngle <= 2 * M_PI))
+        flag = 0;
+    else if (ray->rayAngle >= M_PI_4 && ray->rayAngle < 3 * M_PI_4)
+        flag = 1;
+    else if (ray->rayAngle >= 3 * M_PI_4 && ray->rayAngle < 5 * M_PI_4)
+        flag = 2;
+    else if (ray->rayAngle >= 5 * M_PI_4 && ray->rayAngle <= 7 * M_PI_4)
+        flag = 3;
+
+    // if (ray->lookingDown && ray->flag == 1)
     //     flag = 0;
-    // else if (ray->rayAngle >= M_PI_4 && ray->rayAngle < 3 * M_PI_4)
+    // else if (ray->lookingUp && ray->flag == 1) 
     //     flag = 1;
-    // else if (ray->rayAngle >= 3 * M_PI_4 && ray->rayAngle < 5 * M_PI_4)
+    // else if (ray->lookingRight && ray->flag == 0)
     //     flag = 2;
-    // else if (ray->rayAngle >= 5 * M_PI_4 && ray->rayAngle <= 7 * M_PI_4)
+    // else if (ray->lookingLeft && ray->flag == 0)
     //     flag = 3;
 
     if (point_image_texture(data, flag, &img))

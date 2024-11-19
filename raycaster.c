@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 23:38:53 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/19 22:19:40 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/19 22:49:24 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ void oneRay(t_data *data, t_ray *ray)
     if (ray->rayAngle < M_PI_2 || ray->rayAngle > 3 * M_PI_2)
         ray->lookingRight = 1;
     ray->lookingLeft = !ray->lookingRight;
-    
     ray->v_distance = get_v_intercept(data, ray, 0, 0);
     ray->h_distance = get_h_intercept(data, ray, 0, 0);
     if (ray->v_distance <= ray->h_distance)
@@ -71,19 +70,6 @@ void oneRay(t_data *data, t_ray *ray)
         ray->x_hit = ray->v_hit_x;
         ray->y_hit = ray->v_hit_y;
         ray->flag = 1;
-        
-        // int x = -2;
-        // int y = -2;
-        // while (y < 2)
-        // {
-        //     x = -2;
-        //     while (x < 2)
-        //     {
-        //         mlx_pixel_put(data->mlx, data->win_test, ray->v_hit_x + x, ray->v_hit_y + y, 0xF61108);
-        //             x++;
-        //     }
-        //     y++;
-        // }
     }
     else
     {
@@ -91,18 +77,6 @@ void oneRay(t_data *data, t_ray *ray)
         ray->x_hit = ray->h_hit_x / TILE_SIZE;
         ray->y_hit = ray->h_hit_y / TILE_SIZE;
         ray->flag = 0;
-        // int x = -2;
-        // int y = -2;
-        // while (y < 2)
-        // {
-        // x = -2;
-        // while (x < 2)
-        // {
-        // mlx_pixel_put(data->mlx, data->win_test, ray->h_hit_x + x, ray->h_hit_y + y, 0xF61108);
-        //     x++;
-        // }
-        // y++;
-        // }
     }
 }
 
