@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 15:06:34 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/19 23:07:35 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/19 23:12:29 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,43 +78,38 @@ typedef struct s_player
 typedef struct s_data
 {
 	
-	char	**all_map;
-	void	*mlx;
-	void	*win;
-	void	*win_test;
-	int		height;
-	int		lenght;
-	double	angle;
-	double	p_x;
-	double	p_y;
-
-
-
+	char		**all_map;
+	void		*mlx;
+	void		*win;
+	void		*win_test;
+	int			height;
+	int			lenght;
+	double		angle;
+	double		p_x;
+	double		p_y;
 	t_player	player;
 	t_image		image[4];
-	// t_texture	*tex;
 	
 }t_data;
 
 typedef struct s_ray {
 
-	double rayAngle;
-	double v_distance;
-    double h_distance;
-	double h_hit_x;
-    double h_hit_y;
-    double v_hit_x;
-    double v_hit_y;
+	double	rayAngle;
+	double	v_distance;
+    double	h_distance;
+	double	h_hit_x;
+    double	h_hit_y;
+    double	v_hit_x;
+    double	v_hit_y;
 
-	double x_hit;
-	double y_hit;
-	double distance;
-	int lookingDown;
-	int lookingUp;
-	int lookingRight;
-	int lookingLeft;
-	int flag;
-	// struct s_ray *next;
+	double	x_hit;
+	double	y_hit;
+	double	distance;
+	int		lookingDown;
+	int		lookingUp;
+	int		lookingRight;
+	int		lookingLeft;
+	int		flag;
 }t_ray;
 
 
@@ -135,7 +130,7 @@ char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strdup(char const *s1);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 
-//libft
+
 char		*ft_strjoin(char const *s1, char const *s2);
 size_t		ft_strlen(const char *s);
 int			ft_strcmp(const char *s1, const char *s2);
@@ -171,6 +166,6 @@ void 	draw_floor(t_data *data, double distance, double column);
 int 	get_image_texture(t_data *data, t_texture *tex);
 int 	get_addr_texture(t_data *data);
 void 	clear_texture(t_texture *tex);
-// int is_wall(t_data *data, double y, double x);
+
 
 #endif
