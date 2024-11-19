@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 23:38:53 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/18 23:19:46 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/19 19:20:33 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,8 +230,8 @@ int create_window(char **map, t_texture *tex)
     t_data data;
     int len = 0;
     
-    data.p_y = 0;
-    data.p_x = 0;
+    // data.p_y = 0;
+    // data.p_x = 0;
     data.angle = 3 * M_PI_2;
     while (map[len])
         len++;

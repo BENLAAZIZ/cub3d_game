@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 21:56:12 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/18 22:38:25 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/19 19:29:27 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int is_wall(t_data *data, double y, double x)
 {
-    if (x < 0 || x > data->lenght * TILE_SIZE || y < 0 || y > data->height * TILE_SIZE)
+    if (x <= 0 || x >= data->lenght * TILE_SIZE || y <= 0 || y >= data->height * TILE_SIZE)
         return (1);
     if (data->all_map[(int)y / (int)TILE_SIZE][(int)x / (int)TILE_SIZE] == '1')
         return (1);

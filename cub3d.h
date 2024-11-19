@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 15:06:34 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/18 23:43:25 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/19 19:46:45 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 
 # define Scren_W 1000 // screen width
 # define Scren_H 720 // screen height
-# define TILE_SIZE 32 // tile size
+# define TILE_SIZE 30 // tile size
 #define NUM_RAYS Scren_W
 
 typedef enum e_type {
@@ -63,6 +63,18 @@ typedef struct s_image
 	int		endian;
 } t_image;
 
+typedef struct s_player 
+{
+	// double	p_x;
+	// double	p_y;
+	double	ray_y;
+    double	ray_x;
+    double	step_x;
+    double	step_y;
+    double	ray_step;
+    int		z;
+} t_player;
+
 typedef struct s_data
 {
 	
@@ -76,20 +88,10 @@ typedef struct s_data
 	double	p_x;
 	double	p_y;
 
-	// *****************
 
-	int		tile_size;
-	
-	// *****************
-	float		turnDirection;
-	int			walkDirection;
-	float		radius;
-	float		rotationAngle;
-	float		moveSpeed;
-	float		rotationSpeed;
-	// void *img;
+
+	t_player	player;
 	t_image		image[4];
-	// *****************
 	t_texture	*tex;
 	
 }t_data;

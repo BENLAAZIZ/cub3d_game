@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 18:12:27 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/19 00:07:30 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/19 19:50:05 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,44 @@ void    drawmap(t_data *data)
 
 void    drawplayer(t_data *data)
 {
+    t_player *player;
+    player = &data->player;
     double x = -2;
     double y = -2;
-   
+    // double ray_y = data->p_y;
+    player->ray_y = data->p_y;
+    player->ray_x = data->p_x;
+    player->step_x = cos(data->angle - (FOV / 2)) * player->ray_step;
+    player->step_y = sin(data->angle - (FOV / 2)) * player->ray_step;
+    
+    // double ray_x = data->p_x;
+    // double ray_step = 0.5;
+    player->ray_step = 0.5;
+    // int z = 100;
+    player->z = 100;
+    // double step_x = cos(data->angle - (FOV / 2)) * ray_step;
+    // double step_y = sin(data->angle - (FOV / 2)) * ray_step;
+    double rayAngle = data->angle - (FOV / 2);
+    
+    while (rayAngle < data->angle + (FOV / 2))
+    {
+        while (player->z)
+        {
+            if (is_wall(data, player->ray_y, player->ray_x))
+                    break;
+            mlx_pixel_put(data->mlx, data->win_test, player->ray_x, player->ray_y, 0x40ff00);
+            player->ray_x += player->step_x;
+            player->ray_y += player->step_y;
+            player->z--;
+        }
+        player->ray_y = data->p_y;
+        player->ray_x = data->p_x;
+        rayAngle += 0.01;
+        player->step_x = cos(rayAngle) * player->ray_step;
+        player->step_y = sin(rayAngle) * player->ray_step;
+        player->z = 100;
+    }
+    
     while (y < 2)
     {
         x = -2;
@@ -82,36 +117,6 @@ void    drawplayer(t_data *data)
             x++;
         }
         y++;
-    }
-
-
-    double ray_y = data->p_y;
-    double ray_x = data->p_x;
-    double ray_step = 0.5;
-    double z = 100;
-    double step_x = cos(data->angle - (FOV / 2)) * ray_step;
-    double step_y = sin(data->angle - (FOV / 2)) * ray_step;
-    double rayAngle = data->angle - (FOV / 2);
-    printf("angle = %f\n", data->angle);
-    printf("data->angle - (FOV / 2) = %f\n", data->angle - (FOV / 2));
-    printf("data->angle + (FOV / 2) = %f\n", data->angle + (FOV / 2));
-    
-    while (rayAngle < data->angle + (FOV / 2))
-    {
-        while (z)
-        {
-            if (is_wall(data, ray_y, ray_x))
-                    break;
-            mlx_pixel_put(data->mlx, data->win_test, ray_x, ray_y, 0x40ff00);
-            ray_x += step_x;
-            ray_y += step_y;
-            z--;
-        }
-        rayAngle += 0.01;
-        step_x = cos(rayAngle) * ray_step;
-        step_y = sin(rayAngle) * ray_step;
-        // printf(" ======== rayAngle = %f ========\n", rayAngle);
-        z = 100;
     }
 }
 
@@ -129,24 +134,12 @@ void draw_floor(t_data *data, double distance, double column)
 	int i = bottom_y;
 	while(i < window_height)
 	{
-        // if(_minimap(data,i , column))
-        // {
-        //     // drawmap(data);
-        //     i++;
-        //     continue;
-        // }
 		mlx_pixel_put(data->mlx, data->win_test, column, i, 0x629584);
 		i++;
 	}
 	i = 0;
 	while (i < top_y)
 	{
-        // if(_minimap(data,i , column))
-        // {
-        //     // drawmap(data);
-        //     i++;
-        //     continue;
-        // }
 		mlx_pixel_put(data->mlx, data->win_test, column, i, 0x243642);
 		i++;
 	}
