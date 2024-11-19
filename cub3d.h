@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 15:06:34 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/20 00:05:54 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/20 00:09:12 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 
 # define Scren_W 1000 // screen width
 # define Scren_H 700 // screen height
-# define TILE_SIZE 20 // tile size
+# define TILE_SIZE 32 // tile size
 #define NUM_RAYS Scren_W
 
 typedef enum e_type {
