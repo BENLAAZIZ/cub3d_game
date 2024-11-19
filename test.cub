@@ -1,7 +1,7 @@
-NO textures/hamza.xpm  
-SO textures/t.xpm
-WE textures/hamza.xpm
-EA textures/t.xpm
+NO textures/t0.xpm  
+SO textures/t0.xpm 
+WE textures/t0.xpm 
+EA textures/t0.xpm 
 
 F     0 , 0 , 0
 C 0,0,0
