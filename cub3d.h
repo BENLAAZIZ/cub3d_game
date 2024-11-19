@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 15:06:34 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/19 22:20:36 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/19 23:07:35 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,6 +168,9 @@ void    drawplayer(t_data *data);
 int 	is_wall(t_data *data, double y, double x);
 void 	draw_wall(t_data *data, t_ray *ray, int column);
 void 	draw_floor(t_data *data, double distance, double column);
+int 	get_image_texture(t_data *data, t_texture *tex);
+int 	get_addr_texture(t_data *data);
+void 	clear_texture(t_texture *tex);
 // int is_wall(t_data *data, double y, double x);
 
 #endif

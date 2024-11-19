@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 18:12:27 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/19 22:53:12 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/19 23:02:06 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,14 +196,13 @@ void draw_wall(t_data *data, t_ray *ray, int column)
 {
     double line_height;
     double top_y, bottom_y;
-    double window_height = Scren_H;
     double color, y, tex_y, t_x;
     double texture_x;
     t_image *img;
 
-    line_height = (window_height / ray->distance) * 5;
-    top_y = window_height / 2 - line_height / 2;
-    bottom_y = window_height / 2 + line_height / 2;
+    line_height = (Scren_H / ray->distance) * 5;
+    top_y = Scren_H / 2 - line_height / 2;
+    bottom_y = Scren_H / 2 + line_height / 2;
 
     int flag = 0;
       if ((ray->rayAngle > 0 && ray->rayAngle < M_PI_4) || (ray->rayAngle > 7 * M_PI_4 && ray->rayAngle <= 2 * M_PI))
@@ -242,7 +241,7 @@ void draw_wall(t_data *data, t_ray *ray, int column)
     {
         if (y < 0)
             y = 0;
-        if (y >= window_height)
+        if (y >= Scren_H)
             break;
         tex_y = (y - top_y) / (bottom_y - top_y);
         tex_y *= img->height;
