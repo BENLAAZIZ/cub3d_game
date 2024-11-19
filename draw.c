@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 18:12:27 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/19 19:50:05 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/19 22:39:45 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,12 @@
 
 void    drawmap(t_data *data)
 {
-    int i = 0;
-    int j = 0;
+    int i;
+    int j;
+    int y;
+    int x;
+    
+    i = 0;
     while (data->all_map[i])
     {
         j = 0;
@@ -32,8 +36,7 @@ void    drawmap(t_data *data)
         {
             if (data->all_map[i][j] == '1')
             {
-                int y = 0;
-                int x = 0;
+                y = 0;
                 while (y < TILE_SIZE)
                 {
                     x = 0;
@@ -47,8 +50,7 @@ void    drawmap(t_data *data)
             }
             else if (data->all_map[i][j] == '0' || data->all_map[i][j] == 'N')
             {
-                int y = 0;
-                int x = 0;
+                y = 0;
                 while (y < TILE_SIZE)
                 {
                     x = 0;
@@ -67,28 +69,10 @@ void    drawmap(t_data *data)
 }
 
 
-
-void    drawplayer(t_data *data)
+void    draw_rays_minimap(t_data *data, t_player *player)
 {
-    t_player *player;
-    player = &data->player;
-    double x = -2;
-    double y = -2;
-    // double ray_y = data->p_y;
-    player->ray_y = data->p_y;
-    player->ray_x = data->p_x;
-    player->step_x = cos(data->angle - (FOV / 2)) * player->ray_step;
-    player->step_y = sin(data->angle - (FOV / 2)) * player->ray_step;
-    
-    // double ray_x = data->p_x;
-    // double ray_step = 0.5;
-    player->ray_step = 0.5;
-    // int z = 100;
-    player->z = 100;
-    // double step_x = cos(data->angle - (FOV / 2)) * ray_step;
-    // double step_y = sin(data->angle - (FOV / 2)) * ray_step;
-    double rayAngle = data->angle - (FOV / 2);
-    
+     double rayAngle;
+     rayAngle = data->angle - (FOV / 2);
     while (rayAngle < data->angle + (FOV / 2))
     {
         while (player->z)
@@ -108,6 +92,24 @@ void    drawplayer(t_data *data)
         player->z = 100;
     }
     
+}
+
+
+void    drawplayer(t_data *data)
+{
+    t_player    player;
+    double      x;
+    double      y;
+
+    x = -2;
+    y = -2;
+    player.ray_y = data->p_y;
+    player.ray_x = data->p_x;
+    player.step_x = cos(data->angle - (FOV / 2)) * player.ray_step;
+    player.step_y = sin(data->angle - (FOV / 2)) * player.ray_step;
+    player.ray_step = 0.5;
+    player.z = 100;
+    draw_rays_minimap(data, &player); 
     while (y < 2)
     {
         x = -2;
@@ -126,23 +128,17 @@ void draw_floor(t_data *data, double distance, double column)
 	double line_height;
    	double top_y;
    	double bottom_y;
-	double window_height = Scren_H;
-    line_height = (window_height / distance) * 5;
-    top_y = window_height / 2 - line_height / 2;
+	
+    line_height = (Scren_H / distance) * 5;
+    top_y = Scren_H / 2 - line_height / 2;
     bottom_y = top_y + line_height;
 
-	int i = bottom_y;
-	while(i < window_height)
-	{
+	int i = bottom_y - 1;
+	while(++i < Scren_H)
 		mlx_pixel_put(data->mlx, data->win_test, column, i, 0x629584);
-		i++;
-	}
-	i = 0;
-	while (i < top_y)
-	{
+	i = -1;
+	while (++i < top_y)
 		mlx_pixel_put(data->mlx, data->win_test, column, i, 0x243642);
-		i++;
-	}
 }
 
 // int get_color_from_distance(double distance)
@@ -160,13 +156,10 @@ void draw_floor(t_data *data, double distance, double column)
 // }
 
 
-int get_texture_pixel_color(t_data *data, int texture_x, int texture_y, t_image *img)
+int get_texture_pixel_color(int texture_x, int texture_y, t_image *img)
 {
     int color;
     // char *dst;
-    (void)data;
-
-    
      if (texture_x < 0 || texture_x >= img->whith || texture_y < 0 || texture_y >= img->height)
     {
         printf("Invalid texture coordinates: x=%d, y=%d\n", texture_x, texture_y);
@@ -188,13 +181,13 @@ int point_image_texture(t_data *data, int flag, t_image **img)
    
         if (flag == 0)
             *img = &data->image[0];
-        if (flag == 1)
+        else if (flag == 1)
             *img = &data->image[1];
-        if (flag == 2)
+        else if (flag == 2)
             *img = &data->image[2];
-        if (flag == 3)
+        else if (flag == 3)
             *img = &data->image[3];
-        if (*img == NULL)
+        else if (*img == NULL)
             return (1);
     return (0);
 }
@@ -206,31 +199,31 @@ void draw_wall(t_data *data, t_ray *ray, int column)
     double window_height = Scren_H;
     double color, y, tex_y, t_x;
     double texture_x;
+    t_image *img;
 
     line_height = (window_height / ray->distance) * 5;
     top_y = window_height / 2 - line_height / 2;
     bottom_y = window_height / 2 + line_height / 2;
 
     int flag = 0;
-      if ((ray->rayAngle > 0 && ray->rayAngle < M_PI_4) || (ray->rayAngle > 7 * M_PI_4 && ray->rayAngle <= 2 * M_PI))
-        flag = 0;
-    else if (ray->rayAngle >= M_PI_4 && ray->rayAngle < 3 * M_PI_4)
-        flag = 1;
-    else if (ray->rayAngle >= 3 * M_PI_4 && ray->rayAngle < 5 * M_PI_4)
-        flag = 2;
-    else if (ray->rayAngle >= 5 * M_PI_4 && ray->rayAngle <= 7 * M_PI_4)
-        flag = 3;
+    //   if ((ray->rayAngle > 0 && ray->rayAngle < M_PI_4) || (ray->rayAngle > 7 * M_PI_4 && ray->rayAngle <= 2 * M_PI))
+    //     flag = 0;
+    // else if (ray->rayAngle >= M_PI_4 && ray->rayAngle < 3 * M_PI_4)
+    //     flag = 1;
+    // else if (ray->rayAngle >= 3 * M_PI_4 && ray->rayAngle < 5 * M_PI_4)
+    //     flag = 2;
+    // else if (ray->rayAngle >= 5 * M_PI_4 && ray->rayAngle <= 7 * M_PI_4)
+    //     flag = 3;
 
-    t_image *img;
     if (point_image_texture(data, flag, &img))
     {
         printf("Failed to load texture\n");
         return;
     }
     if (ray->flag == 1)
-        t_x = ray->v_hit_y / 10.0;
+        t_x = ray->v_hit_y / TILE_SIZE;
     else
-        t_x = ray->h_hit_x / 10.0;
+        t_x = ray->h_hit_x / TILE_SIZE;
 
     texture_x = t_x - floor(t_x);
     texture_x *= img->whith;
@@ -244,8 +237,8 @@ void draw_wall(t_data *data, t_ray *ray, int column)
             break;
         tex_y = (y - top_y) / (bottom_y - top_y);
         tex_y *= img->height;
-        color = get_texture_pixel_color(data, texture_x, tex_y, img);
+        color = get_texture_pixel_color(texture_x, tex_y, img);
         mlx_pixel_put(data->mlx, data->win_test, column, y, color);
         y++;
-    }
+    }  
 }

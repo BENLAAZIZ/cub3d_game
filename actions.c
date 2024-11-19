@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 17:47:52 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/18 23:12:45 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/19 21:47:29 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	move_player_down(t_data *data)
 	
 	x = data->p_x - cos(data->angle) * 5.00;
 	y = data->p_y - sin(data->angle) * 5.00;
-	if (data->all_map[(int)(y / TILE_SIZE)][(int)(x / TILE_SIZE)] == '1')
+	if (data->all_map[(int)(y / TILE_SIZE)][(int)x / (int)TILE_SIZE] == '1')
 		return ;
 	data->p_y = y;
 	data->p_x = x;
@@ -81,7 +81,7 @@ void	player_rot(t_data *data, int keycode)
 {
 	if (keycode == 123)
 	{
-		data->angle -= 0.1 * (M_PI / 180) * 80.00;
+		data->angle -= 0.1 * (M_PI / 180) * 50.00;
   		if (data->angle < 0)
 			data->angle += 2 * M_PI;
 
@@ -93,7 +93,7 @@ void	player_rot(t_data *data, int keycode)
 	}
 	if (keycode == 124)
 	{
-		data->angle += 0.1 * (M_PI / 180) * 80.00;
+		data->angle += 0.1 * (M_PI / 180) * 50.00;
 		if (data->angle > 2 * M_PI)
 			data->angle -= 2 * M_PI;
 		// mlx_clear_window(data->mlx, data->win);
@@ -108,15 +108,15 @@ int	key_press(int keycode, t_data *data)
 {
 	if (keycode == 53)
 		exit(0);
-	if (keycode == 13)
+	else if (keycode == 13)
 		move_player_up(data);
-	if (keycode == 1)
+	else if (keycode == 1)
 		move_player_down(data);
-	if (keycode == 0)
+	else if (keycode == 0)
 		move_player_left(data);
-	if (keycode == 2)
+	else if (keycode == 2)
 		move_player_right(data);
-	if (keycode == 123 || keycode == 124)
+	else if (keycode == 123 || keycode == 124)
 		player_rot(data, keycode);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 15:06:34 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/19 19:46:45 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/19 22:20:36 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 
 # define Scren_W 1000 // screen width
 # define Scren_H 720 // screen height
-# define TILE_SIZE 30 // tile size
+# define TILE_SIZE 50 // tile size
 #define NUM_RAYS Scren_W
 
 typedef enum e_type {
@@ -92,7 +92,7 @@ typedef struct s_data
 
 	t_player	player;
 	t_image		image[4];
-	t_texture	*tex;
+	// t_texture	*tex;
 	
 }t_data;
 

@@ -2,8 +2,8 @@ NAME = cub3d
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
-CFLAGS += -Ofast
+CFLAGS = -Wall -Wextra -Werror# -g -fsanitize=address
+# CFLAGS += -Ofast
 RM = rm -f
 
 SRC= main.c libft/ft_strjoin.c libft/ft_strlen.c get_next_line_utils.c get_next_line.c libft/ft_strcmp.c libft/ft_strncmp.c actions.c \
