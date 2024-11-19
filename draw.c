@@ -6,20 +6,11 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 18:12:27 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/19 23:44:52 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/20 00:41:12 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-// int _minimap(t_data *data, double y, double x)
-// {
-//     if (x <= 0 || x > data->lenght * TILE_SIZE || y <= 0 || y > data->height * TILE_SIZE)
-//         return (0);
-//     return (1);
-// }
-
-
 
 void    drawmap(t_data *data)
 {
@@ -48,7 +39,7 @@ void    drawmap(t_data *data)
                     y++;
                 }
             }
-            else if (data->all_map[i][j] == '0' || data->all_map[i][j] == 'N')
+            else if (data->all_map[i][j] == '0' || data->all_map[i][j] == 'N' || data->all_map[i][j] == 'S' || data->all_map[i][j] == 'E' || data->all_map[i][j] == 'W')
             {
                 y = 0;
                 while (y < TILE_SIZE)

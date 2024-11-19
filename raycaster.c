@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 23:38:53 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/20 00:35:17 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/20 00:38:49 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,9 @@ void    get_player_position(t_data *data)
                 break;
             data->p_x++;
         }
-        if (data->all_map[(int)data->p_y][(int)data->p_x] == 'N')
+        // if (data->all_map[(int)data->p_y][(int)data->p_x] == 'N')
+        //     break;
+        if (get_player_direction(data))
             break;
         data->p_y++;
     }
@@ -141,10 +143,10 @@ void  castAllRay(t_data *data)
     double column;
         
     column = 0;
-    data->image->image = mlx_new_image(data->mlx, Scren_W + 1, Scren_H + 1);
+    // data->image->image = mlx_new_image(data->mlx, Scren_W + 1, Scren_H + 1);
 	// if (!data->img.img)
 	// 	return (free_render(data, 0));
-	data->image->addr = mlx_get_data_addr(data->image->image, &data->image->bits_per_pixel, &data->image->line_length, &data->image->endian);
+	// data->image->addr = mlx_get_data_addr(data->image->image, &data->image->bits_per_pixel, &data->image->line_length, &data->image->endian);
 
     
     rayAngle = data->angle - (FOV / 2);
