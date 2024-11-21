@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 23:38:53 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/20 01:39:23 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/21 01:59:31 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,23 @@ void oneRay(t_data *data, t_ray *ray)
         ray->x_hit = ray->v_hit_x;
         ray->y_hit = ray->v_hit_y;
         ray->flag = 1;
+
+        int x = -2;
+        int y = -2;
+        while (x < 2)
+        {
+            y = -2;
+            while (y < 2)
+            {
+                if (is_wall(data, ray->v_hit_y + y, ray->v_hit_x + x))
+                {
+                   mlx_pixel_put(data->mlx, data->win_test, ray->v_hit_x / TILE_SIZE + x, ray->v_hit_y/ TILE_SIZE  + y, 0xE02800);
+                    return;
+                }
+                y++;
+            }
+            x++;
+        }
     }
     else
     {
@@ -104,6 +121,23 @@ void oneRay(t_data *data, t_ray *ray)
         ray->x_hit = ray->h_hit_x / TILE_SIZE;
         ray->y_hit = ray->h_hit_y / TILE_SIZE;
         ray->flag = 0;
+
+         int x = -2;
+        int y = -2;
+        while (x < 2)
+        {
+            y = -2;
+            while (y < 2)
+            {
+                if (is_wall(data, ray->v_hit_y + y, ray->v_hit_x + x))
+                {
+                   mlx_pixel_put(data->mlx, data->win_test, ray->v_hit_x/ TILE_SIZE  + x, ray->v_hit_y/ TILE_SIZE  + y, 0xE02800);
+                    return;
+                }
+                y++;
+            }
+            x++;
+        }
     }
 }
 
@@ -112,6 +146,7 @@ void render_wall(t_data *data, t_ray *ray, double column)
      ray->distance *= cos(ray->rayAngle - data->angle);
      ray->distance = ray->distance * 5;
      draw_wall(data, ray  , column);
+
      draw_floor(data, ray->distance , column);
 }
 

@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 18:12:27 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/20 19:21:20 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/21 02:02:48 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,6 +184,14 @@ int point_image_texture(t_data *data, t_ray *ray, t_image **img)
     return (0);
 }
 
+void put_pixel_to_image(t_data *data, int x, int y, int color)
+{
+    char *dst;
+
+    dst = data->image[0].addr + (y * data->image[0].line_length + x * (data->image[0].bits_per_pixel / 8));
+    *(unsigned int *)dst = color;
+}
+
 void draw_wall(t_data *data, t_ray *ray, int column)
 {
     double line_height;
@@ -206,6 +214,11 @@ void draw_wall(t_data *data, t_ray *ray, int column)
     else
         t_x = ray->h_hit_x / TILE_SIZE;
 
+    // if (ray->flag == 1)  // Vertical hit
+    //     t_x = fmod(ray->v_hit_y, TILE_SIZE) / TILE_SIZE;
+    // else                 // Horizontal hit
+    //     t_x = fmod(ray->h_hit_x, TILE_SIZE) / TILE_SIZE;
+
     texture_x = t_x - floor(t_x);
     texture_x *= img->whith;
 
@@ -220,6 +233,8 @@ void draw_wall(t_data *data, t_ray *ray, int column)
         tex_y *= img->height;
         color = get_texture_pixel_color(texture_x, tex_y, img);
         mlx_pixel_put(data->mlx, data->win_test, column, y, color);
+        //  put_pixel_to_image(data, column, y, color);
         y++;
     }  
+    // mlx_put_image_to_window(data->mlx, data->win_test, data->image[0].image, 0, 0);
 }
