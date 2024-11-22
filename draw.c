@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 18:12:27 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/21 02:02:48 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/22 02:54:36 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,28 +168,36 @@ int get_texture_pixel_color(int texture_x, int texture_y, t_image *img)
 }
 
 
-int point_image_texture(t_data *data, t_ray *ray, t_image **img)
+int point_image_texture(t_data *data, t_ray *ray)
 {
 
     if (!ray->flag && !(ray->rayAngle > 0 && ray->rayAngle < M_PI))
-        *img = &data->image[0];
+        data->img = &data->image[0];
     else if (!ray->flag && ray->rayAngle >= 0 && ray->rayAngle <= M_PI)
-        *img = &data->image[1];
+        data->img = &data->image[1];
     else if (ray->flag && ray->rayAngle >= M_PI_2 && ray->rayAngle <= 3 * M_PI_2)
-        *img = &data->image[2];
+        data->img = &data->image[2];
     else
-        *img = &data->image[3];
-   if (*img == NULL)
+        data->img = &data->image[3];
+    if (data->img == NULL)
             return (1);
     return (0);
 }
 
-void put_pixel_to_image(t_data *data, int x, int y, int color)
+void put_pixel_to_image(t_image **img, int x, int y, int color)
 {
     char *dst;
 
-    dst = data->image[0].addr + (y * data->image[0].line_length + x * (data->image[0].bits_per_pixel / 8));
+    dst = (*img)->addr + (y * (*img)->line_length + x * ((*img)->bits_per_pixel / 8));
     *(unsigned int *)dst = color;
+}
+
+int	get_color(t_image **img, int x, int y)
+{
+	char	*dst;
+
+	dst = (*img)->addr + (y * (*img)->line_length + x * ((*img)->bits_per_pixel / 8));
+	return (*(unsigned int *)dst);
 }
 
 void draw_wall(t_data *data, t_ray *ray, int column)
@@ -198,13 +206,13 @@ void draw_wall(t_data *data, t_ray *ray, int column)
     double top_y, bottom_y;
     double color, y, tex_y, t_x;
     double texture_x;
-    t_image *img;
+    // t_image *img;
 
     line_height = (Scren_H / ray->distance) * 5;
     top_y = Scren_H / 2 - line_height / 2;
     bottom_y = Scren_H / 2 + line_height / 2;
 
-    if (point_image_texture(data, ray, &img))
+    if (point_image_texture(data, ray))
     {
         printf("Failed to load texture\n");
         return;
@@ -220,7 +228,7 @@ void draw_wall(t_data *data, t_ray *ray, int column)
     //     t_x = fmod(ray->h_hit_x, TILE_SIZE) / TILE_SIZE;
 
     texture_x = t_x - floor(t_x);
-    texture_x *= img->whith;
+    texture_x *= data->img->whith;
 
     y = top_y;
     while (y < bottom_y)
@@ -230,10 +238,13 @@ void draw_wall(t_data *data, t_ray *ray, int column)
         if (y >= Scren_H)
             break;
         tex_y = (y - top_y) / (bottom_y - top_y);
-        tex_y *= img->height;
-        color = get_texture_pixel_color(texture_x, tex_y, img);
-        mlx_pixel_put(data->mlx, data->win_test, column, y, color);
+        tex_y *= data->img->height;
+        // color = get_texture_pixel_color(texture_x, tex_y, img);
+        // mlx_pixel_put(data->mlx, data->win_test, column, y, color);
         //  put_pixel_to_image(data, column, y, color);
+
+        color = get_color(&data->img, y + texture_x, line_height);
+        put_pixel_to_image(&data->img, column, (int)line_height, color);
         y++;
     }  
     // mlx_put_image_to_window(data->mlx, data->win_test, data->image[0].image, 0, 0);

@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 23:38:53 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/21 01:59:31 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/22 02:37:01 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,22 +98,22 @@ void oneRay(t_data *data, t_ray *ray)
         ray->y_hit = ray->v_hit_y;
         ray->flag = 1;
 
-        int x = -2;
-        int y = -2;
-        while (x < 2)
-        {
-            y = -2;
-            while (y < 2)
-            {
-                if (is_wall(data, ray->v_hit_y + y, ray->v_hit_x + x))
-                {
-                   mlx_pixel_put(data->mlx, data->win_test, ray->v_hit_x / TILE_SIZE + x, ray->v_hit_y/ TILE_SIZE  + y, 0xE02800);
-                    return;
-                }
-                y++;
-            }
-            x++;
-        }
+        // int x = -2;
+        // int y = -2;
+        // while (x < 2)
+        // {
+        //     y = -2;
+        //     while (y < 2)
+        //     {
+        //         if (is_wall(data, ray->v_hit_y + y, ray->v_hit_x + x))
+        //         {
+        //            mlx_pixel_put(data->mlx, data->win_test, ray->v_hit_x / TILE_SIZE + x, ray->v_hit_y/ TILE_SIZE  + y, 0xE02800);
+        //             return;
+        //         }
+        //         y++;
+        //     }
+        //     x++;
+        // }
     }
     else
     {
@@ -122,22 +122,22 @@ void oneRay(t_data *data, t_ray *ray)
         ray->y_hit = ray->h_hit_y / TILE_SIZE;
         ray->flag = 0;
 
-         int x = -2;
-        int y = -2;
-        while (x < 2)
-        {
-            y = -2;
-            while (y < 2)
-            {
-                if (is_wall(data, ray->v_hit_y + y, ray->v_hit_x + x))
-                {
-                   mlx_pixel_put(data->mlx, data->win_test, ray->v_hit_x/ TILE_SIZE  + x, ray->v_hit_y/ TILE_SIZE  + y, 0xE02800);
-                    return;
-                }
-                y++;
-            }
-            x++;
-        }
+        //  int x = -2;
+        // int y = -2;
+        // while (x < 2)
+        // {
+        //     y = -2;
+        //     while (y < 2)
+        //     {
+        //         if (is_wall(data, ray->v_hit_y + y, ray->v_hit_x + x))
+        //         {
+        //            mlx_pixel_put(data->mlx, data->win_test, ray->v_hit_x/ TILE_SIZE  + x, ray->v_hit_y/ TILE_SIZE  + y, 0xE02800);
+        //             return;
+        //         }
+        //         y++;
+        //     }
+        //     x++;
+        // }
     }
 }
 
@@ -147,7 +147,7 @@ void render_wall(t_data *data, t_ray *ray, double column)
      ray->distance = ray->distance * 5;
      draw_wall(data, ray  , column);
 
-     draw_floor(data, ray->distance , column);
+    //  draw_floor(data, ray->distance , column);
 }
 
 void  castAllRay(t_data *data)
@@ -155,6 +155,14 @@ void  castAllRay(t_data *data)
     double  rayAngle;
     t_ray   ray;
     double column;
+    // ****************************************
+
+    
+    data->img->image = mlx_new_image(data->mlx, Scren_W + 1, Scren_H + 1);
+    data->img->addr = mlx_get_data_addr(data->img->image, &data->img->bits_per_pixel, &data->img->line_length, &data->img->endian);
+    // mlx_clear_window(data->mlx, data->win_test);
+
+    // ****************************************
         
     column = 0;
     rayAngle = data->angle - (FOV / 2);
@@ -166,8 +174,10 @@ void  castAllRay(t_data *data)
         column++;
         rayAngle += FOV / NUM_RAYS;
     }
-    drawmap(data);
-    drawplayer(data);
+    mlx_put_image_to_window(data->mlx, data->win_test, data->img->image, 0, 0);
+    puts("ok");
+    // drawmap(data);
+    // drawplayer(data);
 }
 
 
@@ -183,9 +193,11 @@ int create_window(char **map, t_texture *tex)
     data.mlx = mlx_init();
     data.lenght = ft_strlen(map[0]);
     data.height = len;
-    // data.win = mlx_new_window(data.mlx, data.lenght*10 , data.height*10 , "hello");
-    data.win_test = mlx_new_window(data.mlx, Scren_W, Scren_H, "test");
- 
+
+    // data.win_test = mlx_new_window(data.mlx, Scren_W, Scren_H, "test");
+//  data.img->image = mlx_new_image(data.mlx, Scren_W + 1, Scren_H + 1);
+//  data.img->addr = mlx_get_image_addr(data.img->image, &data.img->bits_per_pixel, &data.img->line_length, &data.img->endian);
+//  mlx_clear_window(data.mlx, data.win_test);
 //****************************************
      if (get_image_texture(&data, tex))
         return 1;

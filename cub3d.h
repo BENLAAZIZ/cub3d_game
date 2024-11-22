@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 15:06:34 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/20 00:09:12 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/22 01:32:39 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ typedef struct s_data
 	double		p_y;
 	t_player	player;
 	t_image		image[4];
+	t_image		*img;
 	
 }t_data;
 
