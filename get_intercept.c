@@ -61,7 +61,11 @@ double get_h_intercept(t_data *data, t_ray *ray, double xstep, double ystep)
     if (ray->lookingRight && xstep < 0)
         xstep *= -1;
     while (xintercept >= 0 && xintercept <= data->lenght * TILE_SIZE && yintercept >= 0 && yintercept <= data->height * TILE_SIZE)
-    {
+    {    
+
+
+
+        
         xtocheck = xintercept;
         if (ray->lookingUp)
             ytocheck = yintercept - 1;
