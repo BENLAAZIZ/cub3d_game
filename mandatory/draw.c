@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 17:11:18 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/23 19:10:54 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/23 19:16:03 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int point_image_texture(t_data *data, t_ray *ray)
 
 void draw_wall_column(t_data *data, t_var *var, int column)
 {
-        while (var->top_y < var->bottom_y)
+    while (var->top_y < var->bottom_y)
     {
         if (var->top_y < 0)
             var->top_y = 0;
@@ -48,7 +48,7 @@ void draw_wall_column(t_data *data, t_var *var, int column)
 }
 
 
-void draw_wall(t_data *data, t_ray *ray, int column)
+int draw_wall(t_data *data, t_ray *ray, int column)
 {
    t_var var;
     
@@ -59,13 +59,14 @@ void draw_wall(t_data *data, t_ray *ray, int column)
     if (point_image_texture(data, ray))
     {
         printf("Failed to load texture\n");
-        return;
+        return (1);
     }
      if (ray->flag == 1)
         var.ofsset_var = (int)((ray->y_hit / TILE_SIZE) * data->imgx->texture->width) % data->imgx->texture->width;
     else
         var.ofsset_var = (int)((ray->x_hit / TILE_SIZE) * data->imgx->texture->width) % data->imgx->texture->width; 
     draw_wall_column(data, &var, column);
+    return (0);
 }
 
 void draw_floor(t_data *data, double distance, double column)

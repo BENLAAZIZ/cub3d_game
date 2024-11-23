@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 17:12:08 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/23 19:12:18 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/23 19:22:58 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,23 +19,17 @@ void init_ray(t_ray *ray)
         ray->rayAngle -= 2 * M_PI;
     if (ray->rayAngle < 0)
         ray->rayAngle += 2 * M_PI;
-    // ray->v_distance = 0;
-    // ray->h_distance = 0;
-    // ray->v_hit_var = 0;
-    // ray->v_hit_y = 0;
-    // ray->h_hit_var = 0;
-    // ray->h_hit_y = 0;
     ray->lookingDown = 0;
     ray->lookingUp = 0;
     ray->lookingRight = 0;
     ray->lookingLeft = 0;
 }
 
-void  castAllRay(t_data *data)
+int  castAllRay(t_data *data)
 {
     double  rayAngle;
+    double  column;
     t_ray   *ray = NULL;
-    double column;
         
     column = 0;
     rayAngle = data->angle - (FOV / 2);
@@ -44,11 +38,13 @@ void  castAllRay(t_data *data)
         ray = malloc(sizeof(t_ray));
         ray->rayAngle = rayAngle;
         oneRay(data, ray);
-        render_wall(data, ray, column);
+        if (render_wall(data, ray, column))
+            return (1);
         column++;
         rayAngle += FOV / NUM_RAYS;
         free(ray);
     }
+    return (0);
 }
 
 void oneRay(t_data *data, t_ray *ray)
@@ -60,7 +56,6 @@ void oneRay(t_data *data, t_ray *ray)
     if (ray->rayAngle < M_PI_2 || ray->rayAngle > 3 * M_PI_2)
         ray->lookingRight = 1;
     ray->lookingLeft = !ray->lookingRight;
-    
     ray->v_distance = get_v_intercept(data, ray);
     ray->h_distance = get_h_intercept(data, ray);
     if (ray->v_distance <= ray->h_distance)

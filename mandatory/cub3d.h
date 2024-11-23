@@ -190,7 +190,7 @@ char	**pars_map(char *argv, t_texture **textures, char **map);
 char	**add_spaces(char **map);
 //pars_map
 
-void  castAllRay(t_data *data);
+
 int is_wall(t_data *data, double y, double x);
 
 //actions
@@ -208,7 +208,7 @@ char **pars_map(char *argv, t_texture **textures, char **map);
 //pars_map
 
 //draw
-void	draw_wall(t_data *data, t_ray *ray, int column);
+int	draw_wall(t_data *data, t_ray *ray, int column);
 void	draw_floor(t_data *data, double distance, double column);
 //draw
 
@@ -220,7 +220,7 @@ double get_h_intercept(t_data *data, t_ray *ray);
 //ray_casting
 void init_ray(t_ray *ray);
 void oneRay(t_data *data, t_ray *ray);
-void  castAllRay(t_data *data);
+int  castAllRay(t_data *data);
 //ray_casting
 
 //main
@@ -228,6 +228,6 @@ int ft_init(t_data *data, t_texture *textures, char **map);
 int point_image_texture(t_data *data, t_ray *ray);
 int32_t ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a);
 int get_image_texture(t_data *data, t_texture *tex);
-void render_wall(t_data *data, t_ray *ray, double column);
+int render_wall(t_data *data, t_ray *ray, double column);
 //main
 #endif
