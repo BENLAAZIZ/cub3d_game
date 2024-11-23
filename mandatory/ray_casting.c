@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 17:12:08 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/23 18:34:25 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/23 19:12:18 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@ void init_ray(t_ray *ray)
         ray->rayAngle -= 2 * M_PI;
     if (ray->rayAngle < 0)
         ray->rayAngle += 2 * M_PI;
-    ray->v_distance = 0;
-    ray->h_distance = 0;
-    ray->v_hit_var = 0;
-    ray->v_hit_y = 0;
-    ray->h_hit_var = 0;
-    ray->h_hit_y = 0;
+    // ray->v_distance = 0;
+    // ray->h_distance = 0;
+    // ray->v_hit_var = 0;
+    // ray->v_hit_y = 0;
+    // ray->h_hit_var = 0;
+    // ray->h_hit_y = 0;
     ray->lookingDown = 0;
     ray->lookingUp = 0;
     ray->lookingRight = 0;
