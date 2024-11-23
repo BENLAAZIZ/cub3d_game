@@ -1,33 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strrchr.c                                       :+:      :+:    :+:   */
+/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aaaraba <aaaraba@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/01 17:45:52 by aaaraba           #+#    #+#             */
+/*   Created: 2023/11/08 12:08:28 by aaaraba           #+#    #+#             */
 /*   Updated: 2024/11/20 12:44:29 by aaaraba          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
 
-char	*ft_strrchr(const char *s, int c)
+void	ft_putendl_fd(char *s, int fd)
 {
 	int	i;
 
 	i = 0;
+	if (s == NULL)
+		return ;
 	while (s[i] != '\0')
 	{
+		write (fd, &s[i], 1);
 		i++;
 	}
-	while (i >= 0)
-	{
-		if (s[i] == (unsigned char)c)
-		{
-			return ((char *)(s + i));
-		}
-		i--;
-	}
-	return (NULL);
+	write (fd, "\n", 1);
 }

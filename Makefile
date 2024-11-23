@@ -2,22 +2,30 @@ NAME = cub3d
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror# -g -fsanitize=address
-# CFLAGS += -Ofast
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
+
 RM = rm -f
 
-SRC= main.c libft/ft_strjoin.c libft/ft_strlen.c get_next_line_utils.c \
-	get_next_line.c libft/ft_strcmp.c libft/ft_strncmp.c actions.c \
- 	libft/ft_split.c list_fun.c libft/ft_atoi.c libft/ft_strrchr.c \
-	libft/ft_strtrim.c libft/ft_strchr.c raycaster.c   draw.c intersiction.c \
-	texture.c
+FRAM = -framework Cocoa -framework OpenGL -framework IOKit
+
+ft = 	main.c get_next_line.c ft_strcmp.c get_texture.c get_texture_helper.c \
+		get_map.c add_spaces.c actions.c pars_map.c draw.c get_intercept.c \
+		ray_casting.c
+
+libft = libft/ft_isalnum.c libft/ft_itoa.c libft/ft_memset.c libft/ft_split.c libft/ft_strjoin.c libft/ft_strncmp.c libft/ft_tolower.c \
+		libft/ft_isalpha.c libft/ft_memchr.c libft/ft_putchar_fd.c libft/ft_strchr.c libft/ft_strlcat.c libft/ft_strnstr.c libft/ft_toupper.c \
+		libft/ft_atoi.c libft/ft_isascii.c libft/ft_memcmp.c libft/ft_putendl_fd.c libft/ft_strdup.c libft/ft_strlcpy.c libft/ft_strrchr.c \
+		libft/ft_bzero.c libft/ft_isdigit.c libft/ft_memcpy.c libft/ft_putnbr_fd.c libft/ft_striteri.c libft/ft_strlen.c libft/ft_strtrim.c \
+		libft/ft_calloc.c libft/ft_isprint.c libft/ft_memmove.c libft/ft_putstr_fd.c libft/ft_strmapi.c libft/ft_substr.c
+
+SRC = $(libft) $(ft)
 
 OBJ = $(SRC:.c=.o)
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -lmlx -framework OpenGL -framework AppKit -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJ) MLX42/build/libmlx42.a -Iinclude -lglfw -L"/Users/$(USER)/.brew/opt/glfw/lib/" $(FRAM) -o $(NAME)
 
 %.o: %.c cub3d.h
 		 $(CC) $(CFLAGS) -c $< -o $@

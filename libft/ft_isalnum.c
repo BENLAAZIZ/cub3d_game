@@ -1,33 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strrchr.c                                       :+:      :+:    :+:   */
+/*   ft_isalnum.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aaaraba <aaaraba@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/01 17:45:52 by aaaraba           #+#    #+#             */
-/*   Updated: 2024/11/20 12:44:29 by aaaraba          ###   ########.fr       */
+/*   Created: 2023/11/03 19:06:10 by aaaraba           #+#    #+#             */
+/*   Updated: 2024/11/20 12:43:21 by aaaraba          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
 
-char	*ft_strrchr(const char *s, int c)
+int	ft_isalnum(int c)
 {
-	int	i;
-
-	i = 0;
-	while (s[i] != '\0')
-	{
-		i++;
-	}
-	while (i >= 0)
-	{
-		if (s[i] == (unsigned char)c)
-		{
-			return ((char *)(s + i));
-		}
-		i--;
-	}
-	return (NULL);
+	return (ft_isalpha(c) || ft_isdigit(c));
 }

@@ -1,33 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strrchr.c                                       :+:      :+:    :+:   */
+/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aaaraba <aaaraba@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/01 17:45:52 by aaaraba           #+#    #+#             */
+/*   Created: 2023/11/08 12:08:39 by aaaraba           #+#    #+#             */
 /*   Updated: 2024/11/20 12:44:29 by aaaraba          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
 
-char	*ft_strrchr(const char *s, int c)
+void	ft_putnbr_fd(int n, int fd)
 {
-	int	i;
-
-	i = 0;
-	while (s[i] != '\0')
+	if (n == -2147483648)
 	{
-		i++;
+		ft_putchar_fd('-', fd);
+		ft_putstr_fd("2147483648", fd);
 	}
-	while (i >= 0)
+	else if (n < 0)
 	{
-		if (s[i] == (unsigned char)c)
-		{
-			return ((char *)(s + i));
-		}
-		i--;
+		ft_putchar_fd('-', fd);
+		n = n * -1;
+		ft_putnbr_fd(n, fd);
 	}
-	return (NULL);
+	else if (n > 9)
+	{
+		ft_putnbr_fd(n / 10, fd);
+		ft_putnbr_fd(n % 10, fd);
+	}
+	else if (n <= 9)
+	{
+		ft_putchar_fd(n + 48, fd);
+	}
 }

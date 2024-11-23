@@ -1,33 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strrchr.c                                       :+:      :+:    :+:   */
+/*   ft_isdigit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aaaraba <aaaraba@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/01 17:45:52 by aaaraba           #+#    #+#             */
-/*   Updated: 2024/11/20 12:44:29 by aaaraba          ###   ########.fr       */
+/*   Created: 2023/10/30 15:55:03 by aaaraba           #+#    #+#             */
+/*   Updated: 2024/11/20 12:43:56 by aaaraba          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
 
-char	*ft_strrchr(const char *s, int c)
+int	ft_isdigit(int c)
 {
-	int	i;
-
-	i = 0;
-	while (s[i] != '\0')
+	if (c >= '0' && c <= '9')
 	{
-		i++;
+		return (1);
 	}
-	while (i >= 0)
-	{
-		if (s[i] == (unsigned char)c)
-		{
-			return ((char *)(s + i));
-		}
-		i--;
-	}
-	return (NULL);
+	return (0);
 }

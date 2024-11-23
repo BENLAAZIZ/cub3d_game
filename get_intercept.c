@@ -1,27 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   intersiction.c                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/13 21:56:12 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/20 21:52:39 by hben-laz         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "cub3d.h"
-
-int is_wall(t_data *data, double y, double x)
-{
-    if (x < 0 || x > data->lenght * TILE_SIZE || y < 0 || y > data->height * TILE_SIZE)
-        return (1);
-    if (data->all_map[(int)y / (int)TILE_SIZE][(int)x / (int)TILE_SIZE] == '1')
-        return (1);
-      
-    return (0);
-}
-
 
 double get_v_intercept(t_data *data, t_ray *ray, double xstep, double ystep)
 {
@@ -46,7 +23,7 @@ double get_v_intercept(t_data *data, t_ray *ray, double xstep, double ystep)
     while (xintercept >= 0 && xintercept <= data->lenght * TILE_SIZE && yintercept >= 0 && yintercept <= data->height * TILE_SIZE)
     {
         if (ray->lookingLeft)
-            xtocheck = xintercept - 1;
+            xtocheck = xintercept - 0.0001;
         else
            xtocheck = xintercept;
         ytocheck = yintercept;
@@ -62,8 +39,6 @@ double get_v_intercept(t_data *data, t_ray *ray, double xstep, double ystep)
     }
     return (INT_MAX);
 }
-
-
 double get_h_intercept(t_data *data, t_ray *ray, double xstep, double ystep)
 {
     double xintercept;
@@ -88,7 +63,7 @@ double get_h_intercept(t_data *data, t_ray *ray, double xstep, double ystep)
     {
         xtocheck = xintercept;
         if (ray->lookingUp)
-            ytocheck = yintercept - 1;
+            ytocheck = yintercept - 0.0001;
         else
             ytocheck = yintercept;
         if (is_wall(data, ytocheck, xtocheck))

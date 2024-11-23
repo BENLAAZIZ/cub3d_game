@@ -1,208 +1,206 @@
 #include "cub3d.h"
 
-int	check_double_texture(char	*texture)
+int get_image_texture(t_data *data, t_texture *tex)
 {
-	static int	check;
-	static int	count;
-
-	if (ft_strncmp(texture , "NO", 2) == 0)
-		check++;
-	else if (ft_strncmp(texture , "SO", 2) == 0)
-		check+=2;
-	else if (ft_strncmp(texture , "WE", 2) == 0)
-		check+=3;
-	else if (ft_strncmp(texture , "EA", 2) == 0)
-		check+=4;
-	else if (ft_strncmp(texture , "F", 1) == 0)
-		check+=5;
-	else if (ft_strncmp(texture , "C", 1) == 0)
-		check+=6;
-	count++;
-	if (count == 6)
-	{
-		if (check != 21)
-			return (-1);
-	}
-	return (0); 
-}
-
-t_texture	*get_texture(int fd, t_texture *tex)
-{
-	int		count;
-	char	*tmp;
-	char	*line;
-	int		i = 0;
-	int		j = 0;
-	t_texture *tex_tmp = NULL;
-
-	count = 0;
-	line = get_next_line(fd);
-	if (line == NULL)
-		return (NULL);
-	while (line && count < 6)
-	{	
-		tmp = line;
-		i = 0;
-		if (line[0] != '\n')
+    while (tex)
+    {
+        if (tex->identifier == 0)
 		{
-			while (line[i] != '\0' && line[i] != '\n' && line[i] != ' ' && line[i] != '\t')
-				i++;
-			j = 0;
-			if (check_double_texture(line) == -1)
-				return (write(2, "wrong texture\n", 14), NULL);
-			count++;
-			tex_tmp = ft_lstnew(tex_tmp, line, i);
-			lstadd_back(&tex, tex_tmp);
-			free(tmp);
+			data->image[0].texture = mlx_load_png(tex->Path);
+			data->image[0].image = mlx_texture_to_image(data->mlx, data->image[0].texture);
+            // printf("width %d h : %d\n", data->image[0].texture->width, data->image[0].texture->height);
 		}
-		line = get_next_line(fd);
-	}
-	return(tex);
+        if (tex->identifier == 1)
+	    {
+			data->image[1].texture = mlx_load_png(tex->Path);
+			data->image[1].image = mlx_texture_to_image(data->mlx, data->image[1].texture);
+		}
+        if (tex->identifier == 2)
+        {
+			data->image[2].texture = mlx_load_png(tex->Path);
+			data->image[2].image = mlx_texture_to_image(data->mlx, data->image[2].texture);
+		}
+        if (tex->identifier == 3)
+        {
+			data->image[3].texture = mlx_load_png(tex->Path);
+			data->image[3].image = mlx_texture_to_image(data->mlx, data->image[3].texture);
+		}
+        tex = tex->next;
+    }
+    if (data->image[0].image == NULL || data->image[1].image == NULL || data->image[2].image == NULL || data->image[3].image == NULL)
+    {
+            return (1);
+    }
+
+    return (0); 
 }
 
-int	ft_check(char *map)
+int32_t ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a)
 {
-	int	i;
-	int player;
+    return (r << 24 | g << 16 | b << 8 | a);
+}
 
-	player = 0;
-	i = 0;
-	while (map[i] != '\0')
+int player_direction(char c, t_data *data)
+{
+	if (c == 'N')
 	{
-		if (map[i] != 'N' && map[i] != 'S' && map[i] != 'E'
-			&& map[i] != '\n' && map[i] != 'W' && map[i] != '1' && map[i] != '0' && map[i] != ' ')
-			return (write (1, "Error\nInvalid map\n", 18), 1);
-		if (map[i] == 'S' || map[i] == 'N' || map[i] == 'W' || map[i] == 'E')
-			player++;
-		i++;
-	}
-	if (player != 1)
-		return (write (1, "Invalid num of player\n", 22), 1);
-	return (0);
-}
-
-char	**get_map(int fd)
-{
-	char	**map;
-	char 	*rest;
-	char	*tmp;
-	char	*line;
-
-	rest = NULL;
-	line = get_next_line(fd);
-	if (line == NULL)
-		return (NULL);
-	while (line)
-	{	
-		tmp = line;
-		rest = ft_strjoin(rest, line);
-		if (rest == NULL)
-			free(tmp);
-		free(tmp);
-		line = get_next_line(fd);
-	}
-	if (ft_check(rest) == 1)
-		return (NULL);
-	map = ft_split(rest,'\n');
-	free(rest);
-	if (map == NULL)
-		return (NULL);
-	return(map);
-}
-
-int	ft_strlen_nspance(char	*str)
-{
-	int	i = 0;
-	while(str[i])
-		i++;
-	return (i);
-}
-
-int check_char(char c)
-{
-	if (c == '1' || c == '0' || c == 'N' ||  c == 'S' || c == 'W' || c == 'E')
+		data->angle = 3 * M_PI_2;
 		return (1);
+	}
+	if (c == 'S')
+	{
+		data->angle = M_PI_2;
+		return (1);
+	}
+	if (c == 'E')
+	{
+		data->angle = 0;
+		return (1);
+	}
+	if (c == 'W')
+	{
+		data->angle = M_PI;
+		return (1);
+	}
 	return (0);
 }
 
+void get_player_position(t_data *data)
+{
+    if (data->all_map == NULL)
+        return ;
+    while (data->all_map[(int)data->p_y])
+    {
+        data->p_x = 0;
+        while (data->all_map[(int)data->p_y][(int)data->p_x])
+        {
+            // if (data->all_map[(int)data->p_y][(int)data->p_x] == 'N' 
+			// 	|| data->all_map[(int)data->p_y][(int)data->p_x] == 'S' 
+			// 	|| data->all_map[(int)data->p_y][(int)data->p_x] == 'E' 
+			// 	|| data->all_map[(int)data->p_y][(int)data->p_x] == 'W')
+            //     break;
+			if (player_direction(data->all_map[(int)data->p_y][(int)data->p_x], data))
+				break;
+            data->p_x++;
+        }
+        // if (data->all_map[(int)data->p_y][(int)data->p_x] == 'N' 
+		// 	|| data->all_map[(int)data->p_y][(int)data->p_x] == 'S' 
+		// 	|| data->all_map[(int)data->p_y][(int)data->p_x] == 'E' 
+		// 	|| data->all_map[(int)data->p_y][(int)data->p_x] == 'W')
+        //     break;
+		if (player_direction(data->all_map[(int)data->p_y][(int)data->p_x], data))
+				break;
+        data->p_y++;
+    }
+    data->p_x = (data->p_x * TILE_SIZE) + (TILE_SIZE / 2);
+    data->p_y = (data->p_y * TILE_SIZE) + (TILE_SIZE / 2);
+}
+int is_wall(t_data *data, double y, double x)
+{
+    if (x <= 0 || x >= data->lenght * TILE_SIZE || y <= 0 || y >= data->height * TILE_SIZE)
+        return (1);
+    if (data->all_map[(int)y / (int)TILE_SIZE][(int)x / (int)TILE_SIZE] == '1')
+        return (1);
+      
+    return (0);
+}
 
+// int point_image_texture(t_data *data, t_ray *ray, t_image **img)
+// {
+
+//     if (!ray->flag && !(ray->rayAngle > 0 && ray->rayAngle < M_PI))
+//     {
+//         *img = &data->image[0];
+//     }
+//     else if (!ray->flag && ray->rayAngle >= 0 && ray->rayAngle <= M_PI)
+//     {
+//         *img = &data->image[1];
+//     }
+//     else if (ray->flag && ray->rayAngle >= M_PI_2 && ray->rayAngle <= 3 * M_PI_2)
+//     {
+//         *img = &data->image[2];
+//     }
+//     else
+//     {
+//         *img = &data->image[3];
+//     }
+//    if (*img == NULL)
+//             return (1);
+//     // exit(0);
+//     return (0);
+// }
+
+
+
+void render_wall(t_data *data, t_ray *ray, double column)
+{
+     ray->distance *= cos(ray->rayAngle - data->angle);
+     ray->distance = ray->distance * 5;
+     draw_wall(data, ray  , column);
+     draw_floor(data, ray->distance , column);
+        // (*column)++;
+}
+
+void ft_hook(void* param)
+{
+	t_data *data = (t_data*)param;
+
+	if (mlx_is_key_down(data->mlx, MLX_KEY_ESCAPE))
+		mlx_close_window(data->mlx);
+	if (mlx_is_key_down(data->mlx, MLX_KEY_W))
+		move_player_up(data);
+	if (mlx_is_key_down(data->mlx, MLX_KEY_S))
+		move_player_down(data);
+	if (mlx_is_key_down(data->mlx, MLX_KEY_A))
+		move_player_left(data);
+	if (mlx_is_key_down(data->mlx, MLX_KEY_D))
+		move_player_right(data);
+    if (mlx_is_key_down(data->mlx, MLX_KEY_LEFT) || mlx_is_key_down(data->mlx, MLX_KEY_RIGHT))
+        player_rot(data);
+
+}
+
+int ft_init(t_data *data, t_texture *textures, char **map)
+{
+	int height;	
+	if (map == NULL)
+		return 1;
+	height = 0;
+	while(map[height])
+		height++;
+	data->height = height;
+	data->all_map = map;
+	data->p_y = 0;
+    data->p_x = 0;
+    // data->angle = 0.0;
+	data->lenght = ft_strlen(map[0]);
+	data->mlx = mlx_init(Screen_W, Screen_H, "Cub3D", 1);
+	data->tex = textures;
+	data->img = mlx_new_image(data->mlx, Screen_W, Screen_H);
+    // printf("add image %p\n", data->img);
+    get_image_texture(data, textures);
+    get_player_position(data);
+	// drawmap(data);
+	// drawplayer(data);
+    castAllRay(data);
+	mlx_image_to_window(data->mlx, data->img, 0, 0);
+	mlx_loop_hook(data->mlx, ft_hook, data);
+	mlx_loop(data->mlx);
+	return (0);
+}
 
 int main (int argc, char **argv)
 {
-	if (argc != 2)
-		return (1);
-	t_texture *tex = NULL;
-	
-	char	**map;
-	int		fd;
-	int		length;
-	int		max_length;
-	int		height;
+	t_texture	*textures;
+	char 		**map;
+	t_data		data;
 
+	map = NULL;
+	textures = NULL;
+	if (argc != 2)
+		return (ft_putstr_fd("Invalid number of arguments", 2), 1);
 	if (ft_strcmp(argv[1] + ft_strlen(argv[1]) - 4, ".cub") != 0)
-		return (1);
-	fd = open(argv[1], O_RDONLY);
-	tex = get_texture(fd, tex);
-	if (tex == NULL)
-		return (1);
-	int i = 0;
-	map = get_map(fd);
-	close(fd);
-	if (map == NULL)
-		return (1);
-	length = ft_strlen_nspance(map[0]);
-	i = 0;
-	while (map[i])
-	{
-		if (max_length < (int)ft_strlen(map[i]))
-			max_length = ft_strlen(map[i]);
-		i++;
-	}
-	char	**new_map = (char **)malloc(sizeof(char *) * (i + 1));
-	height = i;
-	int j = 0;
-	i = 0;
-	while (map[i])
-	{
-		j = 0;
-		new_map[i] = malloc(max_length + 1);
-		while (map[i][j])
-		{
-			new_map[i][j] = map[i][j]; 
-			j++;
-		}
-		while (j < max_length)
-		{
-			new_map[i][j] = ' ';
-			j++;
-		}
-		new_map[i][j] = '\0';
-		i++;
-	}
-	new_map[i] = NULL;
-	i = 0;
-	j = 0;
-	while (new_map[i])
-	{
-		j = 0;
-		while (new_map[i][j])
-		{
-			if (new_map[i][j] == '0' || new_map[i][j] == 'N' || new_map[i][j] == 'S' || new_map[i][j] == 'E'
-				|| new_map[i][j] == 'W')
-			{
-				if (check_char(new_map[i - 1][j]) == 0)
-					return (write(2, "er\n", 3), 1);
-				if (check_char(new_map[i + 1][j]) == 0)
-					return (write(2, "er\n", 3),1);
-				if (check_char(new_map[i][j + 1]) == 0)
-					return (write(2, "er\n", 3),1);
-				if (check_char(new_map[i][j - 1]) == 0)
-					return (write(2, "er\n", 3),1);
-			}
-			j++;
-		}
-		i++;
-	}
-	
-	create_window(new_map, tex);
+		return (ft_putstr_fd("Invalid file extension", 2), 1);
+	map = pars_map(argv[1], &textures, map);
+	ft_init(&data, textures, map);
 }

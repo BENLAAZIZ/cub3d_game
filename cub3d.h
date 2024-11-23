@@ -1,17 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   cub3d.h                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/09 15:06:34 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/22 01:32:39 by hben-laz         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-
-
 #ifndef CUB3D_H
 #define	CUB3D_H
 
@@ -20,19 +6,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <mlx.h>
+#include "MLX42/include/MLX42/MLX42.h"
 #include <math.h>
 #include <limits.h>
 
+#define BUFFER_SIZE 10
 
-#define FOV (60.0 * (M_PI / 180.0))
+#define FOV (60 * (M_PI / 180))
 
 
-# define Scren_W 1000 // screen width
-# define Scren_H 700 // screen height
-# define TILE_SIZE 32 // tile size
-#define NUM_RAYS Scren_W
-
+# define Screen_W 1800 // screen width
+# define Screen_H 1400 // screen height
+# define TILE_SIZE 10.0 // tile size
+# define NUM_RAYS Screen_W
 typedef enum e_type {
 	NO,
 	SO,
@@ -53,31 +39,19 @@ typedef struct s_texture
 typedef struct s_image 
 {
 	void	*image;
+	mlx_texture_t	*texture;
+	// mlx_image_t		*img;
 	char	*addr;
-	
-	int		whith;
+	int		width;
 	int		height;
-	
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
 } t_image;
 
-typedef struct s_player 
-{
-	// double	p_x;
-	// double	p_y;
-	double	ray_y;
-    double	ray_x;
-    double	step_x;
-    double	step_y;
-    double	ray_step;
-    int		z;
-} t_player;
-
 typedef struct s_data
 {
-	
+	mlx_image_t		*img;
 	char		**all_map;
 	void		*mlx;
 	void		*win;
@@ -87,87 +61,156 @@ typedef struct s_data
 	double		angle;
 	double		p_x;
 	double		p_y;
-	t_player	player;
+	int			tile_size;
+	float		turnDirection;
+	int			walkDirection;
+	float		radius;
+	float		rotationAngle;
+	float		moveSpeed;
+	float		rotationSpeed;
 	t_image		image[4];
-	t_image		*img;
+	t_image		*imgx;
+	t_texture	*tex;
 	
 }t_data;
 
+typedef struct s_player 
+{
+	double	ray_y;
+    double	ray_x;
+    double	step_x;
+    double	step_y;
+    double	ray_step;
+    int		z;
+} t_player;
+
 typedef struct s_ray {
 
-	double	rayAngle;
-	double	v_distance;
-    double	h_distance;
-	double	h_hit_x;
-    double	h_hit_y;
-    double	v_hit_x;
-    double	v_hit_y;
+	double rayAngle;
+	double v_distance;
+    double h_distance;
+	double h_hit_x;
+    double h_hit_y;
+    double v_hit_x;
+    double v_hit_y;
 
-	double	x_hit;
-	double	y_hit;
-	double	distance;
-	int		lookingDown;
-	int		lookingUp;
-	int		lookingRight;
-	int		lookingLeft;
-	int		flag;
+	double x_hit;
+	double y_hit;
+	double distance;
+	int lookingDown;
+	int lookingUp;
+	int lookingRight;
+	int lookingLeft;
+	int flag;
+	// struct s_ray *next;
 }t_ray;
 
+//libft
+size_t	ft_strlen(const char *s);
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
+size_t	ft_strlcat(char *dest, const char *src, size_t size);
+int		ft_isprint(int c);
+int		ft_atoi(const char *str);
+int		ft_isalnum(int c);
+int		ft_isalpha(int c);
+int		ft_isascii(int c);
+int		ft_isdigit(int c);
+int		ft_tolower(int c);
+int		ft_isprint(int c);
+int		ft_memcmp(const void *ptr1, const void *ptr2, size_t num);
+int		ft_toupper(int c);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
+char	*ft_strchr(const char *s, int c);
+void	ft_putchar_fd(char c, int fd);
+char	*ft_substr(char const *s, unsigned int start, size_t len);
+void	ft_putstr_fd(char *s, int fd);
+void	ft_putendl_fd(char *s, int fd);
+char	*ft_strrchr(const char *s, int c);
+char	*ft_strdup(const char *s1);
+char	*ft_strnstr(const char *haystack, const char *needle, size_t len);
+char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
+char	*ft_strtrim(char const *s1, char const *set);
+void	*ft_memmove(void *dst, const void *src, size_t len);
+void	*ft_memset(void *b, int c, size_t len);
+void	ft_putchar_fd(char c, int fd);
+void	ft_bzero(void *s, size_t n);
+void	*ft_calloc(size_t num_elements, size_t element_size);
+void	ft_striteri(char *s, void (*f)(unsigned int, char*));
+void	*ft_memchr(const void *s, int c, size_t n);
+void	*ft_memcpy(void *dst, const void *src, size_t n);
+char	*ft_strjoin(char const *s1, char const *s2);
+void	ft_putnbr_fd(int n, int fd);
+char	*ft_itoa(int n);
+char	**ft_split(char const *s, char c);
+int		ft_strcmp(const char *s1, const char *s2);
+//libft
 
-typedef struct s_mlx
-{
-	char	*no;
-	char	*so;
-	char	*we;
-	char	*ea;
-	char	*s;
-	char	*f;
-	char	*c;
-} t_mlx;
-
-#define BUFFER_SIZE 10
+//get_next_line
 char	*get_next_line(int fd);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strdup(char const *s1);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
+//get_next_line
 
-
-char		*ft_strjoin(char const *s1, char const *s2);
-size_t		ft_strlen(const char *s);
-int			ft_strcmp(const char *s1, const char *s2);
-char		**ft_split(char const *s, char c);
-int			ft_strncmp(const char *s1, const char *s2, size_t n);
-int			ft_atoi(const char *str);
+//get_texture
+int			check_rgp(char *str, int r, int g, int p);
+int			check_double_texture(char	*texture);
+t_texture	*get_texture(int fd, t_texture *tex, int j, int i);
 t_texture	*ft_lstnew(t_texture *new, char *line, int i);
 void		lstadd_back(t_texture **lst, t_texture *new);
-char		*ft_substr(char const *s, unsigned int start, size_t len);
-double 		get_v_intercept(t_data *data, t_ray *ray, double xstep, double ystep);
-double 		get_h_intercept(t_data *data, t_ray *ray, double xstep, double ystep);
-void 		oneRay(t_data *data, t_ray *ray);
-void  		castAllRay(t_data *data);
-int			key_press(int keycode, t_data *data);
-void		get_player_position(t_data *data);
-char		*ft_strchr(const char *s, int c);
-char		*ft_strtrim(char const *s1, char const *set);
-char		*ft_strrchr(const char *s, int c);
+//get_texture
 
-//window
-int 		create_window(char **map, t_texture *tex);
+//get_map
+char	**get_map(int fd);
+//get_map
 
-// action
+//pars_map
+char	**pars_map(char *argv, t_texture **textures, char **map);
+char	**add_spaces(char **map);
+//pars_map
+
+void  castAllRay(t_data *data);
+int is_wall(t_data *data, double y, double x);
+
+//actions
 void	move_player_down(t_data *data);
-void	move_player_right(t_data *data);
-void	move_player_left(t_data *data);
 void	move_player_up(t_data *data);
-void    drawmap(t_data *data);
-void    drawplayer(t_data *data);
-int 	is_wall(t_data *data, double y, double x);
-void 	draw_wall(t_data *data, t_ray *ray, int column);
-void 	draw_floor(t_data *data, double distance, double column);
-int 	get_image_texture(t_data *data, t_texture *tex);
-int 	get_addr_texture(t_data *data);
-void 	clear_texture(t_texture *tex);
-int	mouse_rotate(int x, int y, t_data *data);
+void	move_player_left(t_data *data);
+void	move_player_right(t_data *data);
+void	player_rot(t_data *data);
+//actions
 
+//pars_map
+int check_char(char c);
+int check_characters(char **map, int i, int j);
+char **pars_map(char *argv, t_texture **textures, char **map);
+//pars_map
 
+//draw
+void	draw_wall(t_data *data, t_ray *ray, int column);
+void	draw_floor(t_data *data, double distance, double column);
+void	drawplayer(t_data *data);
+void	drawmap(t_data *data);
+void	draw_rays_minimap(t_data *data, t_player *player);
+//draw
+
+//get_intercept
+double get_v_intercept(t_data *data, t_ray *ray, double xstep, double ystep);
+double get_h_intercept(t_data *data, t_ray *ray, double xstep, double ystep);
+//get_intercept
+
+//ray_casting
+void init_ray(t_ray *ray);
+void oneRay(t_data *data, t_ray *ray);
+void  castAllRay(t_data *data);
+//ray_casting
+
+//main
+int ft_init(t_data *data, t_texture *textures, char **map);
+int point_image_texture(t_data *data, t_ray *ray);
+int32_t ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a);
+int get_image_texture(t_data *data, t_texture *tex);
+int get_texture_pixel_color(t_data *data, int texture_x, int texture_y, t_image *img);
+void render_wall(t_data *data, t_ray *ray, double column);
+//main
 #endif

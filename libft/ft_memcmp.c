@@ -1,33 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strrchr.c                                       :+:      :+:    :+:   */
+/*   ft_memcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aaaraba <aaaraba@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/01 17:45:52 by aaaraba           #+#    #+#             */
+/*   Created: 2023/11/04 21:24:32 by aaaraba           #+#    #+#             */
 /*   Updated: 2024/11/20 12:44:29 by aaaraba          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
 
-char	*ft_strrchr(const char *s, int c)
+int	ft_memcmp(const void *s1, const void *s2, size_t n)
 {
-	int	i;
+	char	*p1;
+	char	*p2;
+	size_t	i;
 
 	i = 0;
-	while (s[i] != '\0')
+	p1 = (char *)s1;
+	p2 = (char *)s2;
+	while (i < n)
 	{
+		if (p1[i] != p2[i])
+			return ((unsigned char)p1[i] - (unsigned char)p2[i]);
 		i++;
 	}
-	while (i >= 0)
-	{
-		if (s[i] == (unsigned char)c)
-		{
-			return ((char *)(s + i));
-		}
-		i--;
-	}
-	return (NULL);
+	return (0);
 }
