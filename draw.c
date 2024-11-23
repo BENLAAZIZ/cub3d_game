@@ -1,18 +1,18 @@
 #include "cub3d.h"
 
-int get_texture_pixel_color(t_data *data, int texture_x, int texture_y, t_image *img)
-{
-    int color;
-    (void)data;
-    if (texture_x < 0 || texture_x > img->width || texture_y < 0 || texture_y > img->height)
-    {
-        printf("Invalid texture coordinates: x=%d, y=%d\n", texture_x, texture_y);
-        return 0;
-    }
+// int get_texture_pixel_color(t_data *data, int texture_x, int texture_y, t_image *img)
+// {
+//     int color;
+//     (void)data;
+//     if (texture_x < 0 || texture_x > img->width || texture_y < 0 || texture_y > img->height)
+//     {
+//         printf("Invalid texture coordinates: x=%d, y=%d\n", texture_x, texture_y);
+//         return 0;
+//     }
 
-    color = img->addr[((int)(texture_y * img->height + texture_x))];
-    return (color);
-}
+//     color = img->addr[((int)(texture_y * img->height + texture_x))];
+//     return (color);
+// }
 
 int point_image_texture(t_data *data, t_ray *ray)
 {
@@ -44,36 +44,15 @@ void draw_wall(t_data *data, t_ray *ray, int column)
     top_y = Screen_H / 2 - line_height / 2;
     bottom_y = Screen_H / 2 + line_height / 2;
 
-
     if (point_image_texture(data, ray))
     {
         printf("Failed to load texture\n");
         return;
     }
-
      if (ray->flag == 1)
-    {
         ofsset_x = (int)((ray->v_hit_y / TILE_SIZE) * data->imgx->texture->width) % data->imgx->texture->width;
-        // ofsset_x = 
-    }
     else
-    {
         ofsset_x = (int)((ray->h_hit_x / TILE_SIZE) * data->imgx->texture->width) % data->imgx->texture->width;
-    }
-
-
-    // if (ray->flag == 1)
-    // {
-    //     ofsset_x = (int)((ray->v_hit_y / TILE_SIZE) * data->image[0].texture->width) % data->image[0].texture->width;
-    //     // ofsset_x = 
-    // }
-    // else
-    // {
-    //     ofsset_x = (int)((ray->h_hit_x / TILE_SIZE) * data->image[0].texture->width) % data->image[0].texture->width;
-    // }
-
-
-
     y = top_y;
     while (y < bottom_y)
     {
@@ -82,17 +61,10 @@ void draw_wall(t_data *data, t_ray *ray, int column)
         if (y >= Screen_H)
             break;
         int distance = (y + line_height / 2) - (Screen_H / 2);
-        // offset_y = distance * (data->image[0].texture->height / line_height);
         offset_y = distance * (data->imgx->texture->height / line_height);
-
-
-
-
-        // unsigned int* pixel=  (unsigned int *)data->image[0].texture->pixels;
         unsigned int* pixel=  (unsigned int *)data->imgx->texture->pixels;
 
         color = pixel[(offset_y * data->imgx->texture->width) + ofsset_x];
-        // color = pixel[(offset_y * data->image[0].texture->width) + ofsset_x];
         color = ft_pixel(color >> 16, color >> 8, color, 255);
         mlx_put_pixel(data->img, column, y, color);
         y++;

@@ -188,6 +188,19 @@ void ft_hook(void* param)
 
 }
 
+void clear_texture(t_texture *tex)
+{
+	t_texture *tmp;
+	while (tex)
+	{
+		tmp = tex;
+		tex = tex->next;
+		free(tmp->Path);
+		free(tmp);
+	}
+}
+
+
 int ft_init(t_data *data, t_texture *textures, char **map)
 {
 	int height;	
@@ -198,25 +211,22 @@ int ft_init(t_data *data, t_texture *textures, char **map)
 		height++;
 	data->height = height;
 	data->all_map = map;
-	data->p_y = 0;
-    data->p_x = 0;
-    // data->angle = 0.0;
+	data->tex = textures;
 	data->lenght = ft_strlen(map[0]);
 	data->mlx = mlx_init(Screen_W, Screen_H, "Cub3D", 1);
-	data->tex = textures;
 	data->img = mlx_new_image(data->mlx, Screen_W, Screen_H);
-    // printf("add image %p\n", data->img);
     if (get_image_texture(data, textures))
 		return (ft_putstr_fd("Error in get_image_texture", 2), 1);
+	clear_texture(data->tex);
     get_player_position(data);
-	// drawmap(data);
-	// drawplayer(data);
     castAllRay(data);
 	mlx_image_to_window(data->mlx, data->img, 0, 0);
 	mlx_loop_hook(data->mlx, ft_hook, data);
 	mlx_loop(data->mlx);
 	return (0);
 }
+
+
 
 int main (int argc, char **argv)
 {

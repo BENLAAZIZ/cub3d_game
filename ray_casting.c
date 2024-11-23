@@ -39,6 +39,7 @@ void  castAllRay(t_data *data)
     drawmap(data);
     drawplayer(data);
 }
+
 void oneRay(t_data *data, t_ray *ray)
 {   
     init_ray(ray);
