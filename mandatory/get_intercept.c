@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 17:12:55 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/23 18:18:19 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/23 18:28:48 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,8 @@ double get_v_intercept(t_data *data, t_ray *ray)
 }
 
 
-
-
 void    get_h_otils(t_data *data, t_ray *ray, t_x *x)
 {
-
     x->yintercept = floor(data->p_y / TILE_SIZE) * TILE_SIZE;
     if (ray->lookingDown)
         x->yintercept += TILE_SIZE;
@@ -77,11 +74,11 @@ void    get_h_otils(t_data *data, t_ray *ray, t_x *x)
 
 double get_h_intercept(t_data *data, t_ray *ray)
 {
-    
     t_x  x;
 
     get_h_otils(data, ray, &x);
-    while (x.xintercept >= 0 && x.xintercept <= data->lenght * TILE_SIZE && x.yintercept >= 0 && x.yintercept <= data->height * TILE_SIZE)
+    while (x.xintercept >= 0 && x.xintercept <= data->lenght * TILE_SIZE
+            && x.yintercept >= 0 && x.yintercept <= data->height * TILE_SIZE)
     {
         x.xtocheck = x.xintercept;
         if (ray->lookingUp)

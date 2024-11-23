@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 17:11:18 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/23 18:24:50 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/23 18:26:28 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,21 +64,7 @@ void draw_wall(t_data *data, t_ray *ray, int column)
      if (ray->flag == 1)
         x.ofsset_x = (int)((ray->y_hit / TILE_SIZE) * data->imgx->texture->width) % data->imgx->texture->width;
     else
-        x.ofsset_x = (int)((ray->x_hit / TILE_SIZE) * data->imgx->texture->width) % data->imgx->texture->width;
-    // while (top_y < bottom_y)
-    // {
-    //     if (top_y < 0)
-    //         top_y = 0;
-    //     if (top_y >= Screen_H)
-    //         break;
-    //     distance = (top_y + x.line_height / 2) - (Screen_H / 2);
-    //     offset_y = distance * (data->imgx->texture->height / x.line_height);
-    //     pixel =  (unsigned int *)data->imgx->texture->pixels;
-    //     color = pixel[(offset_y * data->imgx->texture->width) + ofsset_x];
-    //     color = ft_pixel(color >> 16, color >> 8, color, 255);
-    //     mlx_put_pixel(data->img, column, top_y, color);
-    //     top_y++;
-    // }  
+        x.ofsset_x = (int)((ray->x_hit / TILE_SIZE) * data->imgx->texture->width) % data->imgx->texture->width; 
     dr(data, &x, column);
 }
 
