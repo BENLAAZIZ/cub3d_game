@@ -118,6 +118,16 @@ typedef struct s_x
 
 	double ystep;
 	double xstep;
+
+
+	 double         line_height;
+    double          top_y;
+    double          bottom_y;
+    int             color;
+    int             ofsset_x;
+    int             offset_y;
+    // int             distance;
+    unsigned int*   pixel;
 } t_x;
 
 //libft

@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 17:12:55 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/23 18:16:47 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/23 18:18:19 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,18 +80,6 @@ double get_h_intercept(t_data *data, t_ray *ray)
     
     t_x  x;
 
-    // yintercept = floor(data->p_y / TILE_SIZE) * TILE_SIZE;
-    // if (ray->lookingDown)
-    //     yintercept += TILE_SIZE;
-    // xintercept = data->p_x + (yintercept - data->p_y) / tan(ray->rayAngle);
-    // ystep = TILE_SIZE;
-    // xstep = TILE_SIZE / tan(ray->rayAngle); 
-    // if (ray->lookingUp)
-    //     ystep *= -1;
-    // if (ray->lookingLeft && xstep > 0)
-    //     xstep *= -1;
-    // if (ray->lookingRight && xstep < 0)
-    //     xstep *= -1;
     get_h_otils(data, ray, &x);
     while (x.xintercept >= 0 && x.xintercept <= data->lenght * TILE_SIZE && x.yintercept >= 0 && x.yintercept <= data->height * TILE_SIZE)
     {
