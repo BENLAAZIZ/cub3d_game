@@ -15,9 +15,9 @@
 #define FOV (60 * (M_PI / 180))
 
 
-# define Screen_W 1800 // screen width
-# define Screen_H 1400 // screen height
-# define TILE_SIZE 10.0 // tile size
+# define Screen_W 1024 // screen width
+# define Screen_H 800 // screen height
+# define TILE_SIZE 32.0 // tile size
 # define NUM_RAYS Screen_W
 typedef enum e_type {
 	NO,

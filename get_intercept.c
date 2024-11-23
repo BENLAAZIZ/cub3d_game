@@ -23,7 +23,7 @@ double get_v_intercept(t_data *data, t_ray *ray, double xstep, double ystep)
     while (xintercept >= 0 && xintercept <= data->lenght * TILE_SIZE && yintercept >= 0 && yintercept <= data->height * TILE_SIZE)
     {
         if (ray->lookingLeft)
-            xtocheck = xintercept - 0.0001;
+            xtocheck = xintercept - 0.001;
         else
            xtocheck = xintercept;
         ytocheck = yintercept;
@@ -63,7 +63,7 @@ double get_h_intercept(t_data *data, t_ray *ray, double xstep, double ystep)
     {
         xtocheck = xintercept;
         if (ray->lookingUp)
-            ytocheck = yintercept - 0.0001;
+            ytocheck = yintercept - 0.001;
         else
             ytocheck = yintercept;
         if (is_wall(data, ytocheck, xtocheck))

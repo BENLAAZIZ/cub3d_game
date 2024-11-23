@@ -2,38 +2,66 @@
 
 int get_image_texture(t_data *data, t_texture *tex)
 {
+	int i;
+	
+	i  =  0;
     while (tex)
     {
-        if (tex->identifier == 0)
+		printf("tex->identifier = %d\n", tex->identifier);
+		if (i == 4)
+			return (0);
+        if (tex->identifier == i)
 		{
-			data->image[0].texture = mlx_load_png(tex->Path);
-			data->image[0].image = mlx_texture_to_image(data->mlx, data->image[0].texture);
-            // printf("width %d h : %d\n", data->image[0].texture->width, data->image[0].texture->height);
+			data->image[i].texture = mlx_load_png(tex->Path);
+			data->image[i].image = mlx_texture_to_image(data->mlx, data->image[i].texture);
 		}
-        if (tex->identifier == 1)
-	    {
-			data->image[1].texture = mlx_load_png(tex->Path);
-			data->image[1].image = mlx_texture_to_image(data->mlx, data->image[1].texture);
-		}
-        if (tex->identifier == 2)
-        {
-			data->image[2].texture = mlx_load_png(tex->Path);
-			data->image[2].image = mlx_texture_to_image(data->mlx, data->image[2].texture);
-		}
-        if (tex->identifier == 3)
-        {
-			data->image[3].texture = mlx_load_png(tex->Path);
-			data->image[3].image = mlx_texture_to_image(data->mlx, data->image[3].texture);
-		}
+		i++;
         tex = tex->next;
     }
-    if (data->image[0].image == NULL || data->image[1].image == NULL || data->image[2].image == NULL || data->image[3].image == NULL)
-    {
-            return (1);
-    }
+	i = 0;
+	while (i < 4)
+	{
+		if (data->image[i].image == NULL || data->image[i].texture == NULL)
+			return (1);
+		i++;
+	}
 
     return (0); 
 }
+
+// int get_image_texture(t_data *data, t_texture *tex)
+// {
+//     while (tex)
+//     {
+//         if (tex->identifier == 0)
+// 		{
+// 			data->image[0].texture = mlx_load_png(tex->Path);
+// 			data->image[0].image = mlx_texture_to_image(data->mlx, data->image[0].texture);
+// 		}
+//         if (tex->identifier == 1)
+// 	    {
+// 			data->image[1].texture = mlx_load_png(tex->Path);
+// 			data->image[1].image = mlx_texture_to_image(data->mlx, data->image[1].texture);
+// 		}
+//         if (tex->identifier == 2)
+//         {
+// 			data->image[2].texture = mlx_load_png(tex->Path);
+// 			data->image[2].image = mlx_texture_to_image(data->mlx, data->image[2].texture);
+// 		}
+//         if (tex->identifier == 3)
+//         {
+// 			data->image[3].texture = mlx_load_png(tex->Path);
+// 			data->image[3].image = mlx_texture_to_image(data->mlx, data->image[3].texture);
+// 		}
+//         tex = tex->next;
+//     }
+//     if (data->image[0].image == NULL || data->image[1].image == NULL || data->image[2].image == NULL || data->image[3].image == NULL)
+//     {
+//             return (1);
+//     }
+
+//     return (0); 
+// }
 
 int32_t ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a)
 {
@@ -95,6 +123,7 @@ void get_player_position(t_data *data)
     data->p_x = (data->p_x * TILE_SIZE) + (TILE_SIZE / 2);
     data->p_y = (data->p_y * TILE_SIZE) + (TILE_SIZE / 2);
 }
+
 int is_wall(t_data *data, double y, double x)
 {
     if (x <= 0 || x >= data->lenght * TILE_SIZE || y <= 0 || y >= data->height * TILE_SIZE)
@@ -138,7 +167,6 @@ void render_wall(t_data *data, t_ray *ray, double column)
      ray->distance = ray->distance * 5;
      draw_wall(data, ray  , column);
      draw_floor(data, ray->distance , column);
-        // (*column)++;
 }
 
 void ft_hook(void* param)
@@ -178,7 +206,8 @@ int ft_init(t_data *data, t_texture *textures, char **map)
 	data->tex = textures;
 	data->img = mlx_new_image(data->mlx, Screen_W, Screen_H);
     // printf("add image %p\n", data->img);
-    get_image_texture(data, textures);
+    if (get_image_texture(data, textures))
+		return (ft_putstr_fd("Error in get_image_texture", 2), 1);
     get_player_position(data);
 	// drawmap(data);
 	// drawplayer(data);
@@ -202,5 +231,15 @@ int main (int argc, char **argv)
 	if (ft_strcmp(argv[1] + ft_strlen(argv[1]) - 4, ".cub") != 0)
 		return (ft_putstr_fd("Invalid file extension", 2), 1);
 	map = pars_map(argv[1], &textures, map);
+
+	// **************************	
+	if (TILE_SIZE < 1)
+		return (ft_putstr_fd("Invalid TILE_SIZE", 2), 1);
+	if (TILE_SIZE * ft_strlen(map[0]) > Screen_W)
+		return (ft_putstr_fd("Invalid Screen size", 2), 1);
+	if (Screen_W < 1 || Screen_H < 1 || Screen_W > 2560 || Screen_H > 1440)
+		return (ft_putstr_fd("Invalid Screen size", 2), 1);
+	// **************************
+
 	ft_init(&data, textures, map);
 }
