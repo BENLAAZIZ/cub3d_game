@@ -14,11 +14,11 @@
 
 #define FOV (60 * (M_PI / 180))
 
-
 # define Screen_W 1024 // screen width
-# define Screen_H 720 // screen height
-# define TILE_SIZE 10.0 // tile size
+# define Screen_H 800 // screen height
+# define TILE_SIZE 40.0 // tile size
 # define NUM_RAYS Screen_W
+# define speed 5.00
 
 typedef enum e_type {
 	NO,
@@ -41,8 +41,8 @@ typedef struct s_texture
 
 typedef struct s_image 
 {
-	mlx_texture_t	*texture;
 	void			*image;
+	mlx_texture_t	*texture;
 	char			*addr;
 	int				width;
 	int				height;
@@ -54,28 +54,27 @@ typedef struct s_image
 typedef struct s_data
 {
 	mlx_image_t		*img;
-	char		**all_map;
-	void		*mlx;
-	void		*win;
-	void		*win_test;
-	int			height;
-	int			lenght;
-	double		angle;
-	double		p_x;
-	double		p_y;
-	int			tile_size;
-	float		turnDirection;
-	int			walkDirection;
-	float		radius;
-	float		rotationAngle;
-	float		moveSpeed;
-	float		rotationSpeed;
-	int 		ceiling_color;
-	int 		floor_color;
-	t_image		image[4];
-	t_image		*imgx;
-	t_texture	*tex;
-	
+	char			**all_map;
+	void			*mlx;
+	void			*win;
+	void			*win_test;
+	int				height;
+	int				lenght;
+	double			angle;
+	double			p_x;
+	double			p_y;
+	int				tile_size;
+	// float			turnDirection;
+	// int				walkDirection;
+	// float			radius;
+	// float			rotationAngle;
+	// float			moveSpeed;
+	float			rotationSpeed;
+	int 			ceiling_color;
+	int 			floor_color;
+	t_image			image[4];
+	t_image			*imgx;
+	t_texture		*tex;
 }t_data;
 
 typedef struct s_player 
@@ -93,15 +92,15 @@ typedef struct s_ray {
 	double rayAngle;
 	double v_distance;
     double h_distance;
-	double h_hit_var;
+	double h_hit_x;
     double h_hit_y;
-    double v_hit_var;
+    double v_hit_x;
     double v_hit_y;
 
 	double x_hit;
 	double y_hit;
 	double distance;
-	int	lookingDown;
+	int lookingDown;
 	int lookingUp;
 	int lookingRight;
 	int lookingLeft;
@@ -190,8 +189,8 @@ char	**pars_map(char *argv, t_texture **textures, char **map);
 char	**add_spaces(char **map);
 //pars_map
 
-
-int is_wall(t_data *data, double y, double x);
+// void	castAllRay(t_data *data);
+int		is_wall(t_data *data, double y, double x);
 
 //actions
 void	move_player_down(t_data *data);
@@ -202,32 +201,38 @@ void	player_rot(t_data *data);
 //actions
 
 //pars_map
-int check_char(char c);
-int check_characters(char **map, int i, int j);
-char **pars_map(char *argv, t_texture **textures, char **map);
+int		check_char(char c);
+int		check_characters(char **map, int i, int j);
+char	**pars_map(char *argv, t_texture **textures, char **map);
 //pars_map
 
 //draw
-int	draw_wall(t_data *data, t_ray *ray, int column);
+int		draw_wall(t_data *data, t_ray *ray, int column);
 void	draw_floor(t_data *data, double distance, double column);
+void	drawplayer(t_data *data);
+void	drawmap(t_data *data);
+void	draw_rays_minimap(t_data *data, t_player *player);
 //draw
 
 //get_intercept
-double get_v_intercept(t_data *data, t_ray *ray);
-double get_h_intercept(t_data *data, t_ray *ray);
+double	get_v_intercept(t_data *data, t_ray *ray);
+double	get_h_intercept(t_data *data, t_ray *ray);
 //get_intercept
 
 //ray_casting
-void init_ray(t_ray *ray);
-void oneRay(t_data *data, t_ray *ray);
-int  castAllRay(t_data *data);
+void	init_ray(t_ray *ray);
+void	oneRay(t_data *data, t_ray *ray);
+int		castAllRay(t_data *data);
 //ray_casting
 
 //main
-int ft_init(t_data *data, t_texture *textures, char **map);
-int point_image_texture(t_data *data, t_ray *ray);
-int32_t ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a);
-int get_image_texture(t_data *data, t_texture *tex);
-int render_wall(t_data *data, t_ray *ray, double column);
+int		ft_init(t_data *data, t_texture *textures, char **map);
+int		point_image_texture(t_data *data, t_ray *ray);
+int32_t	ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a);
+int		get_image_texture(t_data *data, t_texture *tex, int i);
+// int		get_texture_pixel_color(t_data *data, int texture_x, int texture_y, t_image *img);
+int	render_wall(t_data *data, t_ray *ray, double column);
+void	lst_clear(t_texture **lst);
+void	free_double(char **map);
 //main
 #endif

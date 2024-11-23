@@ -1,10 +1,7 @@
 #include "cub3d.h"
 
-int get_image_texture(t_data *data, t_texture *tex)
+int get_image_texture(t_data *data, t_texture *tex, int i)
 {
-	int i;
-	
-	i  =  0;
     while (tex)
     {
         if (tex->identifier != F && tex->identifier != C)
@@ -22,18 +19,16 @@ int get_image_texture(t_data *data, t_texture *tex)
 		i++;
         tex = tex->next;
     }
-	i = 0;
-	while (i < 4)
+	i = -1;
+	while (++i < 4)
 	{
 		if (data->image[i].image == NULL || data->image[i].texture == NULL)
 			return (1);
-		i++;
 	}
     return (0); 
 }
 
-
-int32_t ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a)
+int ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a)
 {
     return (r << 24 | g << 16 | b << 8 | a);
 }
@@ -80,8 +75,8 @@ void get_player_position(t_data *data)
 				break;
         data->p_y++;
     }
-    data->p_x = (data->p_x * TILE_SIZE) + (TILE_SIZE / 2);
-    data->p_y = (data->p_y * TILE_SIZE) + (TILE_SIZE / 2);
+    data->p_x = (data->p_x * TILE_SIZE) ;
+    data->p_y = (data->p_y * TILE_SIZE) ;
 }
 
 int is_wall(t_data *data, double y, double x)
@@ -99,7 +94,7 @@ int render_wall(t_data *data, t_ray *ray, double column)
      ray->distance *= cos(ray->rayAngle - data->angle);
      ray->distance = ray->distance * 5;
      if (draw_wall(data, ray  , column))
-		return (1);
+	 	return (1);
      draw_floor(data, ray->distance , column);
 	 return (0);
 }
@@ -107,7 +102,7 @@ int render_wall(t_data *data, t_ray *ray, double column)
 void ft_hook(void* param)
 {
 	t_data *data = (t_data*)param;
-
+	
 	if (mlx_is_key_down(data->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(data->mlx);
 	if (mlx_is_key_down(data->mlx, MLX_KEY_W))
@@ -120,14 +115,13 @@ void ft_hook(void* param)
 		move_player_right(data);
     if (mlx_is_key_down(data->mlx, MLX_KEY_LEFT) || mlx_is_key_down(data->mlx, MLX_KEY_RIGHT))
         player_rot(data);
-
 }
 
 int ft_init(t_data *data, t_texture *textures, char **map)
 {
 	int height;	
 	if (map == NULL)
-		return (1);
+		return 1;
 	height = 0;
 	while(map[height])
 		height++;
@@ -135,13 +129,23 @@ int ft_init(t_data *data, t_texture *textures, char **map)
 	data->all_map = map;
 	data->lenght = ft_strlen(map[0]);
 	data->mlx = mlx_init(Screen_W, Screen_H, "Cub3D", 1);
+	if (data->mlx == NULL)
+		return (ft_putstr_fd("Error in mlx_init", 2), 1);
 	data->tex = textures;
 	data->img = mlx_new_image(data->mlx, Screen_W, Screen_H);
-    if (get_image_texture(data, textures))
+	if (data->img == NULL)
+	{
+		mlx_terminate(data->mlx);
+		return (ft_putstr_fd("Error in mlx_new_image", 2), 1);
+	}
+    if (get_image_texture(data, textures, 0))
+	{
+		mlx_terminate(data->mlx);
 		return (ft_putstr_fd("Error in get_image_texture", 2), 1);
+	}
     get_player_position(data);
     if (castAllRay(data))
-		return (ft_putstr_fd("Error in castAllRay", 2), 1);
+		return (1);
 	mlx_image_to_window(data->mlx, data->img, 0, 0);
 	mlx_loop_hook(data->mlx, ft_hook, data);
 	mlx_loop(data->mlx);
@@ -163,11 +167,28 @@ int main (int argc, char **argv)
 	map = pars_map(argv[1], &textures, map);
 	if (map == NULL)
 		return (1);
-	// **************************	
-	if (TILE_SIZE < 1)
-		return (ft_putstr_fd("Invalid TILE_SIZE", 2), 1);
-	if (Screen_W < 1 || Screen_H < 1 || Screen_W > 2560 || Screen_H > 1440)
+	// if (TILE_SIZE < 1)
+	// {
+	// 	free_double(map);
+	// 	lst_clear(&textures);
+	// 	return (ft_putstr_fd("Invalid TILE_SIZE", 2), 1);
+	// }
+	// if (TILE_SIZE * ft_strlen(map[0]) > Screen_W)
+	// {
+	// 	free_double(map);
+	// 	lst_clear(&textures);
+	// 	return (ft_putstr_fd("Invalid TILE_SIZE", 2), 1);
+	// }
+	if (Screen_W < 1 || Screen_H < 1 || Screen_W > 2560 || Screen_H > 1440 || TILE_SIZE < 1)
+	{
+		free_double(map);
+		lst_clear(&textures);
 		return (ft_putstr_fd("Invalid Screen size", 2), 1);
-	// **************************
-	ft_init(&data, textures, map);
+	}
+	if (ft_init(&data, textures, map) == 1)
+	{
+		free_double(map);
+		lst_clear(&textures);
+		return (1);
+	}
 }

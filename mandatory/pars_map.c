@@ -1,5 +1,34 @@
 #include "cub3d.h"
 
+void free_double(char **map)
+{
+	int i;
+	if (!map)
+		return ;
+	i = 0;
+	while (map[i])
+	{
+		free(map[i]);
+		i++;
+	}
+	free(map);
+}
+void lst_clear(t_texture **lst)
+{
+	t_texture *tmp;
+	t_texture *tmp2;
+
+	tmp = *lst;
+	while (tmp)
+	{
+		tmp2 = tmp->next;
+		free(tmp->Path);
+		free(tmp->rgp_color);
+		free(tmp);
+		tmp = tmp2;
+	}
+	*lst = NULL;
+}
 int check_char(char c)
 {
 	if (c == '1'
@@ -22,13 +51,13 @@ int check_characters(char **map, int i, int j)
 				|| map[i][j] == 'S' || map[i][j] == 'E'
 				|| map[i][j] == 'W')
 			{
-				if (check_char(map[i - 1][j]) == 0)
+				if (i > 0 && check_char(map[i - 1][j]) == 0)
 					return (ft_putstr_fd("Error: Invalid character", 2), 1);
-				if (check_char(map[i + 1][j]) == 0)
+				if (map[i + 1] && check_char(map[i + 1][j]) == 0)
 					return (ft_putstr_fd("Error: Invalid character", 2), 1);
-				if (check_char(map[i][j - 1]) == 0)
+				if (j > 0 && check_char(map[i][j - 1]) == 0)
 					return (ft_putstr_fd("Error: Invalid character", 2), 1);
-				if (check_char(map[i][j + 1]) == 0)
+				if (map[i][j + 1] && check_char(map[i][j + 1]) == 0)
 					return (ft_putstr_fd("Error: Invalid character", 2), 1);
 			}
 			j++;
@@ -50,11 +79,27 @@ char **pars_map(char *argv, t_texture **textures, char **map)
 		return (ft_putstr_fd("Error getting textures", 2), NULL);
 	map = get_map(fd);
 	if (map == NULL)
+	{
+		close(fd);
+		lst_clear(textures);
 		return (ft_putstr_fd("Error getting map", 2), NULL);
+	}
 	new_map = add_spaces(map);
+	// free_double(map);
 	if(new_map == NULL)
+	{
+		close(fd);
+		lst_clear(textures);
+		exit(0);
 		return (ft_putstr_fd("Error adding spaces", 2), NULL);
-	check_characters(new_map, 0, 0);
+	}
+	if (check_characters(new_map, 0, 0) == 1)
+	{
+		free_double(new_map);
+		close(fd);
+		lst_clear(textures);
+		return (NULL);
+	}
 	close(fd);
 	return (map);
 }

@@ -80,14 +80,20 @@ t_texture	*get_texture(int fd, t_texture *tex, int j, int i)
 				i++;
 			j = 0;
 			if (check_double_texture(line) == -1)
+			{
+				free(tmp);
 				return (write(2, "wrong texture\n", 14), NULL);
+			}
 			count++;
 			tex_tmp = ft_lstnew(tex_tmp, line, i);
 			if (tex_tmp == NULL)
+			{
+				free(tmp);
 				return (NULL);
+			}
 			lstadd_back(&tex, tex_tmp);
-			free(tmp);
 		}
+		free(tmp);
 		line = get_next_line(fd);
 	}
 	return(tex);
