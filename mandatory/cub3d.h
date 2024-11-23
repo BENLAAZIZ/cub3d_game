@@ -93,9 +93,9 @@ typedef struct s_ray {
 	double rayAngle;
 	double v_distance;
     double h_distance;
-	double h_hit_x;
+	double h_hit_var;
     double h_hit_y;
-    double v_hit_x;
+    double v_hit_var;
     double v_hit_y;
 
 	double x_hit;
@@ -108,27 +108,23 @@ typedef struct s_ray {
 	int flag;
 }t_ray;
 
-typedef struct s_x
+typedef struct s_var
 {
-	double xintercept;
-    double yintercept;
-    double xtocheck;
-    double ytocheck;
-    double distance;
-
-	double ystep;
-	double xstep;
-
-
-	 double         line_height;
-    double          top_y;
-    double          bottom_y;
-    int             color;
-    int             ofsset_x;
-    int             offset_y;
-    // int             distance;
-    unsigned int*   pixel;
-} t_x;
+	double			xintercept;
+    double			yintercept;
+    double			xtocheck;
+    double			ytocheck;
+    double			distance;
+	double			ystep;
+	double			xstep;
+	double			line_height;
+    double			top_y;
+    double			bottom_y;
+    int				color;
+    int				ofsset_var;
+    int				offset_y;
+    unsigned int*	pixel;
+} t_var;
 
 //libft
 size_t	ft_strlen(const char *s);
@@ -214,9 +210,6 @@ char **pars_map(char *argv, t_texture **textures, char **map);
 //draw
 void	draw_wall(t_data *data, t_ray *ray, int column);
 void	draw_floor(t_data *data, double distance, double column);
-void	drawplayer(t_data *data);
-void	drawmap(t_data *data);
-void	draw_rays_minimap(t_data *data, t_player *player);
 //draw
 
 //get_intercept

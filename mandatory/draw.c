@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 17:11:18 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/23 18:26:28 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/23 18:34:25 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int point_image_texture(t_data *data, t_ray *ray)
     return (0);
 }
 
-void dr(t_data *data, t_x *x, int column)
+void dr(t_data *data, t_var *x, int column)
 {
         while (x->top_y < x->bottom_y)
     {
@@ -40,7 +40,7 @@ void dr(t_data *data, t_x *x, int column)
         x->distance = (x->top_y + x->line_height / 2) - (Screen_H / 2);
         x->offset_y = x->distance * (data->imgx->texture->height / x->line_height);
         x->pixel =  (unsigned int *)data->imgx->texture->pixels;
-        x->color = x->pixel[(x->offset_y * data->imgx->texture->width) + x->ofsset_x];
+        x->color = x->pixel[(x->offset_y * data->imgx->texture->width) + x->ofsset_var];
         x->color = ft_pixel(x->color >> 16, x->color >> 8, x->color, 255);
         mlx_put_pixel(data->img, column, x->top_y, x->color);
         x->top_y++;
@@ -50,7 +50,7 @@ void dr(t_data *data, t_x *x, int column)
 
 void draw_wall(t_data *data, t_ray *ray, int column)
 {
-   t_x x;
+   t_var x;
     
 
     x.line_height = (Screen_H / ray->distance) * 5;
@@ -62,9 +62,9 @@ void draw_wall(t_data *data, t_ray *ray, int column)
         return;
     }
      if (ray->flag == 1)
-        x.ofsset_x = (int)((ray->y_hit / TILE_SIZE) * data->imgx->texture->width) % data->imgx->texture->width;
+        x.ofsset_var = (int)((ray->y_hit / TILE_SIZE) * data->imgx->texture->width) % data->imgx->texture->width;
     else
-        x.ofsset_x = (int)((ray->x_hit / TILE_SIZE) * data->imgx->texture->width) % data->imgx->texture->width; 
+        x.ofsset_var = (int)((ray->x_hit / TILE_SIZE) * data->imgx->texture->width) % data->imgx->texture->width; 
     dr(data, &x, column);
 }
 
