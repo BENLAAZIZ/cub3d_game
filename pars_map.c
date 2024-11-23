@@ -55,13 +55,6 @@ char **pars_map(char *argv, t_texture **textures, char **map)
 	if(new_map == NULL)
 		return (ft_putstr_fd("Error adding spaces", 2), NULL);
 	check_characters(new_map, 0, 0);
-	// int i = 0;
-	// while(new_map[i])
-	// {
-	// 	// ft_putstr_fd(new_map[i], 1);
-	// 	// ft_putstr_fd("|\n", 1);
-	// 	i++;
-	// }
 	close(fd);
 	return (map);
 }

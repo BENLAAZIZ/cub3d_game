@@ -17,7 +17,7 @@
 
 # define Screen_W 1024 // screen width
 # define Screen_H 800 // screen height
-# define TILE_SIZE 32.0 // tile size
+# define TILE_SIZE 50.0 // tile size
 # define NUM_RAYS Screen_W
 typedef enum e_type {
 	NO,
@@ -33,6 +33,8 @@ typedef struct s_texture
 	char				*Path;
 	char				*rgp_color;
 	int					identifier;
+	int 				color_floor;
+	int 				color_ceiling;
 	struct s_texture	*next;
 } t_texture;
 
@@ -68,6 +70,8 @@ typedef struct s_data
 	float		rotationAngle;
 	float		moveSpeed;
 	float		rotationSpeed;
+	int 		ceiling_color;
+	int 		floor_color;
 	t_image		image[4];
 	t_image		*imgx;
 	t_texture	*tex;

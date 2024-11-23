@@ -1,11 +1,11 @@
 #include "cub3d.h"
 
-int	check_rgp(char *str, int r, int g, int p)
+int	check_rgp(char *str, int r, int g, int b)
 {
 	int	i;
 	int	j;
 	int	res;
-
+	int color;
 	i = 0;
 	res = 0;
 	while (str[i] == ' ' && str[i] == '\t')
@@ -16,17 +16,20 @@ int	check_rgp(char *str, int r, int g, int p)
 		if (str[i] == ',' || str[i + 1] == '\n')
 		{
 			res = ft_atoi(ft_substr(str, j + 1, i - j));
+			if (res < 0 || res > 255)
+				return (-1);
 			if (r == -1)
 				r = res;
 			else if (g == -1)
 				g = res;
-			else if (p == -1)
-				p = res;
+			else if (b == -1)
+				b = res;
 			j = i;
 		}
 		i++;
 	}
-	return (0);
+	color = ft_pixel(r, g, b, 255);
+	return (color);
 }
 
 int	check_double_texture(char	*texture)
@@ -80,6 +83,8 @@ t_texture	*get_texture(int fd, t_texture *tex, int j, int i)
 				return (write(2, "wrong texture\n", 14), NULL);
 			count++;
 			tex_tmp = ft_lstnew(tex_tmp, line, i);
+			if (tex_tmp == NULL)
+				return (NULL);
 			lstadd_back(&tex, tex_tmp);
 			free(tmp);
 		}

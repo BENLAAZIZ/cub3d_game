@@ -7,13 +7,17 @@ int get_image_texture(t_data *data, t_texture *tex)
 	i  =  0;
     while (tex)
     {
-		printf("tex->identifier = %d\n", tex->identifier);
-		if (i == 4)
-			return (0);
-        if (tex->identifier == i)
+        if (tex->identifier != F && tex->identifier != C)
 		{
 			data->image[i].texture = mlx_load_png(tex->Path);
 			data->image[i].image = mlx_texture_to_image(data->mlx, data->image[i].texture);
+		}
+		else
+		{
+			if (tex->identifier == F)
+				data->floor_color = tex->color_floor;
+			else
+				data->ceiling_color = tex->color_ceiling;
 		}
 		i++;
         tex = tex->next;
@@ -25,43 +29,9 @@ int get_image_texture(t_data *data, t_texture *tex)
 			return (1);
 		i++;
 	}
-
     return (0); 
 }
 
-// int get_image_texture(t_data *data, t_texture *tex)
-// {
-//     while (tex)
-//     {
-//         if (tex->identifier == 0)
-// 		{
-// 			data->image[0].texture = mlx_load_png(tex->Path);
-// 			data->image[0].image = mlx_texture_to_image(data->mlx, data->image[0].texture);
-// 		}
-//         if (tex->identifier == 1)
-// 	    {
-// 			data->image[1].texture = mlx_load_png(tex->Path);
-// 			data->image[1].image = mlx_texture_to_image(data->mlx, data->image[1].texture);
-// 		}
-//         if (tex->identifier == 2)
-//         {
-// 			data->image[2].texture = mlx_load_png(tex->Path);
-// 			data->image[2].image = mlx_texture_to_image(data->mlx, data->image[2].texture);
-// 		}
-//         if (tex->identifier == 3)
-//         {
-// 			data->image[3].texture = mlx_load_png(tex->Path);
-// 			data->image[3].image = mlx_texture_to_image(data->mlx, data->image[3].texture);
-// 		}
-//         tex = tex->next;
-//     }
-//     if (data->image[0].image == NULL || data->image[1].image == NULL || data->image[2].image == NULL || data->image[3].image == NULL)
-//     {
-//             return (1);
-//     }
-
-//     return (0); 
-// }
 
 int32_t ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a)
 {
@@ -102,20 +72,10 @@ void get_player_position(t_data *data)
         data->p_x = 0;
         while (data->all_map[(int)data->p_y][(int)data->p_x])
         {
-            // if (data->all_map[(int)data->p_y][(int)data->p_x] == 'N' 
-			// 	|| data->all_map[(int)data->p_y][(int)data->p_x] == 'S' 
-			// 	|| data->all_map[(int)data->p_y][(int)data->p_x] == 'E' 
-			// 	|| data->all_map[(int)data->p_y][(int)data->p_x] == 'W')
-            //     break;
 			if (player_direction(data->all_map[(int)data->p_y][(int)data->p_x], data))
 				break;
             data->p_x++;
         }
-        // if (data->all_map[(int)data->p_y][(int)data->p_x] == 'N' 
-		// 	|| data->all_map[(int)data->p_y][(int)data->p_x] == 'S' 
-		// 	|| data->all_map[(int)data->p_y][(int)data->p_x] == 'E' 
-		// 	|| data->all_map[(int)data->p_y][(int)data->p_x] == 'W')
-        //     break;
 		if (player_direction(data->all_map[(int)data->p_y][(int)data->p_x], data))
 				break;
         data->p_y++;
@@ -133,33 +93,6 @@ int is_wall(t_data *data, double y, double x)
       
     return (0);
 }
-
-// int point_image_texture(t_data *data, t_ray *ray, t_image **img)
-// {
-
-//     if (!ray->flag && !(ray->rayAngle > 0 && ray->rayAngle < M_PI))
-//     {
-//         *img = &data->image[0];
-//     }
-//     else if (!ray->flag && ray->rayAngle >= 0 && ray->rayAngle <= M_PI)
-//     {
-//         *img = &data->image[1];
-//     }
-//     else if (ray->flag && ray->rayAngle >= M_PI_2 && ray->rayAngle <= 3 * M_PI_2)
-//     {
-//         *img = &data->image[2];
-//     }
-//     else
-//     {
-//         *img = &data->image[3];
-//     }
-//    if (*img == NULL)
-//             return (1);
-//     // exit(0);
-//     return (0);
-// }
-
-
 
 void render_wall(t_data *data, t_ray *ray, double column)
 {
@@ -188,19 +121,6 @@ void ft_hook(void* param)
 
 }
 
-void clear_texture(t_texture *tex)
-{
-	t_texture *tmp;
-	while (tex)
-	{
-		tmp = tex;
-		tex = tex->next;
-		free(tmp->Path);
-		free(tmp);
-	}
-}
-
-
 int ft_init(t_data *data, t_texture *textures, char **map)
 {
 	int height;	
@@ -211,13 +131,12 @@ int ft_init(t_data *data, t_texture *textures, char **map)
 		height++;
 	data->height = height;
 	data->all_map = map;
-	data->tex = textures;
 	data->lenght = ft_strlen(map[0]);
 	data->mlx = mlx_init(Screen_W, Screen_H, "Cub3D", 1);
+	data->tex = textures;
 	data->img = mlx_new_image(data->mlx, Screen_W, Screen_H);
     if (get_image_texture(data, textures))
 		return (ft_putstr_fd("Error in get_image_texture", 2), 1);
-	clear_texture(data->tex);
     get_player_position(data);
     castAllRay(data);
 	mlx_image_to_window(data->mlx, data->img, 0, 0);
@@ -225,8 +144,6 @@ int ft_init(t_data *data, t_texture *textures, char **map)
 	mlx_loop(data->mlx);
 	return (0);
 }
-
-
 
 int main (int argc, char **argv)
 {
@@ -241,6 +158,8 @@ int main (int argc, char **argv)
 	if (ft_strcmp(argv[1] + ft_strlen(argv[1]) - 4, ".cub") != 0)
 		return (ft_putstr_fd("Invalid file extension", 2), 1);
 	map = pars_map(argv[1], &textures, map);
+	if (map == NULL)
+		return (1);
 
 	// **************************	
 	if (TILE_SIZE < 1)

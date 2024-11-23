@@ -14,7 +14,6 @@ void	move_player_down(t_data *data)
 	castAllRay(data);
 
 }
-
 void	move_player_up(t_data *data)
 {
 	double y = data->p_y + sin(data->angle) * 5.00;

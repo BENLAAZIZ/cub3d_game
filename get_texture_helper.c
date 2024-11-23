@@ -25,6 +25,8 @@ t_texture	*ft_lstnew(t_texture *new, char *line, int i)
 	new = (t_texture *)malloc(sizeof(t_texture));
 	if (new == NULL)
 		return (NULL);
+	new->color_ceiling = -1;
+	new->color_floor = -1;
 	new->Path = NULL;
 	new->rgp_color = NULL;
 	if (ft_strncmp(line , "F", 1) == 0)
@@ -41,7 +43,18 @@ t_texture	*ft_lstnew(t_texture *new, char *line, int i)
 		new->identifier = EA;
 	if (ft_strncmp(line , "F", 1) == 0 || ft_strncmp(line, "C", 1) == 0)
 	{
-		check_rgp(line + i, -1, -1, -1);
+		if (new->identifier == F)
+		{
+			new->color_floor = check_rgp(line + i, -1, -1, -1);
+			if (new->color_floor == -1)
+				return (NULL);
+		}
+		else
+		{
+			new->color_ceiling = check_rgp(line + i, -1, -1, -1);
+			if (new->color_ceiling == -1)
+				return (NULL);
+		}
 		new->rgp_color = ft_strdup(line + i);
 	}
 	else
