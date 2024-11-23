@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 17:12:08 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/23 19:33:12 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/23 23:47:44 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void oneRay(t_data *data, t_ray *ray)
     if (ray->v_distance <= ray->h_distance)
     {
         ray->distance = ray->v_distance / TILE_SIZE;
-        ray->x_hit = ray->v_hit_var;
+        ray->x_hit = ray->v_hit_x;
         ray->y_hit = ray->v_hit_y;
         ray->flag = 1;
     }

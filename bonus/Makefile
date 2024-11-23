@@ -1,4 +1,4 @@
-NAME = cub3d
+NAME = cub3d_bonus
 
 CC = cc
 
@@ -27,7 +27,7 @@ all: $(NAME)
 $(NAME): $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) MLX42/build/libmlx42.a -Iinclude -lglfw -L"/Users/$(USER)/.brew/opt/glfw/lib/" $(FRAM) -o $(NAME)
 
-%.o: %.c cub3d.h
+%.o: %.c cub3d_bonus.h
 		 $(CC) $(CFLAGS) -c $< -o $@
 
 clean:

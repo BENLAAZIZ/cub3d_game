@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 17:11:18 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/23 19:16:03 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/23 23:47:16 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void draw_wall_column(t_data *data, t_var *var, int column)
         var->distance = (var->top_y + var->line_height / 2) - (Screen_H / 2);
         var->offset_y = var->distance * (data->imgx->texture->height / var->line_height);
         var->pixel =  (unsigned int *)data->imgx->texture->pixels;
-        var->color = var->pixel[(var->offset_y * data->imgx->texture->width) + var->ofsset_var];
+        var->color = var->pixel[(var->offset_y * data->imgx->texture->width) + var->ofsset_x];
         var->color = ft_pixel(var->color >> 16, var->color >> 8, var->color, 255);
         mlx_put_pixel(data->img, column, var->top_y, var->color);
         var->top_y++;
@@ -62,9 +62,9 @@ int draw_wall(t_data *data, t_ray *ray, int column)
         return (1);
     }
      if (ray->flag == 1)
-        var.ofsset_var = (int)((ray->y_hit / TILE_SIZE) * data->imgx->texture->width) % data->imgx->texture->width;
+        var.ofsset_x = (int)((ray->y_hit / TILE_SIZE) * data->imgx->texture->width) % data->imgx->texture->width;
     else
-        var.ofsset_var = (int)((ray->x_hit / TILE_SIZE) * data->imgx->texture->width) % data->imgx->texture->width; 
+        var.ofsset_x = (int)((ray->x_hit / TILE_SIZE) * data->imgx->texture->width) % data->imgx->texture->width; 
     draw_wall_column(data, &var, column);
     return (0);
 }

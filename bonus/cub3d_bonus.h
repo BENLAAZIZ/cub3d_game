@@ -1,5 +1,5 @@
-#ifndef CUB3D_H
-#define	CUB3D_H
+#ifndef CUB3D_BONUS_H
+#define	CUB3D_BONUS_H
 
 #include <fcntl.h>
 #include <unistd.h>
@@ -17,7 +17,7 @@
 
 # define Screen_W 1024 // screen width
 # define Screen_H 720 // screen height
-# define TILE_SIZE 10.0 // tile size
+# define TILE_SIZE 50.0 // tile size
 # define NUM_RAYS Screen_W
 
 typedef enum e_type {
@@ -236,6 +236,10 @@ int32_t ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a);
 int get_image_texture(t_data *data, t_texture *tex);
 int render_wall(t_data *data, t_ray *ray, double column);
 //main
+
+void    drawmap(t_data *data);
+void    draw_rays_minimap(t_data *data, t_player *player);	
+void    drawplayer(t_data *data);
 
 
 #endif
