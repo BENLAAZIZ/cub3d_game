@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 17:12:08 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/23 17:12:12 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/23 18:17:26 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ void oneRay(t_data *data, t_ray *ray)
         ray->lookingRight = 1;
     ray->lookingLeft = !ray->lookingRight;
     
-    ray->v_distance = get_v_intercept(data, ray, 0, 0);
-    ray->h_distance = get_h_intercept(data, ray, 0, 0);
+    ray->v_distance = get_v_intercept(data, ray);
+    ray->h_distance = get_h_intercept(data, ray);
     if (ray->v_distance <= ray->h_distance)
     {
         ray->distance = ray->v_distance / TILE_SIZE;

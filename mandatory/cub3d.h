@@ -41,15 +41,14 @@ typedef struct s_texture
 
 typedef struct s_image 
 {
-	void	*image;
 	mlx_texture_t	*texture;
-	// mlx_image_t		*img;
-	char	*addr;
-	int		width;
-	int		height;
-	int		bits_per_pixel;
-	int		line_length;
-	int		endian;
+	void			*image;
+	char			*addr;
+	int				width;
+	int				height;
+	int				bits_per_pixel;
+	int				line_length;
+	int				endian;
 } t_image;
 
 typedef struct s_data
@@ -108,6 +107,18 @@ typedef struct s_ray {
 	int lookingLeft;
 	int flag;
 }t_ray;
+
+typedef struct s_x
+{
+	double xintercept;
+    double yintercept;
+    double xtocheck;
+    double ytocheck;
+    double distance;
+
+	double ystep;
+	double xstep;
+} t_x;
 
 //libft
 size_t	ft_strlen(const char *s);
@@ -199,8 +210,8 @@ void	draw_rays_minimap(t_data *data, t_player *player);
 //draw
 
 //get_intercept
-double get_v_intercept(t_data *data, t_ray *ray, double xstep, double ystep);
-double get_h_intercept(t_data *data, t_ray *ray, double xstep, double ystep);
+double get_v_intercept(t_data *data, t_ray *ray);
+double get_h_intercept(t_data *data, t_ray *ray);
 //get_intercept
 
 //ray_casting
@@ -214,7 +225,6 @@ int ft_init(t_data *data, t_texture *textures, char **map);
 int point_image_texture(t_data *data, t_ray *ray);
 int32_t ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a);
 int get_image_texture(t_data *data, t_texture *tex);
-int get_texture_pixel_color(t_data *data, int texture_x, int texture_y, t_image *img);
 void render_wall(t_data *data, t_ray *ray, double column);
 //main
 #endif
