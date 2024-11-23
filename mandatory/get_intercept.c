@@ -6,94 +6,94 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 17:12:55 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/23 18:34:25 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/23 19:07:06 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "cub3d.h"
 
-void    get_v_otils(t_data *data, t_ray *ray, t_var *x)
+void    init_vertical_ray_steps(t_data *data, t_ray *ray, t_var *var)
 {
-      x->xintercept = floor(data->p_x / TILE_SIZE) * TILE_SIZE;
+      var->xintercept = floor(data->p_x / TILE_SIZE) * TILE_SIZE;
     if (ray->lookingRight)
-        x->xintercept += TILE_SIZE;   
-    x->yintercept = data->p_y + (x->xintercept - data->p_x) * tan(ray->rayAngle);
-    x->xstep = TILE_SIZE;
-    x->ystep = TILE_SIZE * tan(ray->rayAngle);
+        var->xintercept += TILE_SIZE;   
+    var->yintercept = data->p_y + (var->xintercept - data->p_x) * tan(ray->rayAngle);
+    var->xstep = TILE_SIZE;
+    var->ystep = TILE_SIZE * tan(ray->rayAngle);
     if (ray->lookingLeft)
-        x->xstep *= -1;
-    if (ray->lookingUp && x->ystep > 0)
-        x->ystep *= -1;
-    if (ray->lookingDown && x->ystep < 0)
-        x->ystep *= -1;
+        var->xstep *= -1;
+    if (ray->lookingUp && var->ystep > 0)
+        var->ystep *= -1;
+    if (ray->lookingDown && var->ystep < 0)
+        var->ystep *= -1;
 }
 
 double get_v_intercept(t_data *data, t_ray *ray)
 {
-    t_var  x;
+    t_var  var;
 
-    get_v_otils(data, ray, &x);
-    while (x.xintercept >= 0 && x.xintercept <= data->lenght * TILE_SIZE 
-            && x.yintercept >= 0 && x.yintercept <= data->height * TILE_SIZE)
+    init_vertical_ray_steps(data, ray, &var);
+    while (var.xintercept >= 0 && var.xintercept <= data->lenght * TILE_SIZE 
+            && var.yintercept >= 0 && var.yintercept <= data->height * TILE_SIZE)
     {
         if (ray->lookingLeft)
-            x.xtocheck = x.xintercept - 0.001;
+            var.xtocheck = var.xintercept - 0.001;
         else
-           x.xtocheck = x.xintercept;
-        x.ytocheck = x.yintercept;
-        if (is_wall(data, x.ytocheck, x.xtocheck))
+           var.xtocheck = var.xintercept;
+        var.ytocheck = var.yintercept;
+        if (is_wall(data, var.ytocheck, var.xtocheck))
         {
-            ray->v_hit_var = x.xintercept;
-            ray->v_hit_y = x.yintercept;
-            x.distance = sqrt(pow(data->p_x - x.xtocheck, 2) + pow(data->p_y - x.ytocheck, 2));
-            return (x.distance);
+            ray->v_hit_var = var.xintercept;
+            ray->v_hit_y = var.yintercept;
+            var.distance = sqrt(pow(data->p_x - var.xtocheck, 2) + pow(data->p_y - var.ytocheck, 2));
+            return (var.distance);
         }
-        x.xintercept += x.xstep;
-        x.yintercept += x.ystep;
+        var.xintercept += var.xstep;
+        var.yintercept += var.ystep;
     }
     return (INT_MAX);
 }
 
 
-void    get_h_otils(t_data *data, t_ray *ray, t_var *x)
+void    init_horizontal_ray_steps(t_data *data, t_ray *ray, t_var *var)
 {
-    x->yintercept = floor(data->p_y / TILE_SIZE) * TILE_SIZE;
+    var->yintercept = floor(data->p_y / TILE_SIZE) * TILE_SIZE;
     if (ray->lookingDown)
-        x->yintercept += TILE_SIZE;
-    x->xintercept = data->p_x + (x->yintercept - data->p_y) / tan(ray->rayAngle);
-    x->ystep = TILE_SIZE;
-    x->xstep = TILE_SIZE / tan(ray->rayAngle); 
+        var->yintercept += TILE_SIZE;
+    var->xintercept = data->p_x + (var->yintercept - data->p_y) / tan(ray->rayAngle);
+    var->ystep = TILE_SIZE;
+    var->xstep = TILE_SIZE / tan(ray->rayAngle); 
     if (ray->lookingUp)
-        x->ystep *= -1;
-    if (ray->lookingLeft && x->xstep > 0)
-        x->xstep *= -1;
-    if (ray->lookingRight && x->xstep < 0)
-        x->xstep *= -1;
+        var->ystep *= -1;
+    if (ray->lookingLeft && var->xstep > 0)
+        var->xstep *= -1;
+    if (ray->lookingRight && var->xstep < 0)
+        var->xstep *= -1;
 }
 
 double get_h_intercept(t_data *data, t_ray *ray)
 {
-    t_var  x;
+    t_var  var;
 
-    get_h_otils(data, ray, &x);
-    while (x.xintercept >= 0 && x.xintercept <= data->lenght * TILE_SIZE
-            && x.yintercept >= 0 && x.yintercept <= data->height * TILE_SIZE)
+    init_horizontal_ray_steps(data, ray, &var);
+    while (var.xintercept >= 0 && var.xintercept <= data->lenght * TILE_SIZE
+            && var.yintercept >= 0 && var.yintercept <= data->height * TILE_SIZE)
     {
-        x.xtocheck = x.xintercept;
+        var.xtocheck = var.xintercept;
         if (ray->lookingUp)
-            x.ytocheck = x.yintercept - 0.001;
+            var.ytocheck = var.yintercept - 0.001;
         else
-            x.ytocheck = x.yintercept;
-        if (is_wall(data, x.ytocheck, x.xtocheck))
+            var.ytocheck = var.yintercept;
+        if (is_wall(data, var.ytocheck, var.xtocheck))
         {
-            ray->h_hit_var = x.xintercept;
-            ray->h_hit_y = x.yintercept;
-            x.distance = sqrt(pow(data->p_x - x.xtocheck, 2) + pow(data->p_y - x.ytocheck, 2));
-            return (x.distance);
+            ray->h_hit_var = var.xintercept;
+            ray->h_hit_y = var.yintercept;
+            var.distance = sqrt(pow(data->p_x - var.xtocheck, 2) + pow(data->p_y - var.ytocheck, 2));
+            return (var.distance);
         }
-        x.xintercept += x.xstep;
-        x.yintercept += x.ystep;
+        var.xintercept += var.xstep;
+        var.yintercept += var.ystep;
     }
     return (INT_MAX);
 }

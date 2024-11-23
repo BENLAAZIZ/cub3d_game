@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 17:11:18 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/23 18:34:25 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/23 19:10:54 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,43 +29,43 @@ int point_image_texture(t_data *data, t_ray *ray)
     return (0);
 }
 
-void dr(t_data *data, t_var *x, int column)
+void draw_wall_column(t_data *data, t_var *var, int column)
 {
-        while (x->top_y < x->bottom_y)
+        while (var->top_y < var->bottom_y)
     {
-        if (x->top_y < 0)
-            x->top_y = 0;
-        if (x->top_y >= Screen_H)
+        if (var->top_y < 0)
+            var->top_y = 0;
+        if (var->top_y >= Screen_H)
             break;
-        x->distance = (x->top_y + x->line_height / 2) - (Screen_H / 2);
-        x->offset_y = x->distance * (data->imgx->texture->height / x->line_height);
-        x->pixel =  (unsigned int *)data->imgx->texture->pixels;
-        x->color = x->pixel[(x->offset_y * data->imgx->texture->width) + x->ofsset_var];
-        x->color = ft_pixel(x->color >> 16, x->color >> 8, x->color, 255);
-        mlx_put_pixel(data->img, column, x->top_y, x->color);
-        x->top_y++;
+        var->distance = (var->top_y + var->line_height / 2) - (Screen_H / 2);
+        var->offset_y = var->distance * (data->imgx->texture->height / var->line_height);
+        var->pixel =  (unsigned int *)data->imgx->texture->pixels;
+        var->color = var->pixel[(var->offset_y * data->imgx->texture->width) + var->ofsset_var];
+        var->color = ft_pixel(var->color >> 16, var->color >> 8, var->color, 255);
+        mlx_put_pixel(data->img, column, var->top_y, var->color);
+        var->top_y++;
     }  
 }
 
 
 void draw_wall(t_data *data, t_ray *ray, int column)
 {
-   t_var x;
+   t_var var;
     
 
-    x.line_height = (Screen_H / ray->distance) * 5;
-    x.top_y = Screen_H / 2 - x.line_height / 2;
-    x.bottom_y = Screen_H / 2 + x.line_height / 2;
+    var.line_height = (Screen_H / ray->distance) * 5;
+    var.top_y = Screen_H / 2 - var.line_height / 2;
+    var.bottom_y = Screen_H / 2 + var.line_height / 2;
     if (point_image_texture(data, ray))
     {
         printf("Failed to load texture\n");
         return;
     }
      if (ray->flag == 1)
-        x.ofsset_var = (int)((ray->y_hit / TILE_SIZE) * data->imgx->texture->width) % data->imgx->texture->width;
+        var.ofsset_var = (int)((ray->y_hit / TILE_SIZE) * data->imgx->texture->width) % data->imgx->texture->width;
     else
-        x.ofsset_var = (int)((ray->x_hit / TILE_SIZE) * data->imgx->texture->width) % data->imgx->texture->width; 
-    dr(data, &x, column);
+        var.ofsset_var = (int)((ray->x_hit / TILE_SIZE) * data->imgx->texture->width) % data->imgx->texture->width; 
+    draw_wall_column(data, &var, column);
 }
 
 void draw_floor(t_data *data, double distance, double column)
