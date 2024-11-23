@@ -1,80 +1,100 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_intercept.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/23 17:12:55 by hben-laz          #+#    #+#             */
+/*   Updated: 2024/11/23 19:07:06 by hben-laz         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+
 #include "cub3d.h"
 
-double get_v_intercept(t_data *data, t_ray *ray, double xstep, double ystep)
+void    init_vertical_ray_steps(t_data *data, t_ray *ray, t_var *var)
 {
-    double xintercept;
-    double yintercept;
-    double xtocheck;
-    double ytocheck;
-    double v_distance;
-  
-    xintercept = floor(data->p_x / TILE_SIZE) * TILE_SIZE;
+      var->xintercept = floor(data->p_x / TILE_SIZE) * TILE_SIZE;
     if (ray->lookingRight)
-        xintercept += TILE_SIZE;   
-    yintercept = data->p_y + (xintercept - data->p_x) * tan(ray->rayAngle);
-    xstep = TILE_SIZE;
-    ystep = TILE_SIZE * tan(ray->rayAngle);
+        var->xintercept += TILE_SIZE;   
+    var->yintercept = data->p_y + (var->xintercept - data->p_x) * tan(ray->rayAngle);
+    var->xstep = TILE_SIZE;
+    var->ystep = TILE_SIZE * tan(ray->rayAngle);
     if (ray->lookingLeft)
-        xstep *= -1;
-    if (ray->lookingUp && ystep > 0)
-        ystep *= -1;
-    if (ray->lookingDown && ystep < 0)
-        ystep *= -1;
-    while (xintercept >= 0 && xintercept <= data->lenght * TILE_SIZE && yintercept >= 0 && yintercept <= data->height * TILE_SIZE)
+        var->xstep *= -1;
+    if (ray->lookingUp && var->ystep > 0)
+        var->ystep *= -1;
+    if (ray->lookingDown && var->ystep < 0)
+        var->ystep *= -1;
+}
+
+double get_v_intercept(t_data *data, t_ray *ray)
+{
+    t_var  var;
+
+    init_vertical_ray_steps(data, ray, &var);
+    while (var.xintercept >= 0 && var.xintercept <= data->lenght * TILE_SIZE 
+            && var.yintercept >= 0 && var.yintercept <= data->height * TILE_SIZE)
     {
         if (ray->lookingLeft)
-            xtocheck = xintercept - 0.001;
+            var.xtocheck = var.xintercept - 0.001;
         else
-           xtocheck = xintercept;
-        ytocheck = yintercept;
-        if (is_wall(data, ytocheck, xtocheck))
+           var.xtocheck = var.xintercept;
+        var.ytocheck = var.yintercept;
+        if (is_wall(data, var.ytocheck, var.xtocheck))
         {
-            ray->v_hit_x = xintercept;
-            ray->v_hit_y = yintercept;
-            v_distance = sqrt(pow(data->p_x - xtocheck, 2) + pow(data->p_y - ytocheck, 2));
-            return (v_distance);
+            ray->v_hit_var = var.xintercept;
+            ray->v_hit_y = var.yintercept;
+            var.distance = sqrt(pow(data->p_x - var.xtocheck, 2) + pow(data->p_y - var.ytocheck, 2));
+            return (var.distance);
         }
-        xintercept += xstep;
-        yintercept += ystep;
+        var.xintercept += var.xstep;
+        var.yintercept += var.ystep;
     }
     return (INT_MAX);
 }
-double get_h_intercept(t_data *data, t_ray *ray, double xstep, double ystep)
-{
-    double xintercept;
-    double yintercept;
-    double xtocheck;
-    double ytocheck;
-    double h_distance;
 
-    yintercept = floor(data->p_y / TILE_SIZE) * TILE_SIZE;
+
+void    init_horizontal_ray_steps(t_data *data, t_ray *ray, t_var *var)
+{
+    var->yintercept = floor(data->p_y / TILE_SIZE) * TILE_SIZE;
     if (ray->lookingDown)
-        yintercept += TILE_SIZE;
-    xintercept = data->p_x + (yintercept - data->p_y) / tan(ray->rayAngle);
-    ystep = TILE_SIZE;
-    xstep = TILE_SIZE / tan(ray->rayAngle); 
+        var->yintercept += TILE_SIZE;
+    var->xintercept = data->p_x + (var->yintercept - data->p_y) / tan(ray->rayAngle);
+    var->ystep = TILE_SIZE;
+    var->xstep = TILE_SIZE / tan(ray->rayAngle); 
     if (ray->lookingUp)
-        ystep *= -1;
-    if (ray->lookingLeft && xstep > 0)
-        xstep *= -1;
-    if (ray->lookingRight && xstep < 0)
-        xstep *= -1;
-    while (xintercept >= 0 && xintercept <= data->lenght * TILE_SIZE && yintercept >= 0 && yintercept <= data->height * TILE_SIZE)
+        var->ystep *= -1;
+    if (ray->lookingLeft && var->xstep > 0)
+        var->xstep *= -1;
+    if (ray->lookingRight && var->xstep < 0)
+        var->xstep *= -1;
+}
+
+double get_h_intercept(t_data *data, t_ray *ray)
+{
+    t_var  var;
+
+    init_horizontal_ray_steps(data, ray, &var);
+    while (var.xintercept >= 0 && var.xintercept <= data->lenght * TILE_SIZE
+            && var.yintercept >= 0 && var.yintercept <= data->height * TILE_SIZE)
     {
-        xtocheck = xintercept;
+        var.xtocheck = var.xintercept;
         if (ray->lookingUp)
-            ytocheck = yintercept - 0.001;
+            var.ytocheck = var.yintercept - 0.001;
         else
-            ytocheck = yintercept;
-        if (is_wall(data, ytocheck, xtocheck))
+            var.ytocheck = var.yintercept;
+        if (is_wall(data, var.ytocheck, var.xtocheck))
         {
-            ray->h_hit_x = xintercept;
-            ray->h_hit_y = yintercept;
-            h_distance = sqrt(pow(data->p_x - xtocheck, 2) + pow(data->p_y - ytocheck, 2));
-            return (h_distance);
+            ray->h_hit_var = var.xintercept;
+            ray->h_hit_y = var.yintercept;
+            var.distance = sqrt(pow(data->p_x - var.xtocheck, 2) + pow(data->p_y - var.ytocheck, 2));
+            return (var.distance);
         }
-        xintercept += xstep;
-        yintercept += ystep;
+        var.xintercept += var.xstep;
+        var.yintercept += var.ystep;
     }
     return (INT_MAX);
 }
+

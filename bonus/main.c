@@ -94,12 +94,14 @@ int is_wall(t_data *data, double y, double x)
     return (0);
 }
 
-void render_wall(t_data *data, t_ray *ray, double column)
+int render_wall(t_data *data, t_ray *ray, double column)
 {
      ray->distance *= cos(ray->rayAngle - data->angle);
      ray->distance = ray->distance * 5;
-     draw_wall(data, ray  , column);
+     if (draw_wall(data, ray  , column))
+		return (1);
      draw_floor(data, ray->distance , column);
+	 return (0);
 }
 
 void ft_hook(void* param)
@@ -125,7 +127,7 @@ int ft_init(t_data *data, t_texture *textures, char **map)
 {
 	int height;	
 	if (map == NULL)
-		return 1;
+		return (1);
 	height = 0;
 	while(map[height])
 		height++;
@@ -138,7 +140,8 @@ int ft_init(t_data *data, t_texture *textures, char **map)
     if (get_image_texture(data, textures))
 		return (ft_putstr_fd("Error in get_image_texture", 2), 1);
     get_player_position(data);
-    castAllRay(data);
+    if (castAllRay(data))
+		return (ft_putstr_fd("Error in castAllRay", 2), 1);
 	mlx_image_to_window(data->mlx, data->img, 0, 0);
 	mlx_loop_hook(data->mlx, ft_hook, data);
 	mlx_loop(data->mlx);
@@ -160,15 +163,11 @@ int main (int argc, char **argv)
 	map = pars_map(argv[1], &textures, map);
 	if (map == NULL)
 		return (1);
-
 	// **************************	
 	if (TILE_SIZE < 1)
 		return (ft_putstr_fd("Invalid TILE_SIZE", 2), 1);
-	if (TILE_SIZE * ft_strlen(map[0]) > Screen_W)
-		return (ft_putstr_fd("Invalid Screen size", 2), 1);
 	if (Screen_W < 1 || Screen_H < 1 || Screen_W > 2560 || Screen_H > 1440)
 		return (ft_putstr_fd("Invalid Screen size", 2), 1);
 	// **************************
-
 	ft_init(&data, textures, map);
 }

@@ -10,7 +10,7 @@ FRAM = -framework Cocoa -framework OpenGL -framework IOKit
 
 ft = 	main.c get_next_line.c ft_strcmp.c get_texture.c get_texture_helper.c \
 		get_map.c add_spaces.c actions.c pars_map.c draw.c get_intercept.c \
-		ray_casting.c
+		ray_casting.c minimap.c
 
 libft = libft/ft_isalnum.c libft/ft_itoa.c libft/ft_memset.c libft/ft_split.c libft/ft_strjoin.c libft/ft_strncmp.c libft/ft_tolower.c \
 		libft/ft_isalpha.c libft/ft_memchr.c libft/ft_putchar_fd.c libft/ft_strchr.c libft/ft_strlcat.c libft/ft_strnstr.c libft/ft_toupper.c \
