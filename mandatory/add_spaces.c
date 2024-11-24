@@ -55,5 +55,6 @@ char	**add_spaces(char **map)
 		i++;
 	}
 	new_map[i] = NULL;
+	free_double(map);
 	return (new_map);
 }

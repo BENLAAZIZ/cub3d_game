@@ -32,7 +32,6 @@ typedef enum e_type {
 typedef struct s_texture
 {
 	char				*Path;
-	char				*rgp_color;
 	int					identifier;
 	int 				color_floor;
 	int 				color_ceiling;
@@ -173,7 +172,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len);
 //get_next_line
 
 //get_texture
-int			check_rgp(char *str, int r, int g, int p);
+void		*check_rgp(char *str, int r, int g, int *color);
 int			check_double_texture(char	*texture);
 t_texture	*get_texture(int fd, t_texture *tex, int j, int i);
 t_texture	*ft_lstnew(t_texture *new, char *line, int i);

@@ -5,13 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/23 17:12:55 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/23 23:47:44 by hben-laz         ###   ########.fr       */
+/*   Created: 2024/11/23 23:29:47 by hben-laz          #+#    #+#             */
+/*   Updated: 2024/11/25 00:45:02 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
-#include "cub3d.h"
+#include "cub3d_bonus.h"
 
 void    init_vertical_ray_steps(t_data *data, t_ray *ray, t_var *var)
 {
@@ -87,7 +86,7 @@ double get_h_intercept(t_data *data, t_ray *ray)
             var.ytocheck = var.yintercept;
         if (is_wall(data, var.ytocheck, var.xtocheck))
         {
-            ray->h_hit_var = var.xintercept;
+            ray->h_hit_x = var.xintercept;
             ray->h_hit_y = var.yintercept;
             var.distance = sqrt(pow(data->p_x - var.xtocheck, 2) + pow(data->p_y - var.ytocheck, 2));
             return (var.distance);
@@ -97,4 +96,3 @@ double get_h_intercept(t_data *data, t_ray *ray)
     }
     return (INT_MAX);
 }
-

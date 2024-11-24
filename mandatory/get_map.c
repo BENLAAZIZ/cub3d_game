@@ -27,6 +27,7 @@ char	**get_map(int fd)
 	char 	*rest;
 	char	*tmp;
 	char	*line;
+	char	*tmp_2;
 
 	rest = NULL;
 	line = get_next_line(fd);
@@ -35,17 +36,23 @@ char	**get_map(int fd)
 	while (line)
 	{	
 		tmp = line;
+		tmp_2 = rest;
 		rest = ft_strjoin(rest, line);
 		if (rest == NULL)
-			free(tmp);
+			return (free(tmp), NULL);
+		free(tmp_2);
 		free(tmp);
 		line = get_next_line(fd);
 	}
+	// while(1);
 	if (ft_check(rest) == 1)
+	{
+		free(rest);
 		return (NULL);
+	}
 	map = ft_split(rest,'\n');
-	free(rest);
 	if (map == NULL)
-		return (NULL);
+		return (free(rest), NULL);
+	free(rest);
 	return(map);
 }

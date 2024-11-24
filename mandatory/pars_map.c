@@ -23,7 +23,6 @@ void lst_clear(t_texture **lst)
 	{
 		tmp2 = tmp->next;
 		free(tmp->Path);
-		free(tmp->rgp_color);
 		free(tmp);
 		tmp = tmp2;
 	}
@@ -45,6 +44,7 @@ int check_characters(char **map, int i, int j)
 {
 	while (map[i])
 	{
+		j = 0;
 		while (map[i][j])
 		{
 			if (map[i][j] == '0' || map[i][j] == 'N'
@@ -54,7 +54,9 @@ int check_characters(char **map, int i, int j)
 				if (i > 0 && check_char(map[i - 1][j]) == 0)
 					return (ft_putstr_fd("Error: Invalid character", 2), 1);
 				if (map[i + 1] && check_char(map[i + 1][j]) == 0)
+				{
 					return (ft_putstr_fd("Error: Invalid character", 2), 1);
+				}
 				if (j > 0 && check_char(map[i][j - 1]) == 0)
 					return (ft_putstr_fd("Error: Invalid character", 2), 1);
 				if (map[i][j + 1] && check_char(map[i][j + 1]) == 0)
@@ -76,7 +78,10 @@ char **pars_map(char *argv, t_texture **textures, char **map)
 		return (ft_putstr_fd("Error opening file", 2), NULL);
 	*textures = get_texture(fd, *textures, 0, 0);
 	if (*textures == NULL)
-		return (ft_putstr_fd("Error getting textures", 2), NULL);
+	{
+		close(fd);
+		return (ft_putstr_fd("Error getting ytextures", 2), NULL);
+	}
 	map = get_map(fd);
 	if (map == NULL)
 	{
@@ -84,8 +89,8 @@ char **pars_map(char *argv, t_texture **textures, char **map)
 		lst_clear(textures);
 		return (ft_putstr_fd("Error getting map", 2), NULL);
 	}
+	// while(1);
 	new_map = add_spaces(map);
-	// free_double(map);
 	if(new_map == NULL)
 	{
 		close(fd);
@@ -101,5 +106,5 @@ char **pars_map(char *argv, t_texture **textures, char **map)
 		return (NULL);
 	}
 	close(fd);
-	return (map);
+	return (new_map);
 }

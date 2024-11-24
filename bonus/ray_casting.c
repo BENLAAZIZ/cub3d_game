@@ -5,13 +5,13 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/23 17:12:08 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/23 23:47:44 by hben-laz         ###   ########.fr       */
+/*   Created: 2024/11/23 23:26:31 by hben-laz          #+#    #+#             */
+/*   Updated: 2024/11/25 00:45:02 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
-#include "cub3d.h"
+#include "cub3d_bonus.h"
 
 void init_ray(t_ray *ray)
 {
@@ -36,6 +36,8 @@ int  castAllRay(t_data *data)
     while (column < NUM_RAYS)
     {
         ray = malloc(sizeof(t_ray));
+        if (ray == NULL)
+            return (1);
         ray->rayAngle = rayAngle;
         oneRay(data, ray);
         if (render_wall(data, ray, column))
@@ -70,8 +72,9 @@ void oneRay(t_data *data, t_ray *ray)
     else
     {
         ray->distance = ray->h_distance / TILE_SIZE;
-        ray->x_hit = ray->h_hit_var;
+        ray->x_hit = ray->h_hit_x;
         ray->y_hit = ray->h_hit_y;
         ray->flag = 0;
     }
 }
+

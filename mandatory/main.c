@@ -8,6 +8,9 @@ int get_image_texture(t_data *data, t_texture *tex, int i)
 		{
 			data->image[i].texture = mlx_load_png(tex->Path);
 			data->image[i].image = mlx_texture_to_image(data->mlx, data->image[i].texture);
+			// printf("image[%d].texture = %p\n", i, data->image[i].texture);
+			// printf("image[%d].image = %p\n", i, data->image[i].image);
+			mlx_delete_image(data->mlx, data->image[i].image);
 		}
 		else
 		{
@@ -98,13 +101,28 @@ int render_wall(t_data *data, t_ray *ray, double column)
      draw_floor(data, ray->distance , column);
 	 return (0);
 }
+void delete_texture(t_data *data)
+{
+	int i;
 
+	i = 0;
+	while (i < 4)
+	{
+		mlx_delete_texture(data->image[i].texture);
+		i++;
+	}
+}
 void ft_hook(void* param)
 {
 	t_data *data = (t_data*)param;
-	
+
 	if (mlx_is_key_down(data->mlx, MLX_KEY_ESCAPE))
+	{
+		delete_texture(data);
+		free_double(data->all_map);
+		lst_clear(&data->tex);
 		mlx_close_window(data->mlx);
+	}
 	if (mlx_is_key_down(data->mlx, MLX_KEY_W))
 		move_player_up(data);
 	if (mlx_is_key_down(data->mlx, MLX_KEY_S))
@@ -152,12 +170,18 @@ int ft_init(t_data *data, t_texture *textures, char **map)
 	return (0);
 }
 
+void f()
+{
+	system("leaks cub3d");
+}
+
 int main (int argc, char **argv)
 {
 	t_texture	*textures;
 	char 		**map;
 	t_data		data;
 
+atexit(f);
 	map = NULL;
 	textures = NULL;
 	if (argc != 2)
@@ -167,19 +191,7 @@ int main (int argc, char **argv)
 	map = pars_map(argv[1], &textures, map);
 	if (map == NULL)
 		return (1);
-	// if (TILE_SIZE < 1)
-	// {
-	// 	free_double(map);
-	// 	lst_clear(&textures);
-	// 	return (ft_putstr_fd("Invalid TILE_SIZE", 2), 1);
-	// }
-	// if (TILE_SIZE * ft_strlen(map[0]) > Screen_W)
-	// {
-	// 	free_double(map);
-	// 	lst_clear(&textures);
-	// 	return (ft_putstr_fd("Invalid TILE_SIZE", 2), 1);
-	// }
-	if (Screen_W < 1 || Screen_H < 1 || Screen_W > 2560 || Screen_H > 1440 || TILE_SIZE < 1)
+	if (Screen_W < 1 || Screen_H < 1 || Screen_W > 2560 || Screen_H > 1440 || TILE_SIZE < 1 || TILE_SIZE > 100)
 	{
 		free_double(map);
 		lst_clear(&textures);

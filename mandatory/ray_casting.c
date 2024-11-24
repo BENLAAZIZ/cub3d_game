@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray_casting.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaaraba <aaaraba@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 23:26:31 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/23 23:51:37 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/24 16:38:26 by aaaraba          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ int  castAllRay(t_data *data)
     while (column < NUM_RAYS)
     {
         ray = malloc(sizeof(t_ray));
+        if (ray == NULL)
+            return (1);
         ray->rayAngle = rayAngle;
         oneRay(data, ray);
         if (render_wall(data, ray, column))

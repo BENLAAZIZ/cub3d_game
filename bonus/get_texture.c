@@ -1,11 +1,15 @@
-#include "cub3d.h"
+#include "cub3d_bonus.h"
 
-int	check_rgp(char *str, int r, int g, int b)
+void	*check_rgp(char *str, int r, int g, int *color)
 {
 	int	i;
 	int	j;
+	int b;
 	int	res;
-	int color;
+	int comma = 0;
+	char *color_str;
+
+	b = -1;
 	i = 0;
 	res = 0;
 	while (str[i] == ' ' && str[i] == '\t')
@@ -15,9 +19,12 @@ int	check_rgp(char *str, int r, int g, int b)
 	{
 		if (str[i] == ',' || str[i + 1] == '\n')
 		{
-			res = ft_atoi(ft_substr(str, j + 1, i - j));
+			if (str[i] == ',')
+				comma++;
+			color_str = ft_substr(str, j + 1, i - j);
+			res = ft_atoi(color_str);
 			if (res < 0 || res > 255)
-				return (-1);
+				return (free(color_str), NULL);
 			if (r == -1)
 				r = res;
 			else if (g == -1)
@@ -25,11 +32,14 @@ int	check_rgp(char *str, int r, int g, int b)
 			else if (b == -1)
 				b = res;
 			j = i;
+			free(color_str);
 		}
 		i++;
 	}
-	color = ft_pixel(r, g, b, 255);
-	return (color);
+	if (comma != 2)
+		return (NULL);
+	*color = ft_pixel(r, g, b, 255);
+	return ("ok");
 }
 
 int	check_double_texture(char	*texture)
@@ -67,7 +77,9 @@ t_texture	*get_texture(int fd, t_texture *tex, int j, int i)
 
 	tex_tmp = NULL;
 	count = 0;
+	// while(1);
 	line = get_next_line(fd);
+	// printf("line = %p\n", line);
 	if (line == NULL)
 		return (NULL);
 	while (line && count < 6)
@@ -80,15 +92,28 @@ t_texture	*get_texture(int fd, t_texture *tex, int j, int i)
 				i++;
 			j = 0;
 			if (check_double_texture(line) == -1)
+			{
+				free(tmp);
+				lst_clear(&tex);
 				return (write(2, "wrong texture\n", 14), NULL);
+			}
 			count++;
 			tex_tmp = ft_lstnew(tex_tmp, line, i);
-			if (tex_tmp == NULL)
+			if (tex_tmp == NULL) 
+			{ 
+				lst_clear(&tex);
+				free(tmp);
 				return (NULL);
+			}
 			lstadd_back(&tex, tex_tmp);
-			free(tmp);
 		}
+		free(tmp), tmp = NULL;
+		if (count == 6)
+			break;
 		line = get_next_line(fd);
+		// printf("line = %p\n", line);
 	}
+		// printf("line = [%s]\n", line);
+	// while (1);
 	return(tex);
 }
