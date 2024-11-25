@@ -53,9 +53,36 @@ int ft_init(t_data *data, t_texture *textures, char **map)
 		mlx_terminate(data->mlx);
 		return (ft_putstr_fd("Error in mlx_new_image", 2), 1);
 	}
-
 	return (0);
 }
+
+
+// void mouse_rotate(double x, double y, void* param) {
+//     t_data *data = (t_data *)param; // Cast param back to your data structure
+//     double safe_zone;
+
+//     if (x < 0 || x > Screen_W || y < 0 || y > Screen_H)
+//         return;
+
+//     safe_zone = fabs(x - (Screen_W / 2)); // Use fabs for floating-point absolute value
+//     if (safe_zone < 100)
+//         return;
+
+//     if (x > Screen_W / 2)
+//         data->angle -= safe_zone / 50.0;
+//     else
+//         data->angle += safe_zone / 50.0;
+
+//     // Normalize angle to be within 0 and 2 * PI
+//     if (data->angle < 0)
+//         data->angle += 2 * M_PI;
+//     if (data->angle > 2 * M_PI)
+//         data->angle -= 2 * M_PI;
+
+//     // Cast rays for updated view
+//     castAllRay(data);
+// }
+
 
 int ft_game(t_data *data, t_texture *textures, char **map)
 {
@@ -73,6 +100,18 @@ int ft_game(t_data *data, t_texture *textures, char **map)
 		return (1);
 	mlx_image_to_window(data->mlx, data->img, 0, 0);
 	mlx_loop_hook(data->mlx, ft_hook, data);
+	// ---------------------------
+
+// 	mlx_t* mlx = mlx_init(Screen_W, Screen_H, "My Window", true);
+// 	if (!mlx)
+//     return (EXIT_FAILURE);
+
+// // Set up the mouse motion hook
+// 	mlx_cursor_hook(mlx, mouse_rotate, &data);
+
+
+	// ---------------------------
+
 	mlx_loop(data->mlx);
 	return (0);
 }
