@@ -16,9 +16,9 @@
 
 # define Screen_W 2555 // screen width
 # define Screen_H 1400 // screen height
-# define TILE_SIZE 20.0 // tile size
+# define TILE_SIZE 99.0 // tile size
 # define NUM_RAYS Screen_W
-# define speed 10.00
+// # define _speed 10.00
 
 typedef enum e_type {
 	NO,
@@ -52,6 +52,9 @@ typedef struct s_image
 
 typedef struct s_data
 {
+	t_image			image[4];
+	t_image			*imgx;
+	t_texture		*tex;
 	mlx_image_t		*img;
 	char			**all_map;
 	void			*mlx;
@@ -63,17 +66,10 @@ typedef struct s_data
 	double			p_x;
 	double			p_y;
 	int				tile_size;
-	// float			turnDirection;
-	// int				walkDirection;
-	// float			radius;
-	// float			rotationAngle;
-	// float			moveSpeed;
-	float			rotationSpeed;
+	float			rotation_speed;
 	int 			ceiling_color;
 	int 			floor_color;
-	t_image			image[4];
-	t_image			*imgx;
-	t_texture		*tex;
+	double				speed;
 }t_data;
 
 typedef struct s_player 

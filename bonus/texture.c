@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 01:48:45 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/25 01:52:23 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/25 02:03:19 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ int point_image_texture(t_data *data, t_ray *ray)
             return (1);
     return (0);
 }
-
 
 void delete_texture(t_data *data)
 {

@@ -7,17 +7,6 @@ int ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a)
 }
 
 
-// int is_wall(t_data *data, double y, double x)
-// {
-//     if (x <= 0 || x >= data->lenght * TILE_SIZE || y <= 0 || y >= data->height * TILE_SIZE)
-//         return (1);
-//     if (data->all_map[(int)y / (int)TILE_SIZE][(int)x / (int)TILE_SIZE] == '1')
-//         return (1);
-      
-//     return (0);
-// }
-
-
 void ft_hook(void* param)
 {
 	t_data *data = (t_data*)param;
@@ -50,6 +39,9 @@ int ft_init(t_data *data, t_texture *textures, char **map)
 		height++;
 	data->height = height;
 	data->all_map = map;
+	data->speed = 10;
+	if (TILE_SIZE > 50)
+		data->speed = 100.0;
 	data->lenght = ft_strlen(map[0]);
 	data->mlx = mlx_init(Screen_W, Screen_H, "Cub3D", 1);
 	if (data->mlx == NULL)
@@ -119,4 +111,3 @@ int main (int argc, char **argv)
 		return (1);
 	}
 }
-

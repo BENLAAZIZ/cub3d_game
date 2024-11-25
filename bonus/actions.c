@@ -5,8 +5,8 @@ void	move_player_down(t_data *data)
 	double x;
 	double y;
 	
-	x = data->p_x - cos(data->angle) * speed;
-	y = data->p_y - sin(data->angle) * speed;
+	x = data->p_x - cos(data->angle) * data->speed;
+	y = data->p_y - sin(data->angle) * data->speed;
 	if (data->all_map[(int)(y / TILE_SIZE)][(int)(x / TILE_SIZE)] == '1')
 		return ;
 	data->p_y = y;
@@ -17,8 +17,8 @@ void	move_player_down(t_data *data)
 
 void	move_player_up(t_data *data)
 {
-	double y = data->p_y + sin(data->angle) * speed;
-	double x = data->p_x + cos(data->angle) * speed;
+	double y = data->p_y + sin(data->angle) * data->speed;
+	double x = data->p_x + cos(data->angle) * data->speed;
 	if (data->all_map[(int)(y / TILE_SIZE)][(int)(x / TILE_SIZE)] == '1')
 		return ;
 	data->p_y = y;
@@ -28,8 +28,8 @@ void	move_player_up(t_data *data)
 
 void	move_player_left(t_data *data)
 { 
-	double y = data->p_y + sin(data->angle - M_PI_2) * speed;
-	double x = data->p_x + cos(data->angle - M_PI_2) * speed;
+	double y = data->p_y + sin(data->angle - M_PI_2) * data->speed;
+	double x = data->p_x + cos(data->angle - M_PI_2) * data->speed;
 	if (data->all_map[(int)(y / TILE_SIZE)][(int)(x / TILE_SIZE)] == '1')
 		return ;
 	data->p_y = y;
@@ -39,8 +39,8 @@ void	move_player_left(t_data *data)
 
 void	move_player_right(t_data *data)
 {
-	double y = data->p_y + sin(data->angle + M_PI_2) * speed;
-	double x = data->p_x + cos(data->angle + M_PI_2) * speed;
+	double y = data->p_y + sin(data->angle + M_PI_2) * data->speed;
+	double x = data->p_x + cos(data->angle + M_PI_2) * data->speed;
 	if (data->all_map[(int)(y / TILE_SIZE)][(int)(x / TILE_SIZE)] == '1')
 		return ;
 	data->p_y = y;
