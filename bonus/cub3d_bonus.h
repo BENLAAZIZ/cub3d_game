@@ -16,7 +16,7 @@
 
 # define Screen_W 2555 // screen width
 # define Screen_H 1400 // screen height
-# define TILE_SIZE 32.0 // tile size
+# define TILE_SIZE 20.0 // tile size
 # define NUM_RAYS Screen_W
 # define speed 10.00
 

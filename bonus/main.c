@@ -136,8 +136,7 @@ void ft_hook(void* param)
 int ft_init(t_data *data, t_texture *textures, char **map)
 {
 	int height;	
-	if (map == NULL)
-		return 1;
+
 	height = 0;
 	while(map[height])
 		height++;
@@ -154,6 +153,16 @@ int ft_init(t_data *data, t_texture *textures, char **map)
 		mlx_terminate(data->mlx);
 		return (ft_putstr_fd("Error in mlx_new_image", 2), 1);
 	}
+
+	return (0);
+}
+
+int ft_game(t_data *data, t_texture *textures, char **map)
+{
+	if (map == NULL)
+		return 1;
+	if (ft_init(data, textures, map))
+		return (1);
     if (get_image_texture(data, textures, 0))
 	{
 		mlx_terminate(data->mlx);
@@ -195,7 +204,7 @@ int main (int argc, char **argv)
 		lst_clear(&textures);
 		return (ft_putstr_fd("Invalid Screen size", 2), 1);
 	}
-	if (ft_init(&data, textures, map) == 1)
+	if (ft_game(&data, textures, map) == 1)
 	{
 		free_double(map);
 		lst_clear(&textures);
