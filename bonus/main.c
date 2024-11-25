@@ -1,115 +1,23 @@
 #include "cub3d_bonus.h"
 
-int get_image_texture(t_data *data, t_texture *tex, int i)
-{
-    while (tex)
-    {
-        if (tex->identifier != F && tex->identifier != C)
-		{
-			data->image[i].texture = mlx_load_png(tex->Path);
-			data->image[i].image = mlx_texture_to_image(data->mlx, data->image[i].texture);
-			mlx_delete_image(data->mlx, data->image[i].image);
-		}
-		else
-		{
-			if (tex->identifier == F)
-				data->floor_color = tex->color_floor;
-			else
-				data->ceiling_color = tex->color_ceiling;
-		}
-		i++;
-        tex = tex->next;
-    }
-	i = -1;
-	while (++i < 4)
-	{
-		if (data->image[i].image == NULL || data->image[i].texture == NULL)
-			return (1);
-	}
-    return (0); 
-}
 
 int ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a)
 {
     return (r << 24 | g << 16 | b << 8 | a);
 }
 
-int player_direction(char c, t_data *data)
-{
-	if (c == 'N')
-	{
-		data->angle = 3 * M_PI_2;
-		return (1);
-	}
-	if (c == 'S')
-	{
-		data->angle = M_PI_2;
-		return (1);
-	}
-	if (c == 'E')
-	{
-		data->angle = 0;
-		return (1);
-	}
-	if (c == 'W')
-	{
-		data->angle = M_PI;
-		return (1);
-	}
-	return (0);
-}
 
-void get_player_position(t_data *data)
-{
-    if (data->all_map == NULL)
-        return ;
-    while (data->all_map[(int)data->p_y])
-    {
-        data->p_x = 0;
-        while (data->all_map[(int)data->p_y][(int)data->p_x])
-        {
-			if (player_direction(data->all_map[(int)data->p_y][(int)data->p_x], data))
-				break;
-            data->p_x++;
-        }
-		if (player_direction(data->all_map[(int)data->p_y][(int)data->p_x], data))
-				break;
-        data->p_y++;
-    }
-    data->p_x = (data->p_x * TILE_SIZE) ;
-    data->p_y = (data->p_y * TILE_SIZE) ;
-}
-
-int is_wall(t_data *data, double y, double x)
-{
-    if (x <= 0 || x >= data->lenght * TILE_SIZE || y <= 0 || y >= data->height * TILE_SIZE)
-        return (1);
-    if (data->all_map[(int)y / (int)TILE_SIZE][(int)x / (int)TILE_SIZE] == '1')
-        return (1);
+// int is_wall(t_data *data, double y, double x)
+// {
+//     if (x <= 0 || x >= data->lenght * TILE_SIZE || y <= 0 || y >= data->height * TILE_SIZE)
+//         return (1);
+//     if (data->all_map[(int)y / (int)TILE_SIZE][(int)x / (int)TILE_SIZE] == '1')
+//         return (1);
       
-    return (0);
-}
+//     return (0);
+// }
 
-int render_wall(t_data *data, t_ray *ray, double column)
-{
-     ray->distance *= cos(ray->rayAngle - data->angle);
-     ray->distance = ray->distance * 5;
-     if (draw_wall(data, ray  , column))
-	 	return (1);
-     draw_floor(data, ray->distance , column);
-	 return (0);
-}
-void delete_texture(t_data *data)
-{
-	int i;
 
-	i = 0;
-	while (i < 4)
-	{
-		mlx_delete_texture(data->image[i].texture);
-		i++;
-	}
-}
 void ft_hook(void* param)
 {
 	t_data *data = (t_data*)param;
@@ -211,3 +119,4 @@ int main (int argc, char **argv)
 		return (1);
 	}
 }
+

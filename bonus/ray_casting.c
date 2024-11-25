@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 23:26:31 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/25 00:45:02 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/25 01:47:13 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,31 +25,17 @@ void init_ray(t_ray *ray)
     ray->lookingLeft = 0;
 }
 
-int  castAllRay(t_data *data)
+
+int render_wall(t_data *data, t_ray *ray, double column)
 {
-    double  rayAngle;
-    double  column;
-    t_ray   *ray = NULL;
-        
-    column = 0;
-    rayAngle = data->angle - (FOV / 2);
-    while (column < NUM_RAYS)
-    {
-        ray = malloc(sizeof(t_ray));
-        if (ray == NULL)
-            return (1);
-        ray->rayAngle = rayAngle;
-        oneRay(data, ray);
-        if (render_wall(data, ray, column))
-            return (1);
-        column++;
-        rayAngle += FOV / NUM_RAYS;
-        free(ray);
-    }
-    drawmap(data);
-    drawplayer(data);
-    return (0);
+     ray->distance *= cos(ray->rayAngle - data->angle);
+     ray->distance = ray->distance * 5;
+     if (draw_wall(data, ray  , column))
+	 	return (1);
+     draw_floor(data, ray->distance , column);
+	 return (0);
 }
+
 
 void oneRay(t_data *data, t_ray *ray)
 {   
@@ -78,3 +64,28 @@ void oneRay(t_data *data, t_ray *ray)
     }
 }
 
+int  castAllRay(t_data *data)
+{
+    double  rayAngle;
+    double  column;
+    t_ray   *ray = NULL;
+        
+    column = 0;
+    rayAngle = data->angle - (FOV / 2);
+    while (column < NUM_RAYS)
+    {
+        ray = malloc(sizeof(t_ray));
+        if (ray == NULL)
+            return (1);
+        ray->rayAngle = rayAngle;
+        oneRay(data, ray);
+        if (render_wall(data, ray, column))
+            return (1);
+        column++;
+        rayAngle += FOV / NUM_RAYS;
+        free(ray);
+    }
+    drawmap(data);
+    drawplayer(data);
+    return (0);
+}

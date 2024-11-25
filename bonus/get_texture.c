@@ -77,9 +77,7 @@ t_texture	*get_texture(int fd, t_texture *tex, int j, int i)
 
 	tex_tmp = NULL;
 	count = 0;
-	// while(1);
 	line = get_next_line(fd);
-	// printf("line = %p\n", line);
 	if (line == NULL)
 		return (NULL);
 	while (line && count < 6)
@@ -111,9 +109,8 @@ t_texture	*get_texture(int fd, t_texture *tex, int j, int i)
 		if (count == 6)
 			break;
 		line = get_next_line(fd);
-		// printf("line = %p\n", line);
 	}
-		// printf("line = [%s]\n", line);
-	// while (1);
 	return(tex);
 }
+
+

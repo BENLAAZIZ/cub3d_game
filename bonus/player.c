@@ -1,0 +1,79 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   player.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/25 01:50:50 by hben-laz          #+#    #+#             */
+/*   Updated: 2024/11/25 02:02:11 by hben-laz         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3d_bonus.h"
+
+int is_wall(t_data *data, double y, double x)
+{
+    if (x <= 0 || x >= data->lenght * TILE_SIZE || y <= 0 || y >= data->height * TILE_SIZE)
+        return (1);
+    if (data->all_map[(int)y / (int)TILE_SIZE][(int)x / (int)TILE_SIZE] == '1')
+        return (1);
+      
+    return (0);
+}
+
+int is_wall_min(t_data *data, double y, double x)
+{
+    if (x <= 0 || x >= data->lenght || y <= 0 || y >= data->height)
+        return (1);
+    if (data->all_map[(int)y][(int)x] == '1')
+        return (1);
+    return (0);
+}
+
+int player_direction(char c, t_data *data)
+{
+	if (c == 'N')
+	{
+		data->angle = 3 * M_PI_2;
+		return (1);
+	}
+	if (c == 'S')
+	{
+		data->angle = M_PI_2;
+		return (1);
+	}
+	if (c == 'E')
+	{
+		data->angle = 0;
+		return (1);
+	}
+	if (c == 'W')
+	{
+		data->angle = M_PI;
+		return (1);
+	}
+	return (0);
+}
+
+void get_player_position(t_data *data)
+{
+    if (data->all_map == NULL)
+        return ;
+    while (data->all_map[(int)data->p_y])
+    {
+        data->p_x = 0;
+        while (data->all_map[(int)data->p_y][(int)data->p_x])
+        {
+			if (player_direction(data->all_map[(int)data->p_y][(int)data->p_x], data))
+				break;
+            data->p_x++;
+        }
+		if (player_direction(data->all_map[(int)data->p_y][(int)data->p_x], data))
+				break;
+        data->p_y++;
+    }
+    data->p_x = (data->p_x * TILE_SIZE) ;
+    data->p_y = (data->p_y * TILE_SIZE) ;
+}
+

@@ -233,5 +233,8 @@ int		get_image_texture(t_data *data, t_texture *tex, int i);
 int	render_wall(t_data *data, t_ray *ray, double column);
 void	lst_clear(t_texture **lst);
 void	free_double(char **map);
+void delete_texture(t_data *data);
+void get_player_position(t_data *data);
+int is_wall_min(t_data *data, double y, double x);
 //main
 #endif
