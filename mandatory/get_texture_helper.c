@@ -27,7 +27,7 @@ t_texture	*ft_lstnew(t_texture *new, char *line, int i)
 		return (NULL);
 	new->color_ceiling = -1;
 	new->color_floor = -1;
-	new->Path = NULL;
+	new->path = NULL;
 	new->next = NULL;
 	if (ft_strncmp(line , "F", 1) == 0)
 		new->identifier = F;
@@ -56,8 +56,8 @@ t_texture	*ft_lstnew(t_texture *new, char *line, int i)
 	}
 	else
 	{
-		new->Path = ft_strtrim(line + i, " \n");
-		if (new->Path == NULL)
+		new->path = ft_strtrim(line + i, " \n");
+		if (new->path == NULL)
 			return (lst_clear(&new), NULL);
 	}	
 	return (new);

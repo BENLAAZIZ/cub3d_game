@@ -14,11 +14,11 @@
 
 #define FOV (60 * (M_PI / 180))
 
-# define Screen_W 1024 // screen width
-# define Screen_H 800 // screen height
-# define TILE_SIZE 40.0 // tile size
-# define NUM_RAYS Screen_W
-# define speed 5.00
+# define SCREEN_W 2000 // screen width
+# define SCREEN_H 800 // screen height
+# define T_S 99.0 // tile size
+# define NUM_RAYS SCREEN_W
+# define speed 10.00
 
 typedef enum e_type {
 	NO,
@@ -31,7 +31,7 @@ typedef enum e_type {
 
 typedef struct s_texture
 {
-	char				*Path;
+	char				*path;
 	int					identifier;
 	int 				color_floor;
 	int 				color_ceiling;
@@ -62,7 +62,7 @@ typedef struct s_data
 	double			angle;
 	double			p_x;
 	double			p_y;
-	int				tile_size;
+	int				T_S;
 	// float			turnDirection;
 	// int				walkDirection;
 	// float			radius;
@@ -88,7 +88,7 @@ typedef struct s_player
 
 typedef struct s_ray {
 
-	double rayAngle;
+	double rayangle;
 	double v_distance;
     double h_distance;
 	double h_hit_x;
@@ -99,10 +99,10 @@ typedef struct s_ray {
 	double x_hit;
 	double y_hit;
 	double distance;
-	int lookingDown;
-	int lookingUp;
-	int lookingRight;
-	int lookingLeft;
+	int lookingdown;
+	int lookingup;
+	int lookingright;
+	int lookingleft;
 	int flag;
 }t_ray;
 

@@ -22,7 +22,7 @@ void lst_clear(t_texture **lst)
 	while (tmp)
 	{
 		tmp2 = tmp->next;
-		free(tmp->Path);
+		free(tmp->path);
 		free(tmp);
 		tmp = tmp2;
 	}

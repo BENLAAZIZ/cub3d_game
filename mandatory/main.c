@@ -6,10 +6,8 @@ int get_image_texture(t_data *data, t_texture *tex, int i)
     {
         if (tex->identifier != F && tex->identifier != C)
 		{
-			data->image[i].texture = mlx_load_png(tex->Path);
+			data->image[i].texture = mlx_load_png(tex->path);
 			data->image[i].image = mlx_texture_to_image(data->mlx, data->image[i].texture);
-			// printf("image[%d].texture = %p\n", i, data->image[i].texture);
-			// printf("image[%d].image = %p\n", i, data->image[i].image);
 			mlx_delete_image(data->mlx, data->image[i].image);
 		}
 		else
@@ -78,15 +76,15 @@ void get_player_position(t_data *data)
 				break;
         data->p_y++;
     }
-    data->p_x = (data->p_x * TILE_SIZE) ;
-    data->p_y = (data->p_y * TILE_SIZE) ;
+    data->p_x = (data->p_x * T_S) ;
+    data->p_y = (data->p_y * T_S) ;
 }
 
 int is_wall(t_data *data, double y, double x)
 {
-    if (x <= 0 || x >= data->lenght * TILE_SIZE || y <= 0 || y >= data->height * TILE_SIZE)
+    if (x <= 0 || x >= data->lenght * T_S || y <= 0 || y >= data->height * T_S)
         return (1);
-    if (data->all_map[(int)y / (int)TILE_SIZE][(int)x / (int)TILE_SIZE] == '1')
+    if (data->all_map[(int)y / (int)T_S][(int)x / (int)T_S] == '1')
         return (1);
       
     return (0);
@@ -94,7 +92,7 @@ int is_wall(t_data *data, double y, double x)
 
 int render_wall(t_data *data, t_ray *ray, double column)
 {
-     ray->distance *= cos(ray->rayAngle - data->angle);
+     ray->distance *= cos(ray->rayangle - data->angle);
      ray->distance = ray->distance * 5;
      if (draw_wall(data, ray  , column))
 	 	return (1);
@@ -146,11 +144,11 @@ int ft_init(t_data *data, t_texture *textures, char **map)
 	data->height = height;
 	data->all_map = map;
 	data->lenght = ft_strlen(map[0]);
-	data->mlx = mlx_init(Screen_W, Screen_H, "Cub3D", 1);
+	data->mlx = mlx_init(SCREEN_W, SCREEN_H, "Cub3D", 1);
 	if (data->mlx == NULL)
 		return (ft_putstr_fd("Error in mlx_init", 2), 1);
 	data->tex = textures;
-	data->img = mlx_new_image(data->mlx, Screen_W, Screen_H);
+	data->img = mlx_new_image(data->mlx, SCREEN_W, SCREEN_H);
 	if (data->img == NULL)
 	{
 		mlx_terminate(data->mlx);
@@ -167,6 +165,16 @@ int ft_init(t_data *data, t_texture *textures, char **map)
 	mlx_image_to_window(data->mlx, data->img, 0, 0);
 	mlx_loop_hook(data->mlx, ft_hook, data);
 	mlx_loop(data->mlx);
+	lst_clear(&data->tex);
+	free_double(data->all_map);
+	int i = 0;
+	while (i < 4)
+	{
+		mlx_delete_texture(data->image[i].texture);
+		i++;
+	}
+	// mlx_delete_image(data., img);
+	mlx_terminate(data->mlx);
 	return (0);
 }
 
@@ -191,7 +199,7 @@ atexit(f);
 	map = pars_map(argv[1], &textures, map);
 	if (map == NULL)
 		return (1);
-	if (Screen_W < 1 || Screen_H < 1 || Screen_W > 2560 || Screen_H > 1440 || TILE_SIZE < 1 || TILE_SIZE > 100)
+	if (SCREEN_W < 1 || SCREEN_H < 1 || SCREEN_W > 2560 || SCREEN_H > 1440 || T_S < 1 || T_S > 100)
 	{
 		free_double(map);
 		lst_clear(&textures);

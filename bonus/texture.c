@@ -3,24 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   texture.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaaraba <aaaraba@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 01:48:45 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/25 02:03:19 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/26 17:39:00 by aaaraba          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d_bonus.h"
 
-int get_image_texture(t_data *data, t_texture *tex, int i)
+int	get_image_texture(t_data *data, t_texture *tex, int i)
 {
-    while (tex)
-    {
-        if (tex->identifier != F && tex->identifier != C)
+	while (tex)
+	{
+		if (tex->identifier != F && tex->identifier != C)
 		{
-			data->image[i].texture = mlx_load_png(tex->Path);
+			data->image[i].texture = mlx_load_png(tex->path);
+			if (data->image[i].texture == NULL)
+				return (1);
 			data->image[i].image = mlx_texture_to_image(data->mlx, data->image[i].texture);
+			if (data->image[i].image == NULL)
+				return (1);
 			mlx_delete_image(data->mlx, data->image[i].image);
+			i++;	
 		}
 		else
 		{
@@ -29,25 +34,18 @@ int get_image_texture(t_data *data, t_texture *tex, int i)
 			else
 				data->ceiling_color = tex->color_ceiling;
 		}
-		i++;
         tex = tex->next;
     }
-	i = -1;
-	while (++i < 4)
-	{
-		if (data->image[i].image == NULL || data->image[i].texture == NULL)
-			return (1);
-	}
-    return (0); 
+    return (0);
 }
 
 int point_image_texture(t_data *data, t_ray *ray)
 {
-    if (!ray->flag && !(ray->rayAngle > 0 && ray->rayAngle < M_PI))
+    if (!ray->flag && !(ray->rayangle > 0 && ray->rayangle < M_PI))
         data->imgx = &data->image[0];
-    else if (!ray->flag && ray->rayAngle >= 0 && ray->rayAngle <= M_PI)
+    else if (!ray->flag && ray->rayangle >= 0 && ray->rayangle <= M_PI)
         data->imgx = &data->image[1];
-    else if (ray->flag && ray->rayAngle >= M_PI_2 && ray->rayAngle <= 3 * M_PI_2)
+    else if (ray->flag && ray->rayangle >= M_PI_2 && ray->rayangle <= 3 * M_PI_2)
         data->imgx = &data->image[2];
     else
         data->imgx = &data->image[3];
@@ -67,4 +65,3 @@ void delete_texture(t_data *data)
 		i++;
 	}
 }
-

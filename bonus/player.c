@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 01:50:50 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/25 02:02:11 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/26 22:17:05 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,28 @@
 
 int is_wall(t_data *data, double y, double x)
 {
-    if (x <= 0 || x >= data->lenght * TILE_SIZE || y <= 0 || y >= data->height * TILE_SIZE)
+    if (x <= 0 || x >= data->lenght * T_S || y <= 0 || y >= data->height * T_S)
         return (1);
-    if (data->all_map[(int)y / (int)TILE_SIZE][(int)x / (int)TILE_SIZE] == '1')
+    if (data->all_map[(int)y / (int)T_S][(int)x / (int)T_S] == '1')
         return (1);
       
     return (0);
 }
 
+
 int is_wall_min(t_data *data, double y, double x)
 {
+	double buffer = 0.04;
     if (x <= 0 || x >= data->lenght || y <= 0 || y >= data->height)
         return (1);
-    if (data->all_map[(int)y][(int)x] == '1')
-        return (1);
-    return (0);
+   if (data->all_map[(int)((y - buffer))][(int)((x - buffer))] == '1' ||
+        data->all_map[(int)((y - buffer))][(int)((x + buffer))] == '1' ||
+        data->all_map[(int)((y + buffer))][(int)((x - buffer))] == '1' ||
+        data->all_map[(int)((y + buffer))][(int)((x + buffer))] == '1')
+		{
+        	return 1;
+		}
+	return 0;
 }
 
 int player_direction(char c, t_data *data)
@@ -73,7 +80,7 @@ void get_player_position(t_data *data)
 				break;
         data->p_y++;
     }
-    data->p_x = (data->p_x * TILE_SIZE) ;
-    data->p_y = (data->p_y * TILE_SIZE) ;
+    data->p_x = (data->p_x * T_S) ;
+    data->p_y = (data->p_y * T_S) ;
 }
 

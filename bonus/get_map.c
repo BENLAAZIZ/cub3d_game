@@ -1,16 +1,29 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_map.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aaaraba <aaaraba@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/26 15:38:18 by aaaraba           #+#    #+#             */
+/*   Updated: 2024/11/26 15:38:19 by aaaraba          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d_bonus.h"
 
 int	ft_check(char *map)
 {
 	int	i;
-	int player;
+	int	player;
 
 	player = 0;
 	i = 0;
 	while (map[i] != '\0')
 	{
 		if (map[i] != 'N' && map[i] != 'S' && map[i] != 'E'
-			&& map[i] != '\n' && map[i] != 'W' && map[i] != '1' && map[i] != '0' && map[i] != ' ')
+			&& map[i] != '\n' && map[i] != 'W'
+			&& map[i] != '1' && map[i] != '0' && map[i] != ' ')
 			return (write (2, "Invalid map\n", 12), 1);
 		if (map[i] == 'S' || map[i] == 'N' || map[i] == 'W' || map[i] == 'E')
 			player++;
@@ -21,12 +34,9 @@ int	ft_check(char *map)
 	return (0);
 }
 
-char	**get_map(int fd)
+char	**get_map(int fd, char *line, char *rest, char **map)
 {
-	char	**map;
-	char 	*rest;
 	char	*tmp;
-	char	*line;
 	char	*tmp_2;
 
 	rest = NULL;
@@ -34,7 +44,7 @@ char	**get_map(int fd)
 	if (line == NULL)
 		return (NULL);
 	while (line)
-	{	
+	{
 		tmp = line;
 		tmp_2 = rest;
 		rest = ft_strjoin(rest, line);
@@ -44,15 +54,11 @@ char	**get_map(int fd)
 		free(tmp);
 		line = get_next_line(fd);
 	}
-	// while(1);
 	if (ft_check(rest) == 1)
-	{
-		free(rest);
-		return (NULL);
-	}
-	map = ft_split(rest,'\n');
+		return (free(rest), NULL);
+	map = ft_split(rest, '\n');
 	if (map == NULL)
 		return (free(rest), NULL);
 	free(rest);
-	return(map);
+	return (map);
 }

@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 01:33:30 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/25 01:59:52 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/26 22:17:05 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ void    drawplayer(t_data *data)
     x = 0;
     y = 0;
     player.ray_step = 0.1;
-    player.ray_y = data->p_y / TILE_SIZE;
-    player.ray_x = data->p_x / TILE_SIZE;
+    player.ray_y = data->p_y / T_S;
+    player.ray_x = data->p_x / T_S;
     player.step_x = cos(data->angle) * player.ray_step;
     player.step_y = sin(data->angle) * player.ray_step;
     player.z = 40;
@@ -44,10 +44,10 @@ void    drawplayer(t_data *data)
 
 void    draw_rays_minimap(t_data *data, t_player *player)
 {
-    double rayAngle;
+    double rayangle;
 
-    rayAngle = data->angle - (FOV / 2);
-    while (rayAngle < data->angle + (FOV / 2))
+    rayangle = data->angle - (FOV / 2);
+    while (rayangle < data->angle + (FOV / 2))
     {
         while (player->z)
         {
@@ -59,11 +59,11 @@ void    draw_rays_minimap(t_data *data, t_player *player)
             player->ray_y += player->step_y;
             player->z--;
         }
-        player->ray_y = data->p_y / TILE_SIZE;
-        player->ray_x = data->p_x / TILE_SIZE;
-        rayAngle += 0.01;
-        player->step_x = cos(rayAngle) * player->ray_step;
-        player->step_y = sin(rayAngle) * player->ray_step;
+        player->ray_y = data->p_y / T_S;
+        player->ray_x = data->p_x / T_S;
+        rayangle += 0.01;
+        player->step_x = cos(rayangle) * player->ray_step;
+        player->step_y = sin(rayangle) * player->ray_step;
         player->z = 40;
     }
     

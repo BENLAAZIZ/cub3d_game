@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 23:28:18 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/23 23:59:00 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/26 22:17:05 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 int point_image_texture(t_data *data, t_ray *ray)
 {
-    if (!ray->flag && !(ray->rayAngle > 0 && ray->rayAngle < M_PI))
+    if (!ray->flag && !(ray->rayangle > 0 && ray->rayangle < M_PI))
         data->imgx = &data->image[0];
-    else if (!ray->flag && ray->rayAngle >= 0 && ray->rayAngle <= M_PI)
+    else if (!ray->flag && ray->rayangle >= 0 && ray->rayangle <= M_PI)
         data->imgx = &data->image[1];
-    else if (ray->flag && ray->rayAngle >= M_PI_2 && ray->rayAngle <= 3 * M_PI_2)
+    else if (ray->flag && ray->rayangle >= M_PI_2 && ray->rayangle <= 3 * M_PI_2)
         data->imgx = &data->image[2];
     else
         data->imgx = &data->image[3];
@@ -34,9 +34,9 @@ void draw_wall_column(t_data *data, t_var *var, int column)
     {
         if (var->top_y < 0)
             var->top_y = 0;
-        if (var->top_y >= Screen_H)
+        if (var->top_y >= SCREEN_H)
             break;
-        var->distance = (var->top_y + var->line_height / 2) - (Screen_H / 2);
+        var->distance = (var->top_y + var->line_height / 2) - (SCREEN_H / 2);
         var->offset_y = var->distance * (data->imgx->texture->height / var->line_height);
         var->pixel =  (unsigned int *)data->imgx->texture->pixels;
         var->color = var->pixel[(var->offset_y * data->imgx->texture->width) + var->ofsset_var];
@@ -51,18 +51,18 @@ int draw_wall(t_data *data, t_ray *ray, int column)
 {
    t_var    var;
     
-    var.line_height = (Screen_H / ray->distance) * 5;
-    var.top_y = Screen_H / 2 - var.line_height / 2;
-    var.bottom_y = Screen_H / 2 + var.line_height / 2;
+    var.line_height = (SCREEN_H / ray->distance) * 5;
+    var.top_y = SCREEN_H / 2 - var.line_height / 2;
+    var.bottom_y = SCREEN_H / 2 + var.line_height / 2;
     if (point_image_texture(data, ray))
     {
         printf("Failed to load texture\n");
         return (1);
     }
      if (ray->flag == 1)
-        var.ofsset_var = (int)((ray->y_hit / TILE_SIZE) * data->imgx->texture->width) % data->imgx->texture->width;
+        var.ofsset_var = (int)((ray->y_hit / T_S) * data->imgx->texture->width) % data->imgx->texture->width;
     else
-        var.ofsset_var = (int)((ray->x_hit / TILE_SIZE) * data->imgx->texture->width) % data->imgx->texture->width; 
+        var.ofsset_var = (int)((ray->x_hit / T_S) * data->imgx->texture->width) % data->imgx->texture->width; 
     draw_wall_column(data, &var, column);
     return (0);
 }
@@ -75,7 +75,7 @@ void draw_floor(t_data *data, double distance, double column)
 	double  window_height;
     int     i;
 
-    window_height = Screen_H;
+    window_height = SCREEN_H;
     line_height = (window_height / distance) * 5;
     top_y = window_height / 2 - line_height / 2;
     bottom_y = top_y + line_height;
@@ -101,8 +101,8 @@ void draw_floor(t_data *data, double distance, double column)
 
 //     x = -2;
 //     y = -2;
-//     player.ray_y = data->p_y / TILE_SIZE;
-//     player.ray_x = data->p_x / TILE_SIZE;
+//     player.ray_y = data->p_y / T_S;
+//     player.ray_x = data->p_x / T_S;
 //     player.step_x = cos(data->angle - (FOV / 2)) * player.ray_step;
 //     player.step_y = sin(data->angle - (FOV / 2)) * player.ray_step;
 //     player.ray_step = 0.5;
@@ -122,10 +122,10 @@ void draw_floor(t_data *data, double distance, double column)
 
 // void    draw_rays_minimap(t_data *data, t_player *player)
 // {
-//      double rayAngle;
+//      double rayangle;
 
-//     rayAngle = data->angle - (FOV / 2);
-//     while (rayAngle < data->angle + (FOV / 2))
+//     rayangle = data->angle - (FOV / 2);
+//     while (rayangle < data->angle + (FOV / 2))
 //     {
 //         while (player->z)
 //         {
@@ -138,9 +138,9 @@ void draw_floor(t_data *data, double distance, double column)
 //         }
 //         player->ray_y = data->p_y;
 //         player->ray_x = data->p_x;
-//         rayAngle += 0.01;
-//         player->step_x = cos(rayAngle) * player->ray_step;
-//         player->step_y = sin(rayAngle) * player->ray_step;
+//         rayangle += 0.01;
+//         player->step_x = cos(rayangle) * player->ray_step;
+//         player->step_y = sin(rayangle) * player->ray_step;
 //         player->z = 100;
 //     }
     
@@ -159,12 +159,12 @@ void draw_floor(t_data *data, double distance, double column)
 //             {
 //                 int y = 1;
 //                 int x = 1;
-//                 while (y < TILE_SIZE)
+//                 while (y < T_S)
 //                 {
 //                     x = 1;
-//                     while (x < TILE_SIZE)
+//                     while (x < T_S)
 //                     {
-// 						mlx_put_pixel(data->img, (j * TILE_SIZE) + y, (i * TILE_SIZE) + x, ft_pixel(255, 255, 255, 255));
+// 						mlx_put_pixel(data->img, (j * T_S) + y, (i * T_S) + x, ft_pixel(255, 255, 255, 255));
 //                         x++;
 //                     }
 //                     y++;
@@ -174,12 +174,12 @@ void draw_floor(t_data *data, double distance, double column)
 //             {
 //                 int y = 0;
 //                 int x = 0;
-//                 while (y < TILE_SIZE)
+//                 while (y < T_S)
 //                 {
 //                     x = 0;
-//                     while (x < TILE_SIZE)
+//                     while (x < T_S)
 //                     {
-// 						mlx_put_pixel(data->img, (j * TILE_SIZE) + y, (i * TILE_SIZE) + x, ft_pixel(0, 0, 0, 255));
+// 						mlx_put_pixel(data->img, (j * T_S) + y, (i * T_S) + x, ft_pixel(0, 0, 0, 255));
 //                         x++;
 //                     }
 //                     y++;

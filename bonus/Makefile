@@ -1,4 +1,4 @@
-NAME = cub3d_bonus
+NAME = cub3D_bonus
 
 CC = cc
 

@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 23:29:47 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/23 23:48:02 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/26 22:17:05 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,17 @@
 
 void    init_vertical_ray_steps(t_data *data, t_ray *ray, t_var *var)
 {
-      var->xintercept = floor(data->p_x / TILE_SIZE) * TILE_SIZE;
-    if (ray->lookingRight)
-        var->xintercept += TILE_SIZE;   
-    var->yintercept = data->p_y + (var->xintercept - data->p_x) * tan(ray->rayAngle);
-    var->xstep = TILE_SIZE;
-    var->ystep = TILE_SIZE * tan(ray->rayAngle);
-    if (ray->lookingLeft)
+      var->xintercept = floor(data->p_x / T_S) * T_S;
+    if (ray->lookingright)
+        var->xintercept += T_S;   
+    var->yintercept = data->p_y + (var->xintercept - data->p_x) * tan(ray->rayangle);
+    var->xstep = T_S;
+    var->ystep = T_S * tan(ray->rayangle);
+    if (ray->lookingleft)
         var->xstep *= -1;
-    if (ray->lookingUp && var->ystep > 0)
+    if (ray->lookingup && var->ystep > 0)
         var->ystep *= -1;
-    if (ray->lookingDown && var->ystep < 0)
+    if (ray->lookingdown && var->ystep < 0)
         var->ystep *= -1;
 }
 
@@ -33,10 +33,10 @@ double get_v_intercept(t_data *data, t_ray *ray)
     t_var  var;
 
     init_vertical_ray_steps(data, ray, &var);
-    while (var.xintercept >= 0 && var.xintercept <= data->lenght * TILE_SIZE 
-            && var.yintercept >= 0 && var.yintercept <= data->height * TILE_SIZE)
+    while (var.xintercept >= 0 && var.xintercept <= data->lenght * T_S 
+            && var.yintercept >= 0 && var.yintercept <= data->height * T_S)
     {
-        if (ray->lookingLeft)
+        if (ray->lookingleft)
             var.xtocheck = var.xintercept - 0.001;
         else
            var.xtocheck = var.xintercept;
@@ -57,17 +57,17 @@ double get_v_intercept(t_data *data, t_ray *ray)
 
 void    init_horizontal_ray_steps(t_data *data, t_ray *ray, t_var *var)
 {
-    var->yintercept = floor(data->p_y / TILE_SIZE) * TILE_SIZE;
-    if (ray->lookingDown)
-        var->yintercept += TILE_SIZE;
-    var->xintercept = data->p_x + (var->yintercept - data->p_y) / tan(ray->rayAngle);
-    var->ystep = TILE_SIZE;
-    var->xstep = TILE_SIZE / tan(ray->rayAngle); 
-    if (ray->lookingUp)
+    var->yintercept = floor(data->p_y / T_S) * T_S;
+    if (ray->lookingdown)
+        var->yintercept += T_S;
+    var->xintercept = data->p_x + (var->yintercept - data->p_y) / tan(ray->rayangle);
+    var->ystep = T_S;
+    var->xstep = T_S / tan(ray->rayangle); 
+    if (ray->lookingup)
         var->ystep *= -1;
-    if (ray->lookingLeft && var->xstep > 0)
+    if (ray->lookingleft && var->xstep > 0)
         var->xstep *= -1;
-    if (ray->lookingRight && var->xstep < 0)
+    if (ray->lookingright && var->xstep < 0)
         var->xstep *= -1;
 }
 
@@ -76,11 +76,11 @@ double get_h_intercept(t_data *data, t_ray *ray)
     t_var  var;
 
     init_horizontal_ray_steps(data, ray, &var);
-    while (var.xintercept >= 0 && var.xintercept <= data->lenght * TILE_SIZE
-            && var.yintercept >= 0 && var.yintercept <= data->height * TILE_SIZE)
+    while (var.xintercept >= 0 && var.xintercept <= data->lenght * T_S
+            && var.yintercept >= 0 && var.yintercept <= data->height * T_S)
     {
         var.xtocheck = var.xintercept;
-        if (ray->lookingUp)
+        if (ray->lookingup)
             var.ytocheck = var.yintercept - 0.001;
         else
             var.ytocheck = var.yintercept;
