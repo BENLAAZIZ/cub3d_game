@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 00:42:41 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/30 00:47:27 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/12/01 14:23:28 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,6 @@ void	get_player_position(t_data *data)
 			break ;
 		data->p_y++;
 	}
-	data->p_x = (data->p_x * T_S);
-	data->p_y = (data->p_y * T_S);
+	data->p_x = (data->p_x * T_S) + (T_S / 2);
+	data->p_y = (data->p_y * T_S) + (T_S / 2);
 }

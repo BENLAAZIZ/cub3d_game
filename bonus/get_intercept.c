@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 00:03:56 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/30 00:06:46 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/12/01 17:08:12 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ double	get_v_intercept(t_data *data, t_ray *ray)
 		&& var.yintercept >= 0 && var.yintercept <= data->height * T_S)
 	{
 		if (ray->lookingleft)
-			var.xtocheck = var.xintercept - 0.001;
+			var.xtocheck = var.xintercept - 0.01;
 		else
 			var.xtocheck = var.xintercept;
 		var.ytocheck = var.yintercept;
@@ -83,9 +83,9 @@ double	get_h_intercept(t_data *data, t_ray *ray)
 	{
 		var.xtocheck = var.xintercept;
 		if (ray->lookingup)
-			var.ytocheck = var.yintercept - 0.001;
+			var.ytocheck = var.yintercept - 0.01;
 		else
-			var.ytocheck = var.yintercept;
+			var.ytocheck = var.yintercept ;
 		if (is_wall(data, var.ytocheck, var.xtocheck))
 		{
 			ray->h_hit_x = var.xintercept;

@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 15:55:54 by aaaraba           #+#    #+#             */
-/*   Updated: 2024/12/01 12:45:06 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/12/01 15:22:45 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ int	ft_init(t_data *data, t_texture *textures, char **map, int i)
 	if (data->mlx == NULL)
 		return (ft_putstr_fd("Error in mlx_init", 2), 1);
 	data->tex = textures;
-		//================================================================
 	if (get_image_texture(data, textures, 0))
 	{
 		i = -1;
@@ -57,7 +56,6 @@ int	ft_init(t_data *data, t_texture *textures, char **map, int i)
 		mlx_terminate(data->mlx);
 		return (ft_putstr_fd("Error in get_image_texture", 2), 1);
 	}
-	//================================================================
 	data->img = mlx_new_image(data->mlx, SCREEN_W, SCREEN_H);
 	if (data->img == NULL)
 	{

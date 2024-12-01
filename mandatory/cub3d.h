@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 00:07:43 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/12/01 12:46:10 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/12/01 15:21:04 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include <stdlib.h>
 # include <string.h>
 // # include "MLX42/include/MLX42/MLX42.h"
-#include "../../MLX42/include/MLX42/MLX42.h"
+#include "../../mlx/include/MLX42/MLX42.h"
 # include <math.h>
 # include <limits.h>
 
