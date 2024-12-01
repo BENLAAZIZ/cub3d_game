@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 15:55:54 by aaaraba           #+#    #+#             */
-/*   Updated: 2024/12/01 12:40:46 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/12/01 18:04:56 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ int	ft_game(t_data *data, t_texture *textures, char **map, int i)
 	data->height = height;
 	data->all_map = map;
 	data->speed = 10;
+	data->fov = (60 * (M_PI / 180));
 	if (map == NULL || ft_init(data, textures, map, i))
 		return (1);
 	get_player_position(data);

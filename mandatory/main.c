@@ -6,15 +6,29 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 15:55:54 by aaaraba           #+#    #+#             */
-/*   Updated: 2024/12/01 15:22:45 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/12/01 19:09:35 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int	ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a)
+void	ft_mouse(t_data *data)
 {
-	return (r << 24 | g << 16 | b << 8 | a);
+	mlx_get_mouse_pos(data->mlx, &data->mouse_x, &data->mouse_y);
+	if (data->mouse_x < SCREEN_W / 2 && data->mouse_x > 0)
+	{
+		(data->angle -= 0.07)
+			&& (cast_rays(data));
+	}
+	if (data->mouse_x > SCREEN_W / 2 && data->mouse_x < SCREEN_W)
+	{
+		(data->angle += 0.07)
+			&& (cast_rays(data));
+	}
+	if (data->angle > 2 * M_PI)
+		data->angle -= 2 * M_PI;
+	if (data->angle < 0)
+		data->angle += 2 * M_PI;
 }
 
 void	ft_hook(void *param)
@@ -22,6 +36,8 @@ void	ft_hook(void *param)
 	t_data	*data;
 
 	data = (t_data *)param;
+	ft_mouse(data);
+	mlx_set_mouse_pos(data->mlx, SCREEN_W / 2, SCREEN_H / 2);
 	if (mlx_is_key_down(data->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(data->mlx);
 	if (mlx_is_key_down(data->mlx, MLX_KEY_W))
@@ -65,9 +81,8 @@ int	ft_init(t_data *data, t_texture *textures, char **map, int i)
 	return (0);
 }
 
-int	ft_game(t_data *data, t_texture *textures, char **map)
+int	ft_game(t_data *data, t_texture *textures, char **map, int i)
 {
-	int	i;
 	int	height;	
 
 	height = 0;
@@ -76,17 +91,18 @@ int	ft_game(t_data *data, t_texture *textures, char **map)
 	data->height = height;
 	data->all_map = map;
 	data->speed = 10;
-
-	if (map == NULL || ft_init(data, textures, map, 0))
+	data->fov = (60 * (M_PI / 180));
+	if (map == NULL || ft_init(data, textures, map, i))
 		return (1);
 	get_player_position(data);
 	if (cast_rays(data))
 		return (1);
 	mlx_image_to_window(data->mlx, data->img, 0, 0);
+	mlx_set_mouse_pos(data->mlx, SCREEN_W / 2, SCREEN_H / 2);
+	mlx_set_cursor_mode(data->mlx, MLX_MOUSE_HIDDEN);
 	mlx_loop_hook(data->mlx, ft_hook, data);
 	mlx_loop(data->mlx);
-	lst_clear(&textures);
-	free_double(map);
+	(lst_clear(&textures), free_double(map));
 	i = -1;
 	while (++i < 4)
 		mlx_delete_texture(data->image[i].texture);
@@ -116,6 +132,6 @@ int	main(int argc, char **argv)
 		(free_double(map), lst_clear(&textures));
 		return (ft_putstr_fd("Invalid Screen size", 2), 1);
 	}
-	if (ft_game(&data, textures, map) == 1)
+	if (ft_game(&data, textures, map, 0) == 1)
 		return (free_double(map), lst_clear(&textures), 1);
 }

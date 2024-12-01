@@ -55,7 +55,7 @@ void	move_player_up(t_data *data)
 		data->all_map[(int)((new_y + buffer) / T_S)]
 			[(int)((new_x + buffer) / T_S)] == '1')
 	{
-		return;
+		return ;
 	}
 	data->p_x = new_x;
 	data->p_y = new_y;
@@ -80,7 +80,7 @@ void	move_player_left(t_data *data)
 		data->all_map[(int)((new_y + buffer) / T_S)]
 			[(int)((new_x + buffer) / T_S)] == '1')
 	{
-		return;
+		return ;
 	}
 	data->p_x = new_x;
 	data->p_y = new_y;

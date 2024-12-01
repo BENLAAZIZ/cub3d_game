@@ -6,11 +6,16 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 23:28:18 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/29 21:54:44 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/12/01 19:08:58 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+int	ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a)
+{
+	return (r << 24 | g << 16 | b << 8 | a);
+}
 
 void	draw_wall_column(t_data *data, t_var *var, int column)
 {

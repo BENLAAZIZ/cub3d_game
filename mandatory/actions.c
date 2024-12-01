@@ -1,12 +1,12 @@
 /* ************************************************************************** */
-/*                                                                            */
+/*			                                                        */
 /*                                                        :::      ::::::::   */
 /*   actions.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/29 22:39:19 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/29 23:49:06 by hben-laz         ###   ########.fr       */
+/*   Created: 2024/11/29 23:56:05 by hben-laz          #+#    #+#             */
+/*   Updated: 2024/11/29 23:59:04 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,12 @@ void	move_player_down(t_data *data)
 	new_y = data->p_y - sin(data->angle) * data->speed;
 	if (data->all_map[(int)((new_y - buffer) / T_S)]
 			[(int)((new_x - buffer) / T_S)] == '1' ||
-		data->all_map[(int)((new_y - buffer) / T_S)]
-				[(int)((new_x + buffer) / T_S)] == '1' ||
+	data->all_map[(int)((new_y - buffer) / T_S)]
+			[(int)((new_x + buffer) / T_S)] == '1' ||
 		data->all_map[(int)((new_y + buffer) / T_S)]
-				[(int)((new_x - buffer) / T_S)] == '1' ||
+			[(int)((new_x - buffer) / T_S)] == '1' ||
 		data->all_map[(int)((new_y + buffer) / T_S)]
-				[(int)((new_x + buffer) / T_S)] == '1')
+			[(int)((new_x + buffer) / T_S)] == '1')
 	{
 		return ;
 	}
@@ -49,11 +49,11 @@ void	move_player_up(t_data *data)
 	if (data->all_map[(int)((new_y - buffer) / T_S)]
 			[(int)((new_x - buffer) / T_S)] == '1' ||
 		data->all_map[(int)((new_y - buffer) / T_S)]
-				[(int)((new_x + buffer) / T_S)] == '1' ||
+			[(int)((new_x + buffer) / T_S)] == '1' ||
 		data->all_map[(int)((new_y + buffer) / T_S)]
-				[(int)((new_x - buffer) / T_S)] == '1' ||
+			[(int)((new_x - buffer) / T_S)] == '1' ||
 		data->all_map[(int)((new_y + buffer) / T_S)]
-				[(int)((new_x + buffer) / T_S)] == '1')
+			[(int)((new_x + buffer) / T_S)] == '1')
 	{
 		return ;
 	}

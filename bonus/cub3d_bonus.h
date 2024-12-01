@@ -6,25 +6,24 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 15:16:53 by aaaraba           #+#    #+#             */
-/*   Updated: 2024/12/01 13:05:59 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/12/01 18:09:13 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CUB3D_H
-#define CUB3D_H
+#ifndef CUB3D_BONUS_H
+# define CUB3D_BONUS_H
 
 # include <fcntl.h>
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
-// # include "MLX42/include/MLX42/MLX42.h"
-#include "../../mlx/include/MLX42/MLX42.h"
+
+# include "../../mlx/include/MLX42/MLX42.h"
 # include <math.h>
 # include <limits.h>
 
 # define BUFFER_SIZE 10
-# define FOV (60 * (M_PI / 180))
 # define SCREEN_W 2000
 # define SCREEN_H 1000
 # define T_S 50.0
@@ -73,6 +72,7 @@ typedef struct s_data
 	int				ceiling_color;
 	int				floor_color;
 	double			speed;
+	double			fov;
 }	t_data;
 
 typedef struct s_player
@@ -127,7 +127,7 @@ size_t		ft_strlen(const char *s);
 size_t		ft_strlcpy(char *dst, const char *src, size_t dstsize);
 size_t		ft_strlcat(char *dest, const char *src, size_t size);
 int			ft_isprint(int c);
-int			ft_atoi(const char *str);
+int			ft_atoi(char *str);
 int			ft_isalnum(int c);
 int			ft_isalpha(int c);
 int			ft_isascii(int c);
@@ -168,7 +168,7 @@ char		*get_next_line(int fd);
 
 //get_texture
 void		*check_rgp(char *str, int r, int g, int *color);
-t_texture	*get_texture(int fd, t_texture *tex, int j, int i);
+t_texture	*get_texture(int fd, t_texture *tex, int i, int count);
 t_texture	*ft_lstnew(t_texture *new, char *line, int i);
 void		lstadd_back(t_texture **lst, t_texture *new);
 //get_texture
@@ -182,8 +182,8 @@ char		**pars_map(char *argv, t_texture **textures, char **map);
 char		**add_spaces(char **map, int i, int j);
 //pars_map
 
-// void	cast_rays(t_data *data);
 int			is_wall(t_data *data, double y, double x);
+
 //actions
 void		move_player_down(t_data *data);
 void		move_player_up(t_data *data);
@@ -191,8 +191,6 @@ void		move_player_left(t_data *data);
 void		move_player_right(t_data *data);
 void		player_rot(t_data *data);
 //actions
-
-
 
 //draw
 int			draw_wall(t_data *data, t_ray *ray, int column);
@@ -220,6 +218,6 @@ void		lst_clear(t_texture **lst);
 void		free_double(char **map);
 void		get_player_position(t_data *data);
 int			is_wall_min(t_data *data, double y, double x);
-int	check_image_texture(t_data *data, t_texture *tex, int i);
+int			check_image_texture(t_data *data, t_texture *tex, int i);
 //main
 #endif

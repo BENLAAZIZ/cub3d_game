@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 00:33:19 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/30 00:41:16 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/12/01 18:03:18 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ void	draw_rays_minimap(t_data *data, t_player *player)
 {
 	double	rayangle;
 
-	rayangle = data->angle - (FOV / 2);
-	while (rayangle < data->angle + (FOV / 2))
+	rayangle = data->angle - (data->fov / 2);
+	while (rayangle < data->angle + (data->fov / 2))
 	{
 		while (player->z)
 		{

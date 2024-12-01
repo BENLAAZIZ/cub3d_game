@@ -1,12 +1,12 @@
 /* ************************************************************************** */
-/*	                                                                  */
+/*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   ray_casting.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/23 23:26:31 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/29 22:53:44 by hben-laz         ###   ########.fr       */
+/*   Created: 2024/11/30 00:24:32 by hben-laz          #+#    #+#             */
+/*   Updated: 2024/12/01 19:09:48 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	cast_rays(t_data *data)
 
 	ray = NULL;
 	column = 0;
-	rayangle = data->angle - (FOV / 2);
+	rayangle = data->angle - (data->fov / 2);
 	while (column < NUM_RAYS)
 	{
 		ray = malloc(sizeof(t_ray));
@@ -80,7 +80,7 @@ int	cast_rays(t_data *data)
 		if (render_wall(data, ray, column))
 			return (1);
 		column++;
-		rayangle += FOV / NUM_RAYS;
+		rayangle += data->fov / NUM_RAYS;
 		free(ray);
 	}
 	return (0);

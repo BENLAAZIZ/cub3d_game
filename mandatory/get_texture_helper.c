@@ -1,4 +1,14 @@
-
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_texture_helper.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/01 15:56:22 by aaaraba           #+#    #+#             */
+/*   Updated: 2024/12/01 19:09:24 by hben-laz         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "cub3d.h"
 
@@ -22,8 +32,7 @@ void	lstadd_back(t_texture **lst, t_texture *new)
 	*lst = tmp;
 }
 
-// *************************************************************
-void	init_caracter(t_texture *new, char *line)
+void	give_id(char *line, t_texture *new)
 {
 	new->color_ceiling = -1;
 	new->color_floor = -1;
@@ -48,17 +57,17 @@ t_texture	*ft_lstnew(t_texture *new, char *line, int i)
 	new = (t_texture *)malloc(sizeof(t_texture));
 	if (new == NULL)
 		return (NULL);
-	init_caracter(new, line);
+	give_id(line, new);
 	if (ft_strncmp(line, "F", 1) == 0 || ft_strncmp(line, "C", 1) == 0)
 	{
 		if (new->identifier == F)
 		{
-			if (!check_rgp(line + i, -1, -1, &new->color_floor))
+			if (!check_rgp(line + i, -2, -2, &new->color_floor))
 				return (lst_clear(&new), NULL);
 		}
 		else
 		{
-			if (!check_rgp(line + i, -1, -1, &new->color_ceiling))
+			if (!check_rgp(line + i, -2, -2, &new->color_ceiling))
 				return (lst_clear(&new), NULL);
 		}
 	}

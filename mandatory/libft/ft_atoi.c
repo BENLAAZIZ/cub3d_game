@@ -1,27 +1,47 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/01 15:30:48 by aaaraba           #+#    #+#             */
+/*   Updated: 2024/12/01 19:07:07 by hben-laz         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../cub3d.h"
 
-int	ft_atoi(const char *str)
+void	skip_spaces(char *str, int *i)
+{
+	while (str[*i] == ' ')
+		(*i)++;
+}
+
+int	ft_atoi(char *str)
 {
 	int				i;
 	int				s;
 	unsigned long	r;
 
+	if (!str)
+		return (-1);
 	i = 0;
 	s = 0;
 	r = 0;
-	while ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
-		i++;
+	skip_spaces(str, &i);
+	if (str[i] < '0' || str[i] > '9')
+		return (free(str), -1);
 	while (str[i] >= '0' && str[i] <= '9')
 	{
 		r = (r * 10) + str[i] - '0';
-		str++;
-		if (r > 255)
-			return (-1);
-	}
-	while (str[i] == ' ')
 		i++;
+		if (r > 255)
+			return (free(str), -1);
+	}
+	skip_spaces(str, &i);
 	if (str[i] != '\0' && str[i] != '\n' && str[i] != ',')
-		return (-1);
+		return (free(str), -1);
+	free(str);
 	return (r);
 }

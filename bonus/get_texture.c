@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_texture.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/01 15:56:58 by aaaraba           #+#    #+#             */
+/*   Updated: 2024/12/01 18:19:55 by hben-laz         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "cub3d_bonus.h"
 
@@ -6,102 +17,92 @@ void	*check_rgp(char *str, int r, int g, int *color)
 	int		i;
 	int		j;
 	int		b;
-	int		res;
-	int		comma;
-	char	*color_str;
 
-	comma = 0;
-	b = -1;
+	b = -2;
 	i = 0;
-	res = 0;
-	while (str[i] == ' ' && str[i] == '\t')
-		i++;
 	j = i;
 	while (str[i])
 	{
 		if (str[i] == ',' || str[i + 1] == '\n')
 		{
-			if (str[i] == ',')
-				comma++;
-			color_str = ft_substr(str, j + 1, i - j);
-			res = ft_atoi(color_str);
-			if (res < 0 || res > 255)
-				return (free(color_str), NULL);
-			if (r == -1)
-				r = res;
-			else if (g == -1)
-				g = res;
-			else if (b == -1)
-				b = res;
+			if (r == -2)
+				r = ft_atoi(ft_substr(str, j + 1, i - j));
+			else if (g == -2)
+				g = ft_atoi(ft_substr(str, j + 1, i - j));
+			else if (b == -2)
+				b = ft_atoi(ft_substr(str, j + 1, i - j));
 			j = i;
-			free(color_str);
 		}
 		i++;
 	}
-	if (comma != 2)
+	if (r < 0 || g < 0 || b < 0)
 		return (NULL);
 	*color = ft_pixel(r, g, b, 255);
 	return ("ok");
 }
 
-int	check_double_texture(char	*texture)
+int	check_double_texture(char	*texture, int i, int count)
 {
 	static int	check;
-	static int	count;
+	char		*tmp;
 
-	if (ft_strncmp(texture, "NO", 2) == 0)
+	tmp = ft_substr(texture, 0, i);
+	if (tmp == NULL)
+		return (-1);
+	if (ft_strcmp(tmp, "NO") == 0)
 		check++;
-	else if (ft_strncmp(texture, "SO", 2) == 0)
+	else if (ft_strcmp(tmp, "SO") == 0)
 		check += 2;
-	else if (ft_strncmp(texture, "WE", 2) == 0)
+	else if (ft_strcmp(tmp, "WE") == 0)
 		check += 3;
-	else if (ft_strncmp(texture, "EA", 2) == 0)
+	else if (ft_strcmp(tmp, "EA") == 0)
 		check += 4;
-	else if (ft_strncmp(texture, "F", 1) == 0)
+	else if (ft_strcmp(tmp, "F") == 0)
 		check += 5;
-	else if (ft_strncmp(texture, "C", 1) == 0)
+	else if (ft_strcmp(tmp, "C") == 0)
 		check += 6;
-	count++;
-	if (count == 6)
+	if (count == 5)
 	{
 		if (check != 21)
 			return (-1);
 	}
-	return (0);
+	return (free(tmp), 0);
 }
 
-t_texture	*get_texture(int fd, t_texture *tex, int j, int i)
+void	skip_char(char *str, int *i)
 {
-	int			count;
-	char		*tmp;
+	*i = 0;
+	if (str == NULL)
+		return ;
+	while (str[*i] != '\0' && str[*i] != '\t'
+		&& str[*i] != '\n' && str[*i] != ' ')
+	{
+		(*i)++;
+	}
+}
+
+t_texture	*get_texture(int fd, t_texture *tex, int i, int count)
+{
 	char		*line;
 	t_texture	*tex_tmp;
 
-	tex_tmp = NULL;
-	count = 0;
 	line = get_next_line(fd);
 	if (line == NULL)
 		return (NULL);
 	while (line && count < 6)
 	{
-		tmp = line;
-		i = 0;
 		if (line[0] != '\n')
 		{
-			while (line[i] != '\0' && line[i] != '\n'
-				&& line[i] != ' ' && line[i] != '\t')
-				i++;
-			j = 0;
-			if (check_double_texture(line) == -1)
-				return (free(tmp), lst_clear(&tex), NULL);
+			skip_char(line, &i);
+			if (check_double_texture(line, i, count) == -1)
+				return (free(line), lst_clear(&tex), NULL);
 			count++;
-			tex_tmp = ft_lstnew(tex_tmp, line, i);
+			tex_tmp = ft_lstnew(NULL, line, i);
 			if (tex_tmp == NULL)
-				return (lst_clear(&tex), free(tmp), NULL);
+				return (lst_clear(&tex), free(line), NULL);
 			lstadd_back(&tex, tex_tmp);
 		}
-		free(tmp);
-		tmp = NULL;
+		free(line);
 		if (count == 6)
 			break ;
 		line = get_next_line(fd);
