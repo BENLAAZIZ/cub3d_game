@@ -3,8 +3,8 @@ SO ../textures/pic1.png
 WE ../textures/pic1.png
 EA ../textures/pic1.png
 
-F 164,169,20
-C 153,204,255
+F 16, 51, 75
+C 57, 107, 140
 
 111111111111111111111
 101000001000000000001
