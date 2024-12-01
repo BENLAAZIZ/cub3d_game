@@ -2,11 +2,15 @@ NAME = cub3D_bonus
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror #-g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror 
 
 RM = rm -f
 
-FRAM = -framework Cocoa -framework OpenGL -framework IOKit
+# FRAM = -framework Cocoa -framework OpenGL -framework IOKit
+
+GLFW_PATH = /Users/hben-laz/.brew/lib # Update to your GLFW location
+LDFLAGS = -lglfw
+LIBS = -L$(GLFW_PATH) -framework Cocoa -framework OpenGL -framework IOKit
 
 ft = 	main.c get_next_line.c ft_strcmp.c get_texture.c get_texture_helper.c \
 		get_map.c add_spaces.c actions.c pars_map.c draw.c get_intercept.c \
@@ -22,18 +26,23 @@ SRC = $(libft) $(ft)
 
 OBJ = $(SRC:.c=.o)
 
+# Paths for MLX42
+MLX_PATH = ../../mlx
+MLX_BUILD = $(MLX_PATH)/build
+MLX_INCLUDE = $(MLX_PATH)/include
+
 all: $(NAME)
 
-$(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) MLX42/build/libmlx42.a -Iinclude -lglfw -L"/Users/$(USER)/.brew/opt/glfw/lib/" $(FRAM) -o $(NAME)
+$(NAME): $(OBJ) cub3D_bonus
+	$(CC) $(CFLAGS) $(OBJ) -I$(MLX_INCLUDE) -L$(MLX_BUILD) -lmlx42 $(LDFLAGS) $(LIBS) -o $(NAME)
 
-%.o: %.c cub3d_bonus.h
-		 $(CC) $(CFLAGS) -c $< -o $@
+%.o: %.c cub3D_bonus
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-		$(RM) $(OBJ)
+	$(RM) $(OBJ)
 
 fclean: clean
-		$(RM) $(NAME)
+	$(RM) $(NAME)
 
 re: fclean all

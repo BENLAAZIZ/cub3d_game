@@ -6,11 +6,16 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 23:28:18 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/11/26 23:52:10 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/11/30 00:20:43 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d_bonus.h"
+
+int	ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a)
+{
+	return (r << 24 | g << 16 | b << 8 | a);
+}
 
 void	draw_wall_column(t_data *data, t_var *var, int column)
 {
@@ -50,7 +55,7 @@ int	draw_wall(t_data *data, t_ray *ray, int column)
 				* data->imgx->texture->width) % data->imgx->texture->width;
 	else
 		var.ofsset_x = (int)((ray->x_hit / T_S)
-				* data->imgx->texture->width) % data->imgx->texture->width; 
+				* data->imgx->texture->width) % data->imgx->texture->width;
 	draw_wall_column(data, &var, column);
 	return (0);
 }

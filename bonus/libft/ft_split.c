@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_split.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/07 13:25:53 by aaaraba           #+#    #+#             */
-/*   Updated: 2024/11/25 00:45:02 by hben-laz         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "../cub3d_bonus.h"
 
@@ -75,7 +64,7 @@ char	**ft_split(char const *s, char c)
 	int		size;
 	int		i;
 
-	if (s == NULL) 
+	if (s == NULL)
 		return (NULL);
 	size = ft_countword(s, c);
 	array = (char **)malloc(sizeof(char *) * (size + 1));

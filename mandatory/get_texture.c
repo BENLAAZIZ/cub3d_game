@@ -1,14 +1,16 @@
+
 #include "cub3d.h"
 
 void	*check_rgp(char *str, int r, int g, int *color)
 {
-	int	i;
-	int	j;
-	int b;
-	int	res;
-	int comma = 0;
-	char *color_str;
+	int		i;
+	int		j;
+	int		b;
+	int		res;
+	int		comma;
+	char	*color_str;
 
+	comma = 0;
 	b = -1;
 	i = 0;
 	res = 0;
@@ -47,71 +49,62 @@ int	check_double_texture(char	*texture)
 	static int	check;
 	static int	count;
 
-	if (ft_strncmp(texture , "NO", 2) == 0)
+	if (ft_strncmp(texture, "NO", 2) == 0)
 		check++;
-	else if (ft_strncmp(texture , "SO", 2) == 0)
-		check+=2;
-	else if (ft_strncmp(texture , "WE", 2) == 0)
-		check+=3;
-	else if (ft_strncmp(texture , "EA", 2) == 0)
-		check+=4;
-	else if (ft_strncmp(texture , "F", 1) == 0)
-		check+=5;
-	else if (ft_strncmp(texture , "C", 1) == 0)
-		check+=6;
+	else if (ft_strncmp(texture, "SO", 2) == 0)
+		check += 2;
+	else if (ft_strncmp(texture, "WE", 2) == 0)
+		check += 3;
+	else if (ft_strncmp(texture, "EA", 2) == 0)
+		check += 4;
+	else if (ft_strncmp(texture, "F", 1) == 0)
+		check += 5;
+	else if (ft_strncmp(texture, "C", 1) == 0)
+		check += 6;
 	count++;
 	if (count == 6)
 	{
 		if (check != 21)
 			return (-1);
 	}
-	return (0); 
+	return (0);
 }
 
 t_texture	*get_texture(int fd, t_texture *tex, int j, int i)
 {
-	int		count;
-	char	*tmp;
-	char	*line;
-	t_texture *tex_tmp;
+	int			count;
+	char		*tmp;
+	char		*line;
+	t_texture	*tex_tmp;
 
 	tex_tmp = NULL;
 	count = 0;
 	line = get_next_line(fd);
-	printf("line = %p\n", line);
 	if (line == NULL)
 		return (NULL);
 	while (line && count < 6)
-	{	
+	{
 		tmp = line;
 		i = 0;
 		if (line[0] != '\n')
 		{
-			while (line[i] != '\0' && line[i] != '\n' && line[i] != ' ' && line[i] != '\t')
+			while (line[i] != '\0' && line[i] != '\n'
+				&& line[i] != ' ' && line[i] != '\t')
 				i++;
 			j = 0;
 			if (check_double_texture(line) == -1)
-			{
-				free(tmp);
-				lst_clear(&tex);
-				return (write(2, "wrong texture\n", 14), NULL);
-			}
+				return (free(tmp), lst_clear(&tex), NULL);
 			count++;
 			tex_tmp = ft_lstnew(tex_tmp, line, i);
-			if (tex_tmp == NULL) 
-			{ 
-				lst_clear(&tex);
-				free(tmp);
-				return (NULL);
-			}
+			if (tex_tmp == NULL)
+				return (lst_clear(&tex), free(tmp), NULL);
 			lstadd_back(&tex, tex_tmp);
 		}
-		free(tmp), tmp = NULL;
+		free(tmp);
+		tmp = NULL;
 		if (count == 6)
-			break;
+			break ;
 		line = get_next_line(fd);
-		printf("line = %p\n", line);
 	}
-		printf("line = [%s]\n", line);
-	return(tex);
+	return (tex);
 }

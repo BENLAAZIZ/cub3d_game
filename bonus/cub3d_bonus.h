@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 15:16:53 by aaaraba           #+#    #+#             */
-/*   Updated: 2024/11/26 23:49:59 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/12/01 12:41:17 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,16 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
-# include "MLX42/include/MLX42/MLX42.h"
+// # include "MLX42/include/MLX42/MLX42.h"
+#include "../../MLX42/include/MLX42/MLX42.h"
 # include <math.h>
 # include <limits.h>
 
 # define BUFFER_SIZE 10
-
 # define FOV (60 * (M_PI / 180))
-
-# define SCREEN_W 2000 // screen width
-# define SCREEN_H 1000 // screen height
-# define T_S 50.0 // tile size
+# define SCREEN_W 2000
+# define SCREEN_H 1000
+# define T_S 50.0
 # define NUM_RAYS SCREEN_W
 
 typedef enum e_type
@@ -72,6 +71,8 @@ typedef struct s_data
 	void			*mlx;
 	// void			*win;
 	// void			*win_test;
+	int				mouse_x;
+	int				mouse_y;
 	int				height;
 	int				lenght;
 	double			angle;
@@ -195,7 +196,7 @@ char		**pars_map(char *argv, t_texture **textures, char **map);
 char		**add_spaces(char **map, int i, int j);
 //pars_map
 
-// void	castAllRay(t_data *data);
+// void	cast_rays(t_data *data);
 int			is_wall(t_data *data, double y, double x);
 
 //actions
@@ -226,9 +227,10 @@ double		get_h_intercept(t_data *data, t_ray *ray);
 //get_intercept
 
 //ray_casting
+// int	ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a);
 void		init_ray(t_ray *ray);
-// void		oneRay(t_data *data, t_ray *ray);
-int			castAllRay(t_data *data);
+// void		one_ray(t_data *data, t_ray *ray);
+int			cast_rays(t_data *data);
 //ray_casting
 
 //main
@@ -242,5 +244,6 @@ void		free_double(char **map);
 // void		delete_texture(t_data *data);
 void		get_player_position(t_data *data);
 int			is_wall_min(t_data *data, double y, double x);
+int	check_image_texture(t_data *data, t_texture *tex, int i);
 //main
 #endif

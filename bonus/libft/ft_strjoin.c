@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_strjoin.c                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/06 17:30:16 by aaaraba           #+#    #+#             */
-/*   Updated: 2024/11/25 00:45:02 by hben-laz         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "../cub3d_bonus.h"
 
@@ -17,7 +6,7 @@ static void	copystring(char *newstr, const char *s2, int totalsize, int i)
 	int	x;
 
 	x = 0;
-	while (i < totalsize) 
+	while (i < totalsize)
 	{
 		newstr[i++] = s2[x++];
 	}
