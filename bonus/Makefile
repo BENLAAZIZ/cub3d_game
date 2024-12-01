@@ -6,8 +6,6 @@ CFLAGS = -Wall -Wextra -Werror
 
 RM = rm -f
 
-# FRAM = -framework Cocoa -framework OpenGL -framework IOKit
-
 GLFW_PATH = /Users/hben-laz/.brew/lib # Update to your GLFW location
 LDFLAGS = -lglfw
 LIBS = -L$(GLFW_PATH) -framework Cocoa -framework OpenGL -framework IOKit

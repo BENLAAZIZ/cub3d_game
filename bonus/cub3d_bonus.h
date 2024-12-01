@@ -6,7 +6,7 @@
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 15:16:53 by aaaraba           #+#    #+#             */
-/*   Updated: 2024/12/01 12:41:17 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/12/01 13:05:59 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <stdlib.h>
 # include <string.h>
 // # include "MLX42/include/MLX42/MLX42.h"
-#include "../../MLX42/include/MLX42/MLX42.h"
+#include "../../mlx/include/MLX42/MLX42.h"
 # include <math.h>
 # include <limits.h>
 
@@ -53,12 +53,6 @@ typedef struct s_image
 {
 	void			*image;
 	mlx_texture_t	*texture;
-	// char			*addr;
-	// int				width;
-	// int				height;
-	// int				bits_per_pixel;
-	// int				line_length;
-	// int				endian;
 }	t_image;
 
 typedef struct s_data
@@ -69,8 +63,6 @@ typedef struct s_data
 	mlx_image_t		*img;
 	char			**all_map;
 	void			*mlx;
-	// void			*win;
-	// void			*win_test;
 	int				mouse_x;
 	int				mouse_y;
 	int				height;
@@ -78,8 +70,6 @@ typedef struct s_data
 	double			angle;
 	double			p_x;
 	double			p_y;
-	// int				tile_size;
-	// float			rotation_speed;
 	int				ceiling_color;
 	int				floor_color;
 	double			speed;
@@ -174,14 +164,10 @@ int			ft_strcmp(const char *s1, const char *s2);
 
 //get_next_line
 char		*get_next_line(int fd);
-// char		*ft_strjoin(char const *s1, char const *s2);
-// char		*ft_strdup(char const *s1);
-// char		*ft_substr(char const *s, unsigned int start, size_t len);
 //get_next_line
 
 //get_texture
 void		*check_rgp(char *str, int r, int g, int *color);
-// int			check_double_texture(char	*texture);
 t_texture	*get_texture(int fd, t_texture *tex, int j, int i);
 t_texture	*ft_lstnew(t_texture *new, char *line, int i);
 void		lstadd_back(t_texture **lst, t_texture *new);
@@ -198,7 +184,6 @@ char		**add_spaces(char **map, int i, int j);
 
 // void	cast_rays(t_data *data);
 int			is_wall(t_data *data, double y, double x);
-
 //actions
 void		move_player_down(t_data *data);
 void		move_player_up(t_data *data);
@@ -207,11 +192,7 @@ void		move_player_right(t_data *data);
 void		player_rot(t_data *data);
 //actions
 
-//pars_map
-// int			check_char(char c);
-// int			check_characters(char **map, int i, int j);
-// char		**pars_map(char *argv, t_texture **textures, char **map);
-//pars_map
+
 
 //draw
 int			draw_wall(t_data *data, t_ray *ray, int column);
@@ -227,21 +208,16 @@ double		get_h_intercept(t_data *data, t_ray *ray);
 //get_intercept
 
 //ray_casting
-// int	ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a);
 void		init_ray(t_ray *ray);
-// void		one_ray(t_data *data, t_ray *ray);
 int			cast_rays(t_data *data);
 //ray_casting
 
 //main
-// int			ft_init(t_data *data, t_texture *textures, char **map);
 int			point_image_texture(t_data *data, t_ray *ray);
 int32_t		ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a);
 int			get_image_texture(t_data *data, t_texture *tex, int i);
-// int			render_wall(t_data *data, t_ray *ray, double column);
 void		lst_clear(t_texture **lst);
 void		free_double(char **map);
-// void		delete_texture(t_data *data);
 void		get_player_position(t_data *data);
 int			is_wall_min(t_data *data, double y, double x);
 int	check_image_texture(t_data *data, t_texture *tex, int i);
