@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaaraba <aaaraba@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 15:30:48 by aaaraba           #+#    #+#             */
-/*   Updated: 2024/12/01 19:07:07 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/12/06 17:22:11 by aaaraba          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,17 +31,16 @@ int	ft_atoi(char *str)
 	r = 0;
 	skip_spaces(str, &i);
 	if (str[i] < '0' || str[i] > '9')
-		return (free(str), -1);
+		return (-1);
 	while (str[i] >= '0' && str[i] <= '9')
 	{
 		r = (r * 10) + str[i] - '0';
 		i++;
 		if (r > 255)
-			return (free(str), -1);
+			return (-1);
 	}
 	skip_spaces(str, &i);
 	if (str[i] != '\0' && str[i] != '\n' && str[i] != ',')
-		return (free(str), -1);
-	free(str);
+		return (-1);
 	return (r);
 }

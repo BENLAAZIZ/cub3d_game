@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/01 18:32:37 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/12/01 18:32:50 by hben-laz         ###   ########.fr       */
+/*   Created: 2024/11/26 15:16:53 by aaaraba           #+#    #+#             */
+/*   Updated: 2024/12/06 18:12:01 by hben-laz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <string.h>
 
 # include "../../mlx/include/MLX42/MLX42.h"
 # include <math.h>
@@ -62,8 +61,6 @@ typedef struct s_data
 	mlx_image_t		*img;
 	char			**all_map;
 	void			*mlx;
-	int				mouse_x;
-	int				mouse_y;
 	int				height;
 	int				lenght;
 	double			angle;
@@ -195,9 +192,6 @@ void		player_rot(t_data *data);
 //draw
 int			draw_wall(t_data *data, t_ray *ray, int column);
 void		draw_floor_ceiling(t_data *data, double distance, double column);
-void		drawplayer(t_data *data);
-void		drawmap(t_data *data);
-void		draw_rays_minimap(t_data *data, t_player *player);
 //draw
 
 //get_intercept
@@ -206,6 +200,7 @@ double		get_h_intercept(t_data *data, t_ray *ray);
 //get_intercept
 
 //ray_casting
+
 void		init_ray(t_ray *ray);
 int			cast_rays(t_data *data);
 //ray_casting
@@ -217,7 +212,6 @@ int			get_image_texture(t_data *data, t_texture *tex, int i);
 void		lst_clear(t_texture **lst);
 void		free_double(char **map);
 void		get_player_position(t_data *data);
-int			is_wall_min(t_data *data, double y, double x);
 int			check_image_texture(t_data *data, t_texture *tex, int i);
 //main
 #endif

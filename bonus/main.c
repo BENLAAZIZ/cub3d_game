@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaaraba <aaaraba@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 15:55:54 by aaaraba           #+#    #+#             */
-/*   Updated: 2024/12/01 18:04:56 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/12/06 00:31:53 by aaaraba          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,31 @@
 
 void	ft_mouse(t_data *data)
 {
-	mlx_get_mouse_pos(data->mlx, &data->mouse_x, &data->mouse_y);
-	if (data->mouse_x < SCREEN_W / 2 && data->mouse_x > 0)
+	if (data->mouse == 0)
 	{
-		(data->angle -= 0.07)
-			&& (cast_rays(data));
+		mlx_get_mouse_pos(data->mlx, &data->mouse_x, &data->mouse_y);
+		if (data->mouse_x < SCREEN_W / 2 && data->mouse_x > 0)
+		{
+			(data->angle -= 0.07)
+				&& (cast_rays(data));
+		}
+		if (data->mouse_x > SCREEN_W / 2 && data->mouse_x < SCREEN_W)
+			(data->angle += 0.07) && (cast_rays(data));
+		if (data->angle > 2 * M_PI)
+			data->angle -= 2 * M_PI;
+		if (data->angle < 0)
+			data->angle += 2 * M_PI;
 	}
-	if (data->mouse_x > SCREEN_W / 2 && data->mouse_x < SCREEN_W)
+	if (mlx_is_key_down(data->mlx, MLX_KEY_H))
 	{
-		(data->angle += 0.07)
-			&& (cast_rays(data));
+		data->mouse = 0;
+		mlx_set_cursor_mode(data->mlx, MLX_MOUSE_HIDDEN);
 	}
-	if (data->angle > 2 * M_PI)
-		data->angle -= 2 * M_PI;
-	if (data->angle < 0)
-		data->angle += 2 * M_PI;
+	else if (mlx_is_key_down(data->mlx, MLX_KEY_N))
+	{
+		data->mouse = 1;
+		mlx_set_cursor_mode(data->mlx, MLX_MOUSE_NORMAL);
+	}
 }
 
 void	ft_hook(void *param)
@@ -37,9 +47,12 @@ void	ft_hook(void *param)
 
 	data = (t_data *)param;
 	ft_mouse(data);
-	mlx_set_mouse_pos(data->mlx, SCREEN_W / 2, SCREEN_H / 2);
+	if (data->mouse == 0)
+		mlx_set_mouse_pos(data->mlx, SCREEN_W / 2, SCREEN_H / 2);
 	if (mlx_is_key_down(data->mlx, MLX_KEY_ESCAPE))
+	{
 		mlx_close_window(data->mlx);
+	}
 	if (mlx_is_key_down(data->mlx, MLX_KEY_W))
 		move_player_up(data);
 	if (mlx_is_key_down(data->mlx, MLX_KEY_S))
@@ -78,6 +91,7 @@ int	ft_init(t_data *data, t_texture *textures, char **map, int i)
 		mlx_terminate(data->mlx);
 		return (ft_putstr_fd("Error in mlx_new_image", 2), 1);
 	}
+	data->mouse = 1;
 	return (0);
 }
 
@@ -99,13 +113,13 @@ int	ft_game(t_data *data, t_texture *textures, char **map, int i)
 		return (1);
 	mlx_image_to_window(data->mlx, data->img, 0, 0);
 	mlx_set_mouse_pos(data->mlx, SCREEN_W / 2, SCREEN_H / 2);
-	mlx_set_cursor_mode(data->mlx, MLX_MOUSE_HIDDEN);
 	mlx_loop_hook(data->mlx, ft_hook, data);
 	mlx_loop(data->mlx);
-	(lst_clear(&textures), free_double(map));
 	i = -1;
 	while (++i < 4)
 		mlx_delete_texture(data->image[i].texture);
+	lst_clear(&textures);
+	free_double(map);
 	mlx_terminate(data->mlx);
 	return (0);
 }

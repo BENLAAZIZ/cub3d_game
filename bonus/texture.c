@@ -34,9 +34,6 @@ int	get_image_texture(t_data *data, t_texture *tex, int i)
 	{
 		if (tex->identifier != F && tex->identifier != C)
 		{
-			data->image[i].texture = mlx_load_png(tex->path);
-			if (data->image[i].texture == NULL)
-				return (1);
 			data->image[i].image = mlx_texture_to_image(data->mlx,
 					data->image[i].texture);
 			if (data->image[i].image == NULL)
@@ -70,16 +67,4 @@ int	point_image_texture(t_data *data, t_ray *ray)
 	if (data->imgx == NULL)
 		return (1);
 	return (0);
-}
-
-void	delete_texture(t_data *data)
-{
-	int	i;
-
-	i = 0;
-	while (i < 4)
-	{
-		mlx_delete_texture(data->image[i].texture);
-		i++;
-	}
 }

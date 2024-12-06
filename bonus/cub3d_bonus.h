@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaaraba <aaaraba@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 15:16:53 by aaaraba           #+#    #+#             */
-/*   Updated: 2024/12/01 18:09:13 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/12/03 21:21:45 by aaaraba          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <string.h>
 
 # include "../../mlx/include/MLX42/MLX42.h"
 # include <math.h>
@@ -72,6 +71,7 @@ typedef struct s_data
 	int				ceiling_color;
 	int				floor_color;
 	double			speed;
+	int				mouse;
 	double			fov;
 }	t_data;
 
@@ -206,6 +206,7 @@ double		get_h_intercept(t_data *data, t_ray *ray);
 //get_intercept
 
 //ray_casting
+
 void		init_ray(t_ray *ray);
 int			cast_rays(t_data *data);
 //ray_casting

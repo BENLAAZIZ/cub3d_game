@@ -6,8 +6,10 @@ CFLAGS = -Wall -Wextra -Werror
 
 RM = rm -f
 
-GLFW_PATH = /Users/hben-laz/.brew/lib # Update to your GLFW location
+GLFW_PATH = /Users/User_name_in_intra/.brew/lib
+
 LDFLAGS = -lglfw
+
 LIBS = -L$(GLFW_PATH) -framework Cocoa -framework OpenGL -framework IOKit
 
 ft = 	main.c get_next_line.c ft_strcmp.c get_texture.c get_texture_helper.c \
@@ -24,17 +26,16 @@ SRC = $(libft) $(ft)
 
 OBJ = $(SRC:.c=.o)
 
-# Paths for MLX42
-MLX_PATH = ../../mlx
+MLX_PATH = ../mlx
 MLX_BUILD = $(MLX_PATH)/build
 MLX_INCLUDE = $(MLX_PATH)/include
 
 all: $(NAME)
 
-$(NAME): $(OBJ) cub3D_bonus
+$(NAME): $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) -I$(MLX_INCLUDE) -L$(MLX_BUILD) -lmlx42 $(LDFLAGS) $(LIBS) -o $(NAME)
 
-%.o: %.c cub3D_bonus
+%.o: %.c cub3d_bonus.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:

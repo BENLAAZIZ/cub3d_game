@@ -3,43 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaaraba <aaaraba@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 15:55:54 by aaaraba           #+#    #+#             */
-/*   Updated: 2024/12/01 19:09:35 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/12/06 17:22:33 by aaaraba          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-void	ft_mouse(t_data *data)
-{
-	mlx_get_mouse_pos(data->mlx, &data->mouse_x, &data->mouse_y);
-	if (data->mouse_x < SCREEN_W / 2 && data->mouse_x > 0)
-	{
-		(data->angle -= 0.07)
-			&& (cast_rays(data));
-	}
-	if (data->mouse_x > SCREEN_W / 2 && data->mouse_x < SCREEN_W)
-	{
-		(data->angle += 0.07)
-			&& (cast_rays(data));
-	}
-	if (data->angle > 2 * M_PI)
-		data->angle -= 2 * M_PI;
-	if (data->angle < 0)
-		data->angle += 2 * M_PI;
-}
 
 void	ft_hook(void *param)
 {
 	t_data	*data;
 
 	data = (t_data *)param;
-	ft_mouse(data);
-	mlx_set_mouse_pos(data->mlx, SCREEN_W / 2, SCREEN_H / 2);
 	if (mlx_is_key_down(data->mlx, MLX_KEY_ESCAPE))
+	{
 		mlx_close_window(data->mlx);
+	}
 	if (mlx_is_key_down(data->mlx, MLX_KEY_W))
 		move_player_up(data);
 	if (mlx_is_key_down(data->mlx, MLX_KEY_S))
@@ -98,14 +79,13 @@ int	ft_game(t_data *data, t_texture *textures, char **map, int i)
 	if (cast_rays(data))
 		return (1);
 	mlx_image_to_window(data->mlx, data->img, 0, 0);
-	mlx_set_mouse_pos(data->mlx, SCREEN_W / 2, SCREEN_H / 2);
-	mlx_set_cursor_mode(data->mlx, MLX_MOUSE_HIDDEN);
 	mlx_loop_hook(data->mlx, ft_hook, data);
 	mlx_loop(data->mlx);
-	(lst_clear(&textures), free_double(map));
 	i = -1;
 	while (++i < 4)
 		mlx_delete_texture(data->image[i].texture);
+	lst_clear(&textures);
+	free_double(map);
 	mlx_terminate(data->mlx);
 	return (0);
 }

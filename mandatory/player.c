@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   player.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hben-laz <hben-laz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaaraba <aaaraba@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 00:42:41 by hben-laz          #+#    #+#             */
-/*   Updated: 2024/12/01 19:09:43 by hben-laz         ###   ########.fr       */
+/*   Updated: 2024/12/06 17:22:33 by aaaraba          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,23 @@ int	is_wall(t_data *data, double y, double x)
 		return (1);
 	if (data->all_map[(int)y / (int)T_S][(int)x / (int)T_S] == '1')
 		return (1);
+	return (0);
+}
+
+int	is_wall_min(t_data *data, double y, double x)
+{
+	double	buffer;
+
+	buffer = 0.04;
+	if (x <= 0 || x >= data->lenght || y <= 0 || y >= data->height)
+		return (1);
+	if (data->all_map[(int)((y - buffer))][(int)((x - buffer))] == '1' ||
+		data->all_map[(int)((y - buffer))][(int)((x + buffer))] == '1' ||
+		data->all_map[(int)((y + buffer))][(int)((x - buffer))] == '1' ||
+		data->all_map[(int)((y + buffer))][(int)((x + buffer))] == '1')
+	{
+		return (1);
+	}
 	return (0);
 }
 
