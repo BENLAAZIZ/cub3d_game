@@ -2,6 +2,8 @@
 
 Welcome to my Cub3D project, a thrilling dive into the world of 3D game development! Inspired by the iconic Wolfenstein 3D, this project is part of the rigorous 42 school curriculum, crafted to introduce students to the fundamentals of 3D rendering and graphics programming using C and the MiniLibX graphical library.
 
+<img width="2012" alt="Screen Shot 2024-12-07 at 12 56 33 AM" src="https://github.com/user-attachments/assets/8a69d76a-92ae-4607-8185-ffcbf235a769">
+
 ## Project Overview
 
 Cub3D is all about bringing a 2D map to life with 3D projections. In this project, I've tackled:
